@@ -900,6 +900,29 @@
     color: #f1f5f9;
     background: #1e293b;
 }
+.contributor-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.contributor-badge.maintainer {
+    background: #f59e0b;
+    color: #111827;
+}
+
+.contributor-badge.developer {
+    background: #3b82f6;
+    color: white;
+}
+
+.contributor-badge.contributor {
+    background: #10b981;
+    color: white;
+}
 
 </style>
 </head>
@@ -2141,7 +2164,10 @@ function createContributorCard(contributor) {
             <img src="${contributor.avatar_url}" class="contributor-avatar" loading="lazy">
 
             <h4 class="contributor-name">${contributor.login}</h4>
-            <p class="contributor-username">${role}</p>
+            <span class="contributor-badge ${role}">
+    ${role.toUpperCase()}
+</span>
+
 
             <div class="contributor-contributions">
                 <i class="ri-git-commit-line"></i>
