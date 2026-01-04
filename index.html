@@ -17,6 +17,8 @@
         rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
 <style>
+
+    
     /* Contributors Section Styling */
     .contributors-section {
         padding: 5rem 1.5rem;
@@ -1628,151 +1630,271 @@
     });
 </script> 
 <script>
-    // Pagination Script
-    const cards = Array.from(document.querySelectorAll(".projects-container .card"));
-    const paginationContainer = document.getElementById("pagination-controls");
-    const emptyState = document.getElementById("empty-state");
-
-    let currentPage = 1;
-    let cardsPerPage = 9;
-
-    function getCardsPerPage() {
-        const container = document.querySelector(".projects-container");
-        const card = container.querySelector(".card");
-        if (!card) return 9;
-
-        const containerWidth = container.clientWidth;
-        const cardWidth = card.clientWidth + 24; // include gap
-        const columns = Math.floor(containerWidth / cardWidth);
-        
-        return columns * 3; // Show 3 rows
-    }
-
-    function showPage(page) {
-        currentPage = page;
-        cardsPerPage = getCardsPerPage();
-
-        const start = (page - 1) * cardsPerPage;
-        const end = start + cardsPerPage;
-
-        let visibleCount = 0;
-        
-        cards.forEach((card, index) => {
-            const isVisible = index >= start && index < end;
-            card.classList.toggle("hidden", !isVisible);
-            if (isVisible) visibleCount++;
-        });
-
-        // Show/hide empty state
-        if (visibleCount === 0) {
-            emptyState.style.display = 'block';
-        } else {
-            emptyState.style.display = 'none';
+    // PROJECTS FILTERING AND PAGINATION SYSTEM
+    
+    class ProjectManager {
+        constructor() {
+            this.cards = Array.from(document.querySelectorAll(".projects-container .card"));
+            this.filteredCards = [];
+            this.paginationContainer = document.getElementById("pagination-controls");
+            this.emptyState = document.getElementById("empty-state");
+            this.searchInput = document.getElementById("project-search");
+            this.sortSelect = document.getElementById("project-sort");
+            this.filterButtons = document.querySelectorAll(".filter-btn");
+            
+            this.currentPage = 1;
+            this.cardsPerPage = 9;
+            this.currentFilter = "all";
+            this.currentSort = "default";
+            this.currentSearch = "";
+            
+            this.init();
         }
-
-        updateActiveButton();
-    }
-
-    function createPagination() {
-        paginationContainer.innerHTML = "";
-        cardsPerPage = getCardsPerPage();
-        const totalPages = Math.ceil(cards.length / cardsPerPage);
-
-        // Only show pagination if there are multiple pages
-        if (totalPages > 1) {
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement("button");
-                btn.textContent = i;
-                btn.addEventListener("click", () => showPage(i));
-                paginationContainer.appendChild(btn);
+        
+        init() {
+            // Add data attributes for sorting if not present
+            this.addDateAttributes();
+            
+            // Initialize event listeners
+            this.initEventListeners();
+            
+            // Apply initial filter and sort
+            this.applyFilters();
+            this.showPage(1);
+        }
+        
+        addDateAttributes() {
+            // Add date attributes for sorting by "newest"
+            const categories = ["utility", "puzzle", "game", "strategy", "action", "fun", "security", "communication", "finance"];
+            const currentDate = new Date();
+            
+            this.cards.forEach((card, index) => {
+                if (!card.hasAttribute('data-date')) {
+                    // Create incremental dates (newer projects first)
+                    const daysAgo = Math.floor(index / 3); // Group projects by 3
+                    const fakeDate = new Date(currentDate);
+                    fakeDate.setDate(currentDate.getDate() - daysAgo);
+                    card.setAttribute('data-date', fakeDate.toISOString());
+                }
+            });
+        }
+        
+        initEventListeners() {
+            // Search input
+            this.searchInput.addEventListener("input", (e) => {
+                this.currentSearch = e.target.value.toLowerCase();
+                this.applyFilters();
+                this.showPage(1);
+            });
+            
+            // Sort select
+            this.sortSelect.addEventListener("change", (e) => {
+                this.currentSort = e.target.value;
+                this.applyFilters();
+                this.showPage(1);
+            });
+            
+            // Filter buttons
+            this.filterButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    // Update active button
+                    this.filterButtons.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    
+                    // Apply filter
+                    this.currentFilter = btn.dataset.filter;
+                    this.applyFilters();
+                    this.showPage(1);
+                });
+            });
+            
+            // Window resize for responsive pagination
+            window.addEventListener("resize", () => {
+                this.updatePagination();
+            });
+        }
+        
+        applyFilters() {
+            let filtered = [...this.cards];
+            
+            // Apply search filter
+            if (this.currentSearch) {
+                filtered = filtered.filter(card => {
+                    const title = card.querySelector(".card-heading").textContent.toLowerCase();
+                    const description = card.querySelector(".card-description").textContent.toLowerCase();
+                    const tech = card.querySelector(".card-tech").textContent.toLowerCase();
+                    const category = card.dataset.category.toLowerCase();
+                    
+                    return title.includes(this.currentSearch) ||
+                           description.includes(this.currentSearch) ||
+                           tech.includes(this.currentSearch) ||
+                           category.includes(this.currentSearch);
+                });
             }
-            paginationContainer.style.display = 'flex';
-        } else {
-            paginationContainer.style.display = 'none';
+            
+            // Apply category filter
+            if (this.currentFilter !== "all") {
+                filtered = filtered.filter(card => 
+                    card.dataset.category === this.currentFilter
+                );
+            }
+            
+            // Apply sorting
+            filtered = this.sortCards(filtered);
+            
+            this.filteredCards = filtered;
+            this.updatePagination();
+            this.updateEmptyState();
+        }
+        
+        sortCards(cards) {
+            const sorted = [...cards];
+            
+            switch(this.currentSort) {
+                case "az":
+                    sorted.sort((a, b) => {
+                        const titleA = a.querySelector(".card-heading").textContent.toLowerCase();
+                        const titleB = b.querySelector(".card-heading").textContent.toLowerCase();
+                        return titleA.localeCompare(titleB);
+                    });
+                    break;
+                    
+                case "za":
+                    sorted.sort((a, b) => {
+                        const titleA = a.querySelector(".card-heading").textContent.toLowerCase();
+                        const titleB = b.querySelector(".card-heading").textContent.toLowerCase();
+                        return titleB.localeCompare(titleA);
+                    });
+                    break;
+                    
+                case "newest":
+                    sorted.sort((a, b) => {
+                        const dateA = new Date(a.getAttribute("data-date"));
+                        const dateB = new Date(b.getAttribute("data-date"));
+                        return dateB - dateA; // Newest first
+                    });
+                    break;
+                    
+                case "default":
+                default:
+                    // Keep original order
+                    break;
+            }
+            
+            return sorted;
+        }
+        
+        showPage(page) {
+            this.currentPage = page;
+            const start = (page - 1) * this.cardsPerPage;
+            const end = start + this.cardsPerPage;
+            
+            // Hide all cards first
+            this.cards.forEach(card => {
+                card.style.display = "none";
+                card.classList.add("hidden");
+            });
+            
+            // Show filtered cards for current page
+            this.filteredCards.forEach((card, index) => {
+                if (index >= start && index < end) {
+                    card.style.display = "block";
+                    card.classList.remove("hidden");
+                }
+            });
+            
+            this.updateActiveButton();
+            this.scrollToProjects();
+        }
+        
+        updatePagination() {
+            this.paginationContainer.innerHTML = "";
+            const totalPages = Math.ceil(this.filteredCards.length / this.cardsPerPage);
+            
+            // Only show pagination if there are multiple pages
+            if (totalPages > 1) {
+                // Previous button
+                if (this.currentPage > 1) {
+                    const prevBtn = document.createElement("button");
+                    prevBtn.innerHTML = "&laquo;";
+                    prevBtn.addEventListener("click", () => this.showPage(this.currentPage - 1));
+                    this.paginationContainer.appendChild(prevBtn);
+                }
+                
+                // Page buttons
+                const maxVisiblePages = 5;
+                let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                
+                // Adjust start page if we're near the end
+                if (endPage - startPage + 1 < maxVisiblePages) {
+                    startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.classList.toggle("active", i === this.currentPage);
+                    btn.addEventListener("click", () => this.showPage(i));
+                    this.paginationContainer.appendChild(btn);
+                }
+                
+                // Next button
+                if (this.currentPage < totalPages) {
+                    const nextBtn = document.createElement("button");
+                    nextBtn.innerHTML = "&raquo;";
+                    nextBtn.addEventListener("click", () => this.showPage(this.currentPage + 1));
+                    this.paginationContainer.appendChild(nextBtn);
+                }
+                
+                this.paginationContainer.style.display = "flex";
+            } else {
+                this.paginationContainer.style.display = "none";
+            }
+        }
+        
+        updateActiveButton() {
+            const buttons = this.paginationContainer.querySelectorAll("button");
+            buttons.forEach((btn, index) => {
+                // Skip previous/next buttons
+                if (btn.innerHTML !== "&laquo;" && btn.innerHTML !== "&raquo;") {
+                    const pageNum = parseInt(btn.textContent);
+                    btn.classList.toggle("active", pageNum === this.currentPage);
+                }
+            });
+        }
+        
+        updateEmptyState() {
+            if (this.filteredCards.length === 0) {
+                this.emptyState.style.display = "block";
+            } else {
+                this.emptyState.style.display = "none";
+            }
+        }
+        
+        scrollToProjects() {
+            // Smooth scroll to projects section when changing pages
+            const projectsSection = document.getElementById("projects");
+            if (projectsSection && this.currentPage > 1) {
+                const navbarHeight = 75;
+                const targetPosition = projectsSection.offsetTop - navbarHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: "smooth"
+                });
+            }
         }
     }
-
-    function updateActiveButton() {
-        paginationContainer.querySelectorAll("button").forEach((btn, i) => {
-            btn.classList.toggle("active", i + 1 === currentPage);
-        });
-    }
-
-    // Recalculate on resize
-    window.addEventListener("resize", () => {
-        createPagination();
-        showPage(1);
+    
+    // Initialize when DOM is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        const projectManager = new ProjectManager();
+        
+        // Expose to global scope if needed
+        window.ProjectManager = projectManager;
     });
-
-    // Initialize pagination
-    createPagination();
-    showPage(1);
 </script>
-
-    <script>
-        // Pagination Script
-        const cards = Array.from(document.querySelectorAll(".projects-container .card"));
-        const paginationContainer = document.getElementById("pagination-controls");
-
-        let currentPage = 1;
-        let cardsPerPage = 9;
-
-        function getCardsPerPage() {
-            const container = document.querySelector(".projects-container");
-            const card = container.querySelector(".card");
-            if (!card) return 9;
-
-            const containerWidth = container.clientWidth;
-            const cardWidth = card.clientWidth + 24; // include gap
-            const columns = Math.floor(containerWidth / cardWidth);
-
-            // Always fill complete rows (3 rows)
-            return columns * 3;
-        }
-
-        function showPage(page) {
-            currentPage = page;
-            cardsPerPage = getCardsPerPage();
-
-            const start = (page - 1) * cardsPerPage;
-            const end = start + cardsPerPage;
-
-            cards.forEach((card, index) => {
-                card.classList.toggle("hidden", index < start || index >= end);
-            });
-
-            updateActiveButton();
-        }
-
-        function createPagination() {
-            paginationContainer.innerHTML = "";
-            cardsPerPage = getCardsPerPage();
-            const totalPages = Math.ceil(cards.length / cardsPerPage);
-
-            for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement("button");
-                btn.textContent = i;
-                btn.addEventListener("click", () => showPage(i));
-                paginationContainer.appendChild(btn);
-            }
-        }
-
-        function updateActiveButton() {
-            paginationContainer.querySelectorAll("button").forEach((btn, i) => {
-                btn.classList.toggle("active", i + 1 === currentPage);
-            });
-        }
-
-        // Recalculate on resize
-        window.addEventListener("resize", () => {
-            createPagination();
-            showPage(1);
-        });
-
-        // Init
-        createPagination();
-        showPage(1);
-    </script>
 
     <script src="./js/app.js"></script>
 </body>
