@@ -1,4 +1,15 @@
 [
+
+  {
+  "title": "Image Preview Uploader",
+  "category": "utility",
+  "description": "Preview and validate images before upload with drag and drop support.",
+  "tech": ["HTML", "CSS", "JS"],
+  "link": "./projects/image-preview-uploader/index.html",
+  "icon": "ri-image-add-line",
+  "coverClass": "image-preview-cover"
+}
+,
   {
     "title": "AI Resume Analyzer",
     "category": "utility",
