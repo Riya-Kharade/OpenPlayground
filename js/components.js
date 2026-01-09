@@ -160,8 +160,21 @@ class ComponentLoader {
         this.initializeSmoothScrolling();
 
         // Initialize project functionality
-        if (window.ProjectManager) {
-            new window.ProjectManager();
+        // Ensure projects loader script is present and initialize it.
+        // Some builds render the projects HTML but forget to include the loader script,
+        // which prevents dynamic filtering from working. Load it here if missing.
+        try {
+            const existing = document.querySelector('script[data-name="projects-loader"]');
+            if (!existing) {
+                const script = document.createElement('script');
+                script.src = './js/projects-loader.js';
+                script.defer = true;
+                script.setAttribute('data-name', 'projects-loader');
+                script.addEventListener('error', (e) => console.error('Failed to load projects-loader.js', e));
+                document.body.appendChild(script);
+            }
+        } catch (err) {
+            console.error('Error injecting projects-loader script:', err);
         }
 
         // Initialize contributors
