@@ -1,5 +1,18 @@
 [
   {
+    "title": "False Choice Simulator",
+    "category": "psychology",
+    "description": "Psychological experiment simulator demonstrating false choice scenarios and cognitive biases in decision-making.",
+    "tech": [
+        "HTML",
+        "CSS",
+        "JS"
+    ],
+    "link": "./projects/FalseChoiceSimulator/index.html",
+    "icon": "fas fa-brain",
+    "coverClass": "false-choice-cover"
+},
+  {
     "title": "Traffic Sign Memory Game",
     "category": "Educational / Memory Game",
     "description": "Interactive memory game where users match pairs of traffic signs to improve road safety knowledge and memory skills.",
