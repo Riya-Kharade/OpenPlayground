@@ -1,11 +1,10 @@
-name: Auto add ECWoC26 label to PRs
+name: Auto add ECWoC26 label to Issues
 
 on:
-  pull_request_target:
+  issues:
     types: [opened]
 
 permissions:
-  pull-requests: write
   issues: write
   contents: read
 
@@ -13,13 +12,13 @@ jobs:
   add-label:
     runs-on: ubuntu-latest
     steps:
-      - name: Add ECWoC26 label
+      - name: Add ECWoC26 label to issue
         uses: actions/github-script@v7
         with:
           script: |
             await github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
+              issue_number: context.payload.issue.number,
               labels: ["ECWoC26"],
             });
