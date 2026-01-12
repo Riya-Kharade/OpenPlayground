@@ -210,6 +210,19 @@
     "icon": "ri-file-list-3-line",
     "coverStyle": "background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%); color:#1e40af;"
   },
+   {
+    "title": "GIF search App",
+    "category": "utility",
+    "description": "Search and display GIFs using the Giphy API with pagination and trending features.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/gif-search/index.html",
+    "icon": "ri-gif-line",
+    "coverStyle": "background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%); color:#1e40af;"
+  },
   {
     "title": "Drag and Drop List Manager",
     "category": "utility",
