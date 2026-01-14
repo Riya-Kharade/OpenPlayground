@@ -40,6 +40,20 @@
     "coverStyle": "background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); color: #22c55e;"
   },
   {
+    "title": "Color Palette Generator",
+    "category": "utility",
+    "description": "Generate harmonious color palettes with adjustable parameters, including color count, harmony rules, and export options for designers and artists.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+"link": "./projects/color-palette-generator/index.html",
+    "icon": "ri-palette-line",
+    "coverClass": "palette-cover"
+  },
+
+  {
     "title": "Sound Reaction System",
     "category": "utility",
     "description": "Adaptive audio interaction module with environmental calibration, live decibel monitoring, and adjustable sensitivity controls.",
