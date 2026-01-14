@@ -1588,6 +1588,22 @@
     "icon": "ri-gamepad-line",
     "coverStyle": "background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: white;"
   },
+
+  {
+    "title": "Pattern Predictor Game",
+    "category": "game",
+    "description": "An interactive pattern prediction game that challenges users to identify and predict visual and logical patterns with increasing difficulty, featuring smooth animations and modern UI.",
+    "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+    "link": "./projects/pattern-predictor/index.html",
+    "icon": "ri-brain-line",
+    "coverStyle": "background: linear-gradient(135deg, #7c3aed, #22d3ee); color: white;"
+  },
+
+  
   {
     "title": "Truth or Dare",
     "category": "game",
