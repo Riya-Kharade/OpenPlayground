@@ -361,7 +361,18 @@ function openAdd(){
      • <strong>Recommendation:</strong> Use local PNG files for transparency requirements
    </div>
    <input id="t" placeholder="Recipe Title (e.g., 'Fluffy Pancakes')">
-   <input id="i" placeholder="Image URL (https://...)">
+    <div style="display:grid;grid-template-columns:1fr;gap:10px">
+      <input id="i" placeholder="Image URL (https://...)">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label class="btn secondary" style="margin:0" for="fileInput"><i data-lucide="image-up" class="icon"></i> Upload Image</label>
+        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display:none">
+        <div id="uploadInfo" style="font-size:12px;color:#666"></div>
+      </div>
+      <div id="imagePreviewWrap" style="display:none">
+        <div style="font-size:12px;color:#666;margin-bottom:6px;display:flex;align-items:center;gap:6px"><i data-lucide="eye" class="icon" style="width:14px;height:14px"></i>Preview</div>
+        <img id="imagePreview" alt="Preview" style="width:100%;max-height:220px;object-fit:cover;border-radius:10px;border:1px solid rgba(0,0,0,.08)">
+      </div>
+    </div>
    <div style="margin:10px 0;">
      <label style="display:flex;align-items:center;gap:8px;">
        <input type="checkbox" id="pngRequired"> 
@@ -376,11 +387,51 @@ function openAdd(){
      <button class="btn secondary" onclick="closeModal()" style="margin-left:10px;"><i data-lucide="ban" class="icon"></i>Cancel</button>
    </div>
  </div>`
+
+  // Initialize icons for newly injected content
+  if (window.lucide && window.lucide.createIcons) { window.lucide.createIcons(); }
+
+  // Wire up file upload
+  const fileInput = document.getElementById('fileInput');
+  const uploadInfo = document.getElementById('uploadInfo');
+  const imagePreview = document.getElementById('imagePreview');
+  const imagePreviewWrap = document.getElementById('imagePreviewWrap');
+
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const allowed = ['image/png','image/jpeg','image/webp','image/svg+xml'];
+    if (!allowed.includes(file.type)) {
+      uploadInfo.style.color = '#b00020';
+      uploadInfo.textContent = `Unsupported type: ${file.type}. Allowed: PNG, JPEG, WebP, SVG.`;
+      fileInput.value = '';
+      imagePreviewWrap.style.display = 'none';
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      uploadInfo.style.color = '#b00020';
+      uploadInfo.textContent = `File too large (${(file.size/1024/1024).toFixed(2)}MB). Max 2MB.`;
+      fileInput.value = '';
+      imagePreviewWrap.style.display = 'none';
+      return;
+    }
+    uploadInfo.style.color = '#666';
+    uploadInfo.textContent = `${file.name} • ${(file.size/1024).toFixed(0)} KB • ${file.type}`;
+    const reader = new FileReader();
+    reader.onload = () => {
+      imagePreview.src = reader.result;
+      imagePreviewWrap.style.display = 'block';
+      // Store temporarily on window for retrieval in addRecipe
+      window.__uploadedImageDataURL = reader.result;
+      window.__uploadedImageType = file.type;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 function addRecipe(){
  const title = document.getElementById('t').value;
- const img = document.getElementById('i').value;
+ const imgUrlInput = document.getElementById('i').value;
  const ingredients = document.getElementById('ing').value.split(',').map(i => i.trim()).filter(i => i);
  const steps = document.getElementById('st').value.split(',').map(s => s.trim()).filter(s => s);
  const time = parseInt(document.getElementById('time').value) || 600;
@@ -394,7 +445,7 @@ function addRecipe(){
  // Validate image URL format
  const validImageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
  const hasValidExtension = validImageExtensions.some(ext => 
-   img.toLowerCase().includes(ext) || img.includes('unsplash.com') || img.includes('images.')
+   imgUrlInput.toLowerCase().includes(ext) || imgUrlInput.includes('unsplash.com') || imgUrlInput.includes('images.')
  );
  
  if (!hasValidExtension) {
@@ -403,15 +454,28 @@ function addRecipe(){
  }
  
  // Warning for PNG requirement with external URLs
- if (requiresPNG && (img.includes('unsplash.com') || img.includes('picsum.photos'))) {
+ if (requiresPNG && (imgUrlInput.includes('unsplash.com') || imgUrlInput.includes('picsum.photos'))) {
    const proceed = confirm('⚠️ Warning: You\'ve marked this recipe as requiring PNG format, but you\'re using an external image source that typically serves JPEG. This may cause format inconsistency. Continue anyway?');
    if (!proceed) return;
  }
  
+ // Prefer uploaded file if present, otherwise use URL
+ let finalImg = imgUrlInput;
+ let finalImgType = 'url';
+ if (window.__uploadedImageDataURL) {
+   finalImg = window.__uploadedImageDataURL;
+   finalImgType = window.__uploadedImageType || 'data';
+   // If PNG is required but uploaded type isn't PNG, warn
+   if (requiresPNG && finalImgType !== 'image/png') {
+     const proceed = confirm(`⚠️ PNG required but uploaded file type is ${finalImgType}. Transparency may not be supported. Continue?`);
+     if (!proceed) return;
+   }
+ }
+
  const newRecipe = {
    id: Date.now(),
    title,
-   img,
+   img: finalImg,
    ingredients,
    steps,
    time,
