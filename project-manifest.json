@@ -1735,5 +1735,10 @@
       "path": "./projects/Digital Mood Landscape/project.json",
       "link": "./projects/Digital Mood Landscape/index.html"
     }
+    {
+      "folder": "MyFolio",
+      "path": "./projects/MyFolio/project.json",
+      "link": "./projects/MyFolio/index.html"
+    }
   ]
 }
