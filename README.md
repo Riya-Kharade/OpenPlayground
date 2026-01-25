@@ -39,8 +39,11 @@ OpenPlayground is where creativity meets code! Whether you're building your firs
 - 📋 **Dual View Modes** - Switch between Card and List view
 - 🔖 **Bookmarks** - Save your favorite projects for quick access
 - 🎲 **Random Project** - Discover something new with one click
+- 🚀 **Full-Stack Section** - Unique projects in MERN, Python, Go, Rust & more (GitHub only)
 - 🌙 **Dark Mode** - Easy on the eyes, day or night
 - 📱 **Fully Responsive** - Works beautifully on all devices
+
+
 
 ---
 
@@ -140,6 +143,7 @@ OpenPlayground/
 | **Puzzle**       | 🧩   | Brain teasers and logic games       |
 | **Fun**          | 🎉   | Jokes, quotes, creative projects    |
 | **Productivity** | 📊   | Planners, trackers, organizers      |
+| **MERN Stack**   | 🚀   | Full-Stack projects (GitHub only)   |
 | **Experimental** | 🔬   | Unique concepts and demos           |
 
 ---

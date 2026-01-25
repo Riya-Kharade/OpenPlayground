@@ -1,7 +1,7 @@
 {
-  "version": "2.0",
-  "generated": "2026-01-23T05:14:34.847Z",
-  "count": 325,
+  "version": "2.1",
+  "generated": "2026-01-24T16:38:07.796Z",
+  "count": 359,
   "projects": [
     {
       "folder": "15 Sliding Puzzle",
@@ -14,22 +14,14 @@
       "link": "./projects/2048-puzzle/index.html"
     },
     {
+      "folder": "2dshooter",
+      "path": "./projects/2dshooter/project.json",
+      "link": "./projects/2dshooter/index.html"
+    },
+    {
       "folder": "365Days",
       "path": "./projects/365Days/project.json",
       "link": "./projects/365Days/index.html"
-    },
-    {
-      "folder": "DigitalEnergyMeter",
-      "path": "./projects/DigitalEnergyMeter/project.json",
-      "link": "./projects/DigitalEnergyMeter/index.html"
-    },
-    {
-      "folder": "DigitalPresenceMirror",
-      "path": "./projects/DigitalPresenceMirror/project.json",
-      "link": "./projects/DigitalPresenceMirror/index.html",
-      "folder": "ThoughtSpeedAnalyzer",
-      "path": "./projects/ThoughtSpeedAnalyzer/project.json",
-      "link": "./projects/ThoughtSpeedAnalyzer/index.html"
     },
     {
       "folder": "AccessibilityColorLab",
@@ -87,6 +79,16 @@
       "link": "./projects/Alarm-app/index.html"
     },
     {
+      "folder": "AmbientFocusRoom",
+      "path": "./projects/AmbientFocusRoom/project.json",
+      "link": "./projects/AmbientFocusRoom/index.html"
+    },
+    {
+      "folder": "asciiforge",
+      "path": "./projects/asciiforge/project.json",
+      "link": "./projects/asciiforge/index.html"
+    },
+    {
       "folder": "astroid-game",
       "path": "./projects/astroid-game/project.json",
       "link": "./projects/astroid-game/index.html"
@@ -110,6 +112,11 @@
       "folder": "background-video",
       "path": "./projects/background-video/project.json",
       "link": "./projects/background-video/index.html"
+    },
+    {
+      "folder": "balloon-rise",
+      "path": "./projects/balloon-rise/project.json",
+      "link": "./projects/balloon-rise/index.html"
     },
     {
       "folder": "barcode-reader",
@@ -217,6 +224,16 @@
       "link": "./projects/chat-app/index.html"
     },
     {
+      "folder": "chat-app-main",
+      "path": "./projects/chat-app-main/project.json",
+      "link": "./projects/chat-app-main/public/index.html"
+    },
+    {
+      "folder": "checkers",
+      "path": "./projects/checkers/project.json",
+      "link": "./projects/checkers/index.html"
+    },
+    {
       "folder": "chess",
       "path": "./projects/chess/project.json",
       "link": "./projects/chess/index.html"
@@ -312,6 +329,11 @@
       "link": "./projects/Cryptographic-Protocol-Simulator/index.html"
     },
     {
+      "folder": "css-shapes-and-corners",
+      "path": "./projects/css-shapes-and-corners/project.json",
+      "link": "./projects/css-shapes-and-corners/index.html"
+    },
+    {
       "folder": "CSSBoxShadow",
       "path": "./projects/CSSBoxShadow/project.json",
       "link": "./projects/CSSBoxShadow/index.html"
@@ -386,10 +408,25 @@
       "path": "./projects/dictionary/project.json",
       "link": "./projects/dictionary/index.html"
     },
+        {
+      "folder": "ConnectFour",
+      "path": "./projects/ConnectFour/project.json",
+      "link": "./projects/ConnectFour/index.html"
+    },
+    {
+      "folder": "3DMouse",
+      "path": "./projects/3DMouse/project.json",
+      "link": "./projects/3DMouse/index.html"
+    },
     {
       "folder": "dictonary-app",
       "path": "./projects/dictonary-app/project.json",
       "link": "./projects/dictonary-app/index.html"
+    },
+    {
+      "folder": "Digital Mood Landscape",
+      "path": "./projects/Digital Mood Landscape/project.json",
+      "link": "./projects/Digital Mood Landscape/index.html"
     },
     {
       "folder": "digital-alarm",
@@ -405,6 +442,11 @@
       "folder": "Digital-Minimalism-Experiment",
       "path": "./projects/Digital-Minimalism-Experiment/project.json",
       "link": "./projects/Digital-Minimalism-Experiment/index.html"
+    },
+    {
+      "folder": "DigitalEnergyMeter",
+      "path": "./projects/DigitalEnergyMeter/project.json",
+      "link": "./projects/DigitalEnergyMeter/index.html"
     },
     {
       "folder": "DigitalFootprintVisualizer",
@@ -492,6 +534,11 @@
       "link": "./projects/Event-Countdown-Timer/index.html"
     },
     {
+      "folder": "evorefresh",
+      "path": "./projects/evorefresh/project.json",
+      "link": "./projects/evorefresh/index.html"
+    },
+    {
       "folder": "evoshapes",
       "path": "./projects/evoshapes/project.json",
       "link": "./projects/evoshapes/index.html"
@@ -502,9 +549,19 @@
       "link": "./projects/expensesplitter/index.html"
     },
     {
+      "folder": "fading-snake",
+      "path": "./projects/fading-snake/project.json",
+      "link": "./projects/fading-snake/index.html"
+    },
+    {
       "folder": "FalseChoiceSimulator",
       "path": "./projects/FalseChoiceSimulator/project.json",
       "link": "./projects/FalseChoiceSimulator/index.html"
+    },
+    {
+      "folder": "file-size-converter",
+      "path": "./projects/file-size-converter/project.json",
+      "link": "./projects/file-size-converter/index.html"
     },
     {
       "folder": "file-upload-preview",
@@ -617,6 +674,11 @@
       "link": "./projects/habit-tracker/index.html"
     },
     {
+      "folder": "HabitGravityVisualizer",
+      "path": "./projects/HabitGravityVisualizer/project.json",
+      "link": "./projects/HabitGravityVisualizer/index.html"
+    },
+    {
       "folder": "hangman-game",
       "path": "./projects/hangman-game/project.json",
       "link": "./projects/hangman-game/index.html"
@@ -637,6 +699,11 @@
       "link": "./projects/Hover maze/index.html"
     },
     {
+      "folder": "hsl-color-game",
+      "path": "./projects/hsl-color-game/project.json",
+      "link": "./projects/hsl-color-game/index.html"
+    },
+    {
       "folder": "HumanErrorPlayground",
       "path": "./projects/HumanErrorPlayground/project.json",
       "link": "./projects/HumanErrorPlayground/index.html"
@@ -645,6 +712,11 @@
       "folder": "IaC Visual Playground",
       "path": "./projects/IaC Visual Playground/project.json",
       "link": "./projects/IaC Visual Playground/index.html"
+    },
+    {
+      "folder": "IdeaEvolution",
+      "path": "./projects/IdeaEvolution/project.json",
+      "link": "./projects/IdeaEvolution/index.html"
     },
     {
       "folder": "ideaOfTheDayApp",
@@ -707,9 +779,19 @@
       "link": "./projects/internet-speed-tester/index.html"
     },
     {
+      "folder": "InvisibleNav",
+      "path": "./projects/InvisibleNav/project.json",
+      "link": "./projects/InvisibleNav/index.html"
+    },
+    {
       "folder": "iridium-game",
       "path": "./projects/iridium-game/project.json",
       "link": "./projects/iridium-game/index.html"
+    },
+    {
+      "folder": "json-formattor",
+      "path": "./projects/json-formattor/project.json",
+      "link": "./projects/json-formattor/index.html"
     },
     {
       "folder": "kanban-board",
@@ -732,6 +814,11 @@
       "link": "./projects/keyplayground/index.html"
     },
     {
+      "folder": "kinetic-loader",
+      "path": "./projects/kinetic-loader/project.json",
+      "link": "./projects/kinetic-loader/index.html"
+    },
+    {
       "folder": "Kinetic-Typography",
       "path": "./projects/Kinetic-Typography/project.json",
       "link": "./projects/Kinetic-Typography/index.html"
@@ -745,6 +832,11 @@
       "folder": "LiveWebcamToASCII",
       "path": "./projects/LiveWebcamToASCII/project.json",
       "link": "./projects/LiveWebcamToASCII/index.html"
+    },
+    {
+      "folder": "living-typrography",
+      "path": "./projects/living-typrography/project.json",
+      "link": "./projects/living-typrography/index.html"
     },
     {
       "folder": "Loot_Box_Simulator",
@@ -762,9 +854,19 @@
       "link": "./projects/LSB Image Steganography Tool/index.html"
     },
     {
+      "folder": "Lunar-lander",
+      "path": "./projects/Lunar-lander/project.json",
+      "link": "./projects/Lunar-lander/index.html"
+    },
+    {
       "folder": "Luxury-Todo-list",
       "path": "./projects/Luxury-Todo-list/project.json",
       "link": "./projects/Luxury-Todo-list/index.html"
+    },
+    {
+      "folder": "lyric-search",
+      "path": "./projects/lyric-search/project.json",
+      "link": "./projects/lyric-search/index.html"
     },
     {
       "folder": "markdown-previewer",
@@ -795,6 +897,11 @@
       "folder": "Memory-Game(Colors)",
       "path": "./projects/Memory-Game(Colors)/project.json",
       "link": "./projects/Memory-Game(Colors)/index.html"
+    },
+    {
+      "folder": "MemoryFade",
+      "path": "./projects/MemoryFade/project.json",
+      "link": "./projects/MemoryFade/index.html"
     },
     {
       "folder": "Mental_Fatigue_Tester",
@@ -835,6 +942,11 @@
       "folder": "MinimalCountdown",
       "path": "./projects/MinimalCountdown/project.json",
       "link": "./projects/MinimalCountdown/index.html"
+    },
+    {
+      "folder": "MinimalSurvival",
+      "path": "./projects/MinimalSurvival/project.json",
+      "link": "./projects/MinimalSurvival/index.html"
     },
     {
       "folder": "mistakerunner",
@@ -885,6 +997,16 @@
       "folder": "my-stylish-to-do-list",
       "path": "./projects/my-stylish-to-do-list/project.json",
       "link": "./projects/my-stylish-to-do-list/index.html"
+    },
+    {
+      "folder": "MyFolio",
+      "path": "./projects/MyFolio/project.json",
+      "link": "./projects/MyFolio/index.html"
+    },
+    {
+      "folder": "Neon Vortex",
+      "path": "./projects/Neon Vortex/project.json",
+      "link": "./projects/Neon Vortex/index.html"
     },
     {
       "folder": "Neon_Snake_Arena",
@@ -1000,6 +1122,11 @@
       "folder": "Particle_Life_Simulation",
       "path": "./projects/Particle_Life_Simulation/project.json",
       "link": "./projects/Particle_Life_Simulation/index.html"
+    },
+    {
+      "folder": "Password-Generator",
+      "path": "./projects/Password-Generator/project.json",
+      "link": "./projects/Password-Generator/frontend/index.html"
     },
     {
       "folder": "password-strength-checker",
@@ -1262,6 +1389,11 @@
       "link": "./projects/ReverseMaze/index.html"
     },
     {
+      "folder": "RiskRewardGambler",
+      "path": "./projects/RiskRewardGambler/project.json",
+      "link": "./projects/RiskRewardGambler/index.html"
+    },
+    {
       "folder": "roadmap-generator",
       "path": "./projects/roadmap-generator/project.json",
       "link": "./projects/roadmap-generator/index.html"
@@ -1330,6 +1462,11 @@
       "folder": "sliding-image",
       "path": "./projects/sliding-image/project.json",
       "link": "./projects/sliding-image/index.html"
+    },
+    {
+      "folder": "smart-classrom-timetable",
+      "path": "./projects/smart-classrom-timetable/project.json",
+      "link": "./projects/smart-classrom-timetable/index.html"
     },
     {
       "folder": "Smart-Contract-Execution-Simulator",
@@ -1437,6 +1574,11 @@
       "link": "./projects/synthetic-exchange/index.html"
     },
     {
+      "folder": "SynthLab",
+      "path": "./projects/SynthLab/project.json",
+      "link": "./projects/SynthLab/index.html"
+    },
+    {
       "folder": "System-Design-Visualizer",
       "path": "./projects/System-Design-Visualizer/project.json",
       "link": "./projects/System-Design-Visualizer/index.html"
@@ -1482,9 +1624,19 @@
       "link": "./projects/tic-tac-toe/index.html"
     },
     {
+      "folder": "tilting-maze",
+      "path": "./projects/tilting-maze/project.json",
+      "link": "./projects/tilting-maze/index.html"
+    },
+    {
       "folder": "Time-Perception-Experiment",
       "path": "./projects/Time-Perception-Experiment/project.json",
       "link": "./projects/Time-Perception-Experiment/index.html"
+    },
+    {
+      "folder": "Time-Perception-Simulator",
+      "path": "./projects/Time-Perception-Simulator/project.json",
+      "link": "./projects/Time-Perception-Simulator/index.html"
     },
     {
       "folder": "time-zone-converter",
@@ -1567,6 +1719,11 @@
       "link": "./projects/UnlimitedColors/index.html"
     },
     {
+      "folder": "untangle",
+      "path": "./projects/untangle/project.json",
+      "link": "./projects/untangle/index.html"
+    },
+    {
       "folder": "url-shortener",
       "path": "./projects/url-shortener/project.json",
       "link": "./projects/url-shortener/index.html"
@@ -1575,6 +1732,11 @@
       "folder": "VectorForge",
       "path": "./projects/VectorForge/project.json",
       "link": "./projects/VectorForge/index.html"
+    },
+    {
+      "folder": "virtual-keyboard",
+      "path": "./projects/virtual-keyboard/project.json",
+      "link": "./projects/virtual-keyboard/index.html"
     },
     {
       "folder": "Virtual_Control_Panel",
@@ -1620,6 +1782,11 @@
       "folder": "Whack a Box",
       "path": "./projects/Whack a Box/project.json",
       "link": "./projects/Whack a Box/index.html"
+    },
+    {
+      "folder": "word-checker",
+      "path": "./projects/word-checker/project.json",
+      "link": "./projects/word-checker/index.html"
     },
     {
       "folder": "word-memory-game",
@@ -1670,13 +1837,35 @@
       "folder": "EvoRefresh",
       "path": "./projects/evorefresh/project.json",
       "link": "./projects/evorefresh/index.html"
+    },
+    {
       "folder": "Flownet",
       "path": "./projects/flownet/project.json",
       "link": "./projects/flownet/index.html"
+    },
+    {
      {
       "folder": "voice-forge",
       "path": "./projects/voice-forge/project.json",
       "link": "./projects/voice-forge/index.html"
+    },
+    {
+      "folder": "Digital Mood Landscape",
+      "path": "./projects/Digital Mood Landscape/project.json",
+      "link": "./projects/Digital Mood Landscape/index.html"
+    },
+    {
+      "folder": "Harmonicajs",
+      "path": "./projects/harmonicjs/project.json",
+      "link": "./projects/harmonicjs/index.html"
+      "folder": "AsciiForge",
+      "path": "./projects/AsciiForge/project.json",
+      "link": "./projects/AsciiForge/index.html"
+    }
+    {
+      "folder": "MyFolio",
+      "path": "./projects/MyFolio/project.json",
+      "link": "./projects/MyFolio/index.html"
     }
   ]
 }

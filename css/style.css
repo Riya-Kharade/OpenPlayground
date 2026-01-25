@@ -95,6 +95,11 @@
   color: var(--text-primary);
 }
 
+html[data-theme="dark"] .bot-message {
+  background: rgba(255, 107, 53, 0.15);
+  color: var(--text-primary);
+}
+
 .user-message {
   background: #ff6b35;
   color: white;
@@ -190,6 +195,11 @@
   --glass-border: rgba(255, 255, 255, 0.3);
   --glass-blur: blur(10px);
 
+  /* Light mode specific colors */
+  --card-bg: var(--surface);
+  --modal-bg: var(--surface);
+  --input-bg: var(--surface);
+
   /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -252,6 +262,11 @@ html[data-theme="dark"] {
 
   --glass-bg: rgba(30, 30, 30, 0.9);
   --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Dark mode specific colors for better contrast */
+  --card-bg: var(--surface);
+  --modal-bg: var(--surface-elevated);
+  --input-bg: var(--surface-elevated);
 }
 
 /* Base Styles */
@@ -421,7 +436,8 @@ button#themeToggle {
 
 /* Reserve space for sticky navbar */
 #header-placeholder {
-  height: 72px; /* matches navbar height */
+  height: 72px;
+  /* matches navbar height */
 }
 
 .nav-container {
@@ -533,6 +549,7 @@ html[data-theme="dark"] .card-actions .bookmark-btn,
 html[data-theme="dark"] .card-actions .source-btn {
   background: var(--surface-elevated);
   border-color: var(--border-default);
+  color: var(--text-muted);
 }
 
 html[data-theme="dark"] .card-actions .bookmark-btn:hover,
@@ -540,6 +557,12 @@ html[data-theme="dark"] .card-actions .source-btn:hover {
   background: rgba(255, 107, 53, 0.2);
   color: var(--primary-400);
   border-color: var(--primary-400);
+}
+
+html[data-theme="dark"] .card-actions .bookmark-btn.bookmarked {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+  color: white;
 }
 
 /* List Card Actions Adjustment */
@@ -625,6 +648,28 @@ html[data-theme="dark"] .card-actions .source-btn:hover {
 .nav-links a:hover::after {
   width: 100%;
 }
+
+.nav-links .fullstack-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: #ff6b35;
+  font-weight: 600;
+  padding: var(--space-2) var(--space-3);
+}
+
+.nav-links .fullstack-link i {
+  transition: transform var(--transition-spring);
+}
+
+.nav-links .fullstack-link:hover {
+  color: #ff5722;
+}
+
+.nav-links .fullstack-link:hover i {
+  transform: translateY(-3px) translateX(2px);
+}
+
 
 .nav-links .github-link {
   display: flex;
@@ -1699,12 +1744,19 @@ html[data-theme="dark"] .difficulty-badge {
 html[data-theme="dark"] .list-card-btn {
   background: var(--surface-elevated);
   border-color: var(--border-default);
+  color: var(--text-secondary);
 }
 
 html[data-theme="dark"] .list-card-btn:hover {
   background: rgba(255, 107, 53, 0.2);
   color: var(--primary-400);
   border-color: var(--primary-400);
+}
+
+html[data-theme="dark"] .list-card-btn.bookmarked {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+  color: white;
 }
 
 /* List view responsive */
@@ -2766,12 +2818,19 @@ html[data-theme="dark"] .team-role {
 }
 
 .rating-modal {
-  background: var(--surface);
+  background: var(--modal-bg);
   border-radius: var(--radius-lg);
   padding: 0;
   max-width: 400px;
   width: 90%;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-light);
+}
+
+html[data-theme="dark"] .rating-modal {
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 .rating-modal-header {
@@ -2940,6 +2999,19 @@ html[data-theme="dark"] .team-role {
   resize: vertical;
   font-family: inherit;
   margin-bottom: var(--space-4);
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .review-textarea {
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .review-textarea:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
 }
 
 .submit-rating {
@@ -3421,6 +3493,12 @@ html[data-theme="dark"] .team-role {
   overflow: hidden;
 }
 
+html[data-theme="dark"] .custom-options {
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.6);
+}
+
 .custom-select.open .custom-options {
   opacity: 1;
   visibility: visible;
@@ -3649,6 +3727,30 @@ main
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 
+/* Dark Mode Filter Buttons - Better Contrast */
+html[data-theme="dark"] .filter-btn,
+html[data-theme="dark"] .category-btn,
+html[data-theme="dark"] .filters button {
+  background-color: var(--surface-elevated) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-default) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+html[data-theme="dark"] .filter-btn:hover,
+html[data-theme="dark"] .category-btn:hover {
+  background-color: rgba(255, 107, 53, 0.2) !important;
+  color: var(--primary-400) !important;
+  border-color: var(--primary-400) !important;
+}
+
+html[data-theme="dark"] .filter-btn.active,
+html[data-theme="dark"] .category-btn.active {
+  background-color: var(--primary-500) !important;
+  color: white !important;
+  border-color: var(--primary-500) !important;
+}
+
 /* 2. Active Filter - ONLY in Light Mode */
 [data-theme="light"] .filter-btn.active,
 [data-theme="light"] .category-btn.active,
@@ -3667,12 +3769,129 @@ main
   border: 1px solid #e5e7eb !important;
 }
 
+/* Dark Mode View Toggle Buttons */
+html[data-theme="dark"] .view-btn {
+  background: var(--surface-elevated) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-default) !important;
+}
+
+html[data-theme="dark"] .view-btn:hover {
+  background: rgba(255, 107, 53, 0.2) !important;
+  color: var(--primary-400) !important;
+  border-color: var(--primary-400) !important;
+}
+
+html[data-theme="dark"] .view-btn.active {
+  background: var(--primary-500) !important;
+  color: white !important;
+  border-color: var(--primary-500) !important;
+}
+
 /* 4. Search Bar - ONLY in Light Mode */
 [data-theme="light"] input[type="text"],
 [data-theme="light"] input[type="search"] {
   background-color: #ffffff !important;
   color: #1f2937 !important;
   border: 1px solid #d1d5db !important;
+}
+
+/* Dark Mode Search Bar */
+html[data-theme="dark"] .search-box input,
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="search"] {
+  background-color: var(--surface-elevated) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-default) !important;
+}
+
+html[data-theme="dark"] .search-box:focus-within {
+  border-color: var(--primary-500) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2) !important;
+}
+
+/* Mobile Search Enhancements */
+.search-box {
+  position: relative;
+  min-height: 44px; /* Touch-friendly height */
+}
+
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+html[data-theme="dark"] .search-suggestions {
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background: var(--primary-50);
+  color: var(--primary-600);
+}
+
+html[data-theme="dark"] .suggestion-item:hover {
+  background: rgba(255, 107, 53, 0.2);
+  color: var(--primary-400);
+}
+
+.suggestion-item i {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.suggestion-item span {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* Mobile Responsive Search */
+@media (max-width: 768px) {
+  .search-box {
+    width: 100%;
+    max-width: none;
+    min-height: 48px; /* Larger touch target on mobile */
+  }
+  
+  .search-box input {
+    font-size: 16px; /* Prevent zoom on iOS */
+    padding: var(--space-3) var(--space-4);
+  }
+  
+  .search-suggestions {
+    max-height: 250px;
+  }
+  
+  .suggestion-item {
+    padding: var(--space-4);
+    min-height: 48px;
+  }
 }
 
 /* 5. Theme Toggle Button - ONLY in Light Mode */
@@ -3719,6 +3938,19 @@ main
   background: var(--bg-secondary);
   color: var(--text-primary);
   font-family: inherit;
+}
+
+html[data-theme="dark"] .feedback-form input,
+html[data-theme="dark"] .feedback-form textarea {
+  background: var(--surface-elevated);
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+html[data-theme="dark"] .feedback-form input:focus,
+html[data-theme="dark"] .feedback-form textarea:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
 }
 
 .feedback-form input:focus,
