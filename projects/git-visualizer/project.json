@@ -1,0 +1,13 @@
+{
+  "title": "Git Visualizer",
+  "category": "utility",
+  "difficulty": "Beginner",
+  "description": "A project to visualize and teach Git commands and workflows, built with HTML, CSS, and JavaScript.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "icon": "ri-git-branch-line",
+  "coverStyle": "background: linear-gradient(135deg, #f85032 0%, #e73827 100%); color: white;"
+}
