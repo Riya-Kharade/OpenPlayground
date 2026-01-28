@@ -1,6 +1,6 @@
 # TimeFlow ⏱️
 
-TimeFlow is a premium, high-performance time tracking application built for **Day 141** of the 100 Days of Web Development challenge.
+TimeFlow is a premium, high-performance time tracking application built for users who have a hard time managing "TIME" itself
 
 ## ✨ Features
 
