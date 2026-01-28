@@ -2014,6 +2014,11 @@
       "link": "./projects/WordClock/index.html"
     },
     {
+      "folder": "RainSimulator",
+      "path": "./projects/RainSimulator/project.json",
+      "link": "./projects/RainSimulator/index.html"
+    },
+    {
       "folder": "liquidBtn",
       "path": "./projects/liquidBtn/project.json",
       "link": "./projects/liquidBtn/index.html"
