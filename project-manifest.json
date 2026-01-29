@@ -1745,5 +1745,10 @@
       "path": "./projects/Rainy_Day/project.json",
       "link": "./projects/Rainy_Day/index.html"
     }
+    {
+      "folder": "ToDoIst",
+      "path": "./projects/ToDoIst/project.json",
+      "link": "./projects/ToDoIst/index.html"
+    }
   ]
 }
