@@ -1760,6 +1760,11 @@
       "path": "./projects/Sharks/project.json",
       "link": "./projects/Sharks/index.html"
     }
+    {
+      "folder": "Calci",
+      "path": "./projects/Calci/project.json",
+      "link": "./projects/Calci/index.html"
+    }
   
   ]
 }
