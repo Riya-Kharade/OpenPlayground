@@ -1,7 +1,7 @@
 {
   "version": "2.1",
   "generated": "2026-01-24T16:38:07.796Z",
-  "count": 362,
+  "count": 361,
   "projects": [
     {
       "folder": "15 Sliding Puzzle",
@@ -1962,31 +1962,6 @@
       "folder": "Focus Timer Pro",
       "path": "./projects/Focus-Timer-Pro/project.json",
       "link": "./projects/Focus-Timer-Pro/index.html"
-    },
-    {
-      "folder": "caseConverter",
-      "path": "./projects/caseConverter/project.json",
-      "link": "./projects/caseConverter/index.html"
-    },
-    {
-      "folder": "Code Snippet Expiry Vault",
-      "path": "./projects/Code-Snippet-Expiry-Vault/project.json",
-      "link": "./projects/Code-Snippet-Expiry-Vault/index.html"
-    },
-    {
-      "folder": "ToDoIst",
-      "path": "./projects/ToDoIst/project.json",
-      "link": "./projects/ToDoIst/index.html"
-    },
-    {
-      "folder": "thumbnail",
-      "path": "./projects/thumbnail/project.json",
-      "link": "./projects/thumbnail/index.html"
-    },
-    {
-      "folder": "Resumator",
-      "path": "./projects/Resumator/project.json",
-      "link": "./projects/Resumator/index.html"
     }
      {
       "folder": "Sharks",
