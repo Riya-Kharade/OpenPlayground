@@ -23,6 +23,12 @@
       "path": "./projects/AttentionGarden/project.json",
       "link": "./projects/AttentionGarden/index.html"
     },
+     {
+      "folder": "e-learn",
+      "path": "./projects/e-learn/project.json",
+      "link": "./projects/e-learn/index.html"
+    },
+  
     {
       "folder": "MinimalSurvival",
       "path": "./projects/MinimalSurvival/project.json",
@@ -2118,6 +2124,7 @@
       "folder": "time-complexity-game",
       "path": "./projects/time-complexity-game/project.json",
       "link": "./projects/time-complexity-game/index.html"
+
     },
 
    {
@@ -2144,9 +2151,13 @@
       "folder": "puzzleroom",
       "path": "./projects/puzzleroom/project.json",
       "link": "./projects/puzzleroom/index.html"
+    },
+     {
+      "folder": "tab-focus-idle-tracker",
+      "path": "./projects/tab-focus-idle-tracker/project.json",
+      "link": "./projects/tab-focus-idle-tracker/index.html"
     }
-  
-  
+ 
   
   ]
 }
