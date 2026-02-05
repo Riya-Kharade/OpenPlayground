@@ -394,6 +394,16 @@
       "link": "./projects/Cryptographic-Protocol-Simulator/index.html"
     },
     {
+      "folder": "calcx-calculator-app",
+      "path": "./projects/calcx-calculator-app/project.json",
+      "link": "./projects/calcx-calculator-app/index.html"
+    },
+    {
+      "folder": "quick-notes",
+      "path": "./projects/quick-notes/project.json",
+      "link": "./projects/quick-notes/index.html"
+    },
+    {
       "folder": "css-shapes-and-corners",
       "path": "./projects/css-shapes-and-corners/project.json",
       "link": "./projects/css-shapes-and-corners/index.html"
@@ -1942,15 +1952,11 @@
       "folder": "WorldMeetingPlanner",
       "path": "./projects/WorldMeetingPlanner/project.json",
       "link": "./projects/WorldMeetingPlanner/index.html"
- add-color-palette-generator
- add-color-palette-generator
-
     },
     {
       "folder": "ResonanceForge",
       "path": "./projects/resonanceforge/project.json",
       "link": "./projects/resonanceforge/index.html"
- main
     },
     {
       "folder": "color-blindness-checker",
@@ -1958,13 +1964,11 @@
       "link": "./projects/color-blindness-checker/index.html"
     },
     {
-  add-color-palette-generator
       "folder": "palette-generator",
       "path": "./projects/palette-generator/project.json",
       "link": "./projects/palette-generator/index.html"
-
- main
-
+    },
+    {
       "folder": "evoshapes",
       "path": "./projects/evoshapes/project.json",
       "link": "./projects/evoshapes/index.html"
@@ -1988,6 +1992,8 @@
       "folder": "EvoRefresh",
       "path": "./projects/evorefresh/project.json",
       "link": "./projects/evorefresh/index.html"
+    },
+    {
       "folder": "Flownet",
       "path": "./projects/flownet/project.json",
       "link": "./projects/flownet/index.html"
@@ -2011,6 +2017,8 @@
       "folder": "ScribeWord",
       "path": "./projects/ScribeWord/project.json",
       "link": "./projects/ScribeWord/index.html"
+    },
+    {  
       "folder": "Harmonicajs",
       "path": "./projects/harmonicjs/project.json",
       "link": "./projects/harmonicjs/index.html"
@@ -2054,16 +2062,12 @@
       "folder": "mousetone",
       "path": "./projects/mousetone/project.json",
       "link": "./projects/mousetone/index.html"
- add-color-palette-generator
- main
-
     },
     {
       "folder": "emotion-theme",
       "path": "./projects/emotion-theme/project.json",
       "link": "./projects/emotion-theme/index.html"
- main
-    }
+    },
     {
       "folder": "snake world",
       "path": "./projects/snake world/project.json",
