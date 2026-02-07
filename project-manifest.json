@@ -1734,6 +1734,11 @@
       "folder": "Digital Mood Landscape",
       "path": "./projects/Digital Mood Landscape/project.json",
       "link": "./projects/Digital Mood Landscape/index.html"
+    },
+    {
+      "folder": "Event Manager",
+      "path": "./projects/Event Manager/project.json",
+      "link": "./projects/Event Manager/index.html"
     }
   ]
 }
