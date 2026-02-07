@@ -1987,6 +1987,11 @@
       "folder": "finite-automaton-simulator",
       "path": "./projects/finite-automaton-simulator/project.json",
       "link": "./projects/finite-automaton-simulator/index.html"
+    },
+    {
+      "folder": "graph-coloring-visualizer",
+      "path": "./projects/graph-coloring-visualizer/project.json",
+      "link": "./projects/graph-coloring-visualizer/index.html"
     }
   ]
 }
