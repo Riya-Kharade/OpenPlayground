@@ -56,10 +56,12 @@ const progress = calculateProgress(plan);
 document.getElementById("progressBox")
 .innerText = `Progress: ${progress}%`;
 
+if (typeof checkPanic !== 'undefined') {
 const panic = checkPanic(user, syllabus);
 
 if(panic){
   const banner=document.getElementById("panicBanner");
   banner.innerText="🚨 Panic Mode: You are falling behind!";
   banner.style.color="red";
+}
 }

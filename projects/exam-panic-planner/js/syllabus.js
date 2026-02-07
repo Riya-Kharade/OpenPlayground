@@ -12,6 +12,11 @@ addBtn.addEventListener("click", function(){
   const unit = unitInput.value.trim();
   const hours = Number(hourInput.value);
 
+  if (hours <= 0) {
+    alert("Hours must be greater than 0");
+    return;
+  }
+
   if(!subject || !unit || !hours) return;
 
   if(!syllabus[subject]){

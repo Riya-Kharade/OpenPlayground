@@ -5,6 +5,11 @@ form.addEventListener("submit", function(e) {
   const name = document.getElementById("name").value;
   const hours = Number(document.getElementById("hours").value);
   const examDate = document.getElementById("examDate").value;
+  const today = new Date().toISOString().split('T')[0];
+if (examDate < today) {
+  alert("Exam date cannot be in the past");
+  return;
+}
 
   if (hours <= 0) {
     alert("Daily hours must be greater than 0");

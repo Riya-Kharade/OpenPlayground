@@ -1,5 +1,7 @@
 function generatePlan(){
 
+  const oldPlan = JSON.parse(localStorage.getItem("plan")) || [];
+
   const user = JSON.parse(localStorage.getItem("user"));
   const syllabus = JSON.parse(localStorage.getItem("syllabus"));
 
@@ -17,6 +19,11 @@ function generatePlan(){
   const daysLeft = Math.ceil(
     (examDate - today) / (1000 * 60 * 60 * 24)
   );
+
+  if (daysLeft <= 0) {
+  alert("Exam date must be in the future");
+  return;
+}
 
   const dailyLimit = user.dailyHours;
 

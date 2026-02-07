@@ -16,6 +16,7 @@ input{
   color:black;
   font-weight:bold;
   cursor:pointer;
+  transition: 0.2s ease;
 }
 
 .card{
@@ -36,4 +37,9 @@ button:hover{
   opacity:0.85;
   transform:scale(1.02);
   transition:0.2s;
+}
+
+input:focus, button:focus {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
 }
