@@ -2258,7 +2258,11 @@
       "folder": "Random-Username-Generator",
       "path": "./projects/Random-Username-Generator/project.json",
       "link": "./projects/Random-Username-Generator/index.html"
+  },
+    {
+      "folder": "clipboard-activity-monitor",
+      "path": "./projects/clipboard-activity-monitor/project.json",
+      "link": "./projects/clipboard-activity-monitor/index.html"
   }
-  
   ]
 }
