@@ -964,6 +964,11 @@
       "link": "./projects/markdown-previewer/index.html"
     },
     {
+      "folder": "maze-generator-solver",
+      "path": "./projects/maze-generator-solver/project.json",
+      "link": "./projects/maze-generator-solver/index.html"
+    },
+    {
       "folder": "Medicine reminder",
       "path": "./projects/Medicine reminder/project.json",
       "link": "./projects/Medicine reminder/index.html"
