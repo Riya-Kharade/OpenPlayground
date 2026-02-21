@@ -272,9 +272,9 @@
 
     function drawBubble(x, y, colorIndex, scale = 1, alpha = 1) {
         const color = COLORS[colorIndex];
-        if (!color) return;
+        if (!color || alpha <= 0 || scale <= 0) return;
         ctx.save();
-        ctx.globalAlpha = alpha;
+        ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
         ctx.translate(x, y);
         ctx.scale(scale, scale);
 
@@ -283,7 +283,7 @@
         glow.addColorStop(1, 'transparent');
         ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(0, 0, BUBBLE_RADIUS * 1.2, 0, Math.PI * 2);
+        ctx.arc(0, 0, Math.max(0.1, BUBBLE_RADIUS * 1.2), 0, Math.PI * 2);
         ctx.fill();
 
         const grad = ctx.createRadialGradient(-BUBBLE_RADIUS * 0.3, -BUBBLE_RADIUS * 0.3, 2, 0, 0, BUBBLE_RADIUS);
@@ -292,12 +292,12 @@
         grad.addColorStop(1, color.shadow);
         
         ctx.beginPath();
-        ctx.arc(0, 0, BUBBLE_RADIUS, 0, Math.PI * 2);
+        ctx.arc(0, 0, Math.max(0.1, BUBBLE_RADIUS), 0, Math.PI * 2);
         ctx.fillStyle = grad;
         ctx.fill();
 
         ctx.beginPath();
-        ctx.ellipse(-BUBBLE_RADIUS * 0.4, -BUBBLE_RADIUS * 0.4, BUBBLE_RADIUS * 0.3, BUBBLE_RADIUS * 0.15, Math.PI / 4, 0, Math.PI * 2);
+        ctx.ellipse(-BUBBLE_RADIUS * 0.4, -BUBBLE_RADIUS * 0.4, Math.max(0.1, BUBBLE_RADIUS * 0.3), Math.max(0.1, BUBBLE_RADIUS * 0.15), Math.PI / 4, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255,255,255,0.4)';
         ctx.fill();
 
@@ -327,7 +327,7 @@
 
         for (let r = 0; r < ROWS; r++) {
             for (let c = 0; c < COLS; c++) {
-                if (grid[r][c] !== -1) {
+                if (grid[r] && grid[r][c] !== -1) {
                     const pos = getBubblePos(r, c);
                     drawBubble(pos.x, pos.y, grid[r][c]);
                 }
@@ -352,19 +352,27 @@
             p.x += p.vx;
             p.y += p.vy;
             p.life -= 0.02;
-            ctx.globalAlpha = p.life;
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius * p.life, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.globalAlpha = 1;
-            return p.life > 0;
+            if (p.life > 0) {
+                ctx.globalAlpha = p.life;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                // Safety fix for IndexSizeError: ensure radius is never negative
+                const r = Math.max(0.01, p.radius * p.life);
+                ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+                return true;
+            }
+            return false;
         });
 
         animations = animations.filter(anim => {
             anim.life -= 0.08;
-            drawBubble(anim.x, anim.y, anim.colorIndex, 1 + (1 - anim.life) * 0.5, anim.life);
-            return anim.life > 0;
+            if (anim.life > 0) {
+                drawBubble(anim.x, anim.y, anim.colorIndex, 1 + (1 - anim.life) * 0.5, anim.life);
+                return true;
+            }
+            return false;
         });
     }
 
@@ -452,9 +460,9 @@
     function popBubbles(matches) {
         matches.forEach(m => {
             const [r, c] = m.split(',').map(Number);
-            const pos = getBubblePos(r, c);
-            const colorIdx = grid[r][c];
-            if (colorIdx !== -1) {
+            if (grid[r] && grid[r][c] !== -1) {
+                const pos = getBubblePos(r, c);
+                const colorIdx = grid[r][c];
                 animations.push({ x: pos.x, y: pos.y, colorIndex: colorIdx, life: 1 });
                 createParticles(pos.x, pos.y, COLORS[colorIdx]);
                 grid[r][c] = -1;
