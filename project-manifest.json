@@ -2332,6 +2332,11 @@
       "folder": "Dashboard Sidebar UI",
       "path": "./projects/Dashboard-Sidebar-UI/project.json",
       "link": "./projects/Dashboard-Sidebar-UI/index.html"
+  },
+    {
+      "folder": "Extinct Animals Website",
+      "path": "./projects/extinct-animals-website/project.json",
+      "link": "./projects/extinct-animals-website/index.html"
   }
   ]
 }
