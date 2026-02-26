@@ -2332,6 +2332,11 @@
       "folder": "Dashboard Sidebar UI",
       "path": "./projects/Dashboard-Sidebar-UI/project.json",
       "link": "./projects/Dashboard-Sidebar-UI/index.html"
+  },
+   {
+      "folder": "World Wonders Gallery",
+      "path": "./projects/world-wonders-gallery/project.json",
+      "link": "./projects/world-wonders-gallery/index.html"
   }
   ]
 }
