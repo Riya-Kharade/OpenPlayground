@@ -2332,6 +2332,11 @@
       "folder": "Dashboard Sidebar UI",
       "path": "./projects/Dashboard-Sidebar-UI/project.json",
       "link": "./projects/Dashboard-Sidebar-UI/index.html"
+  },
+    {
+      "folder": "Famous Scientists Gallery",
+      "path": "./projects/famous-scientists-gallery/project.json",
+      "link": "./projects/famous-scientists-gallery/index.html"
   }
   ]
 }
