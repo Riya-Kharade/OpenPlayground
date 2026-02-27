@@ -6,6 +6,12 @@
     "category": "utility",
     "description": "Finds the most eco-friendly route for your daily commute.",
     "path": "projects/EcoRoute/index.html"
+  },
+  {
+    "name": "Mood Tunes",
+    "type": "Frontend (HTML/CSS/JS)",
+    "category": "utility",
+    "description": "Mood detection and playlist generation with embedded player.",
+    "path": "projects/MoodTunes/index.html"
   }
-  // Add more projects below
 ]
