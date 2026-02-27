@@ -1,0 +1,24 @@
+{
+  "name": "EcoRoute",
+  "type": "Frontend (HTML/CSS/JS)",
+  "category": "utility",
+  "description": "Finds the most eco-friendly route for your daily commute.",
+  "techStack": {
+    "frontend": "HTML, CSS, JS",
+    "backend": "Node.js (optional)",
+    "database": "MongoDB (optional)"
+  },
+  "features": [
+    "Route optimization",
+    "Carbon footprint tracking",
+    "Public transport integration"
+  ],
+  "screenshots": [],
+  "checklist": [
+    "I have tested my project locally",
+    "My project follows the repository structure",
+    "My project is responsive (if frontend)",
+    "I will add my project to projects.json (NOT index.html)",
+    "I have included setup instructions for backend (if full-stack)"
+  ]
+}
