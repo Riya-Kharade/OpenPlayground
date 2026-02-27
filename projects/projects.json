@@ -13,5 +13,12 @@
     "category": "utility",
     "description": "Mood detection and playlist generation with embedded player.",
     "path": "projects/MoodTunes/index.html"
+  },
+  {
+    "name": "EventNest",
+    "type": "Frontend (HTML/CSS/JS)",
+    "category": "utility",
+    "description": "An event discovery and RSVP platform for local meetups and college communities.",
+    "path": "projects/EventNest/index.html"
   }
 ]

@@ -1,0 +1,20 @@
+{
+  "name": "EventNest",
+  "type": "Frontend (HTML/CSS/JS)",
+  "category": "utility",
+  "description": "An event discovery and RSVP platform for local meetups and college communities.",
+  "features": [
+    "Event discovery by search and filter",
+    "RSVP to events with confirmation",
+    "Event history and local RSVP storage",
+    "Responsive and accessible UI"
+  ],
+  "screenshots": [],
+  "checklist": [
+    "I have tested my project locally",
+    "My project follows the repository structure",
+    "My project is responsive (if frontend)",
+    "I will add my project to projects.json (NOT index.html)",
+    "I have included setup instructions for backend (if full-stack)"
+  ]
+}
