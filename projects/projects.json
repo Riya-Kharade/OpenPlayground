@@ -27,5 +27,12 @@
     "category": "utility",
     "description": "A book recommendation and reading log app for avid readers.",
     "path": "projects/BookBuddy/index.html"
+  },
+  {
+    "name": "GreenCart",
+    "type": "Frontend (HTML/CSS/JS)",
+    "category": "utility",
+    "description": "An eco-friendly shopping assistant that suggests sustainable products and tracks purchases.",
+    "path": "projects/GreenCart/index.html"
   }
 ]
