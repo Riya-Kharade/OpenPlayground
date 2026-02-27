@@ -6,6 +6,16 @@ const recipeOutput = document.getElementById('recipe-output');
 const saveFavoriteBtn = document.getElementById('save-favorite');
 
 const favoritesList = document.getElementById('favorites-list');
+const historyList = document.getElementById('history-list');
+function updateHistory() {
+    const history = JSON.parse(localStorage.getItem('recipeRemixHistory') || '[]');
+    historyList.innerHTML = '';
+    history.slice(-10).reverse().forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        historyList.appendChild(li);
+    });
+}
 const clearPantryBtn = document.getElementById('clear-pantry-btn');
 // Clear pantry input
 clearPantryBtn.onclick = () => {
@@ -50,6 +60,12 @@ generateBtn.onclick = () => {
     const recipe = generateRecipe(ingredients);
     recipeOutput.textContent = recipe;
     saveFavoriteBtn.style.display = recipe && !recipe.startsWith('Please') ? 'inline-block' : 'none';
+    if (recipe && !recipe.startsWith('Please')) {
+        let history = JSON.parse(localStorage.getItem('recipeRemixHistory') || '[]');
+        history.push(recipe);
+        localStorage.setItem('recipeRemixHistory', JSON.stringify(history));
+        updateHistory();
+    }
 };
 
 saveFavoriteBtn.onclick = () => {
@@ -63,5 +79,6 @@ saveFavoriteBtn.onclick = () => {
     }
 };
 
-// Load favorites on page load
+// Load favorites and history on page load
 updateFavorites();
+updateHistory();
