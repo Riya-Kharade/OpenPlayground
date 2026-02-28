@@ -489,6 +489,11 @@
       "link": "./projects/TriDuel/index.html"
     },
     {
+      "folder": "FocusFlow",
+      "path": "./projects/FocusFlow/project.json",
+      "link": "./projects/FocusFlow/index.html"
+    },
+    {
       "folder": "css-shapes-and-corners",
       "path": "./projects/css-shapes-and-corners/project.json",
       "link": "./projects/css-shapes-and-corners/index.html"
