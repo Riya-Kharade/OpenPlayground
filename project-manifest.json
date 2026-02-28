@@ -454,6 +454,11 @@
       "link": "./projects/Budgetly/index.html"
     },
     {
+      "folder": "TempShift",
+      "path": "./projects/TempShift/project.json",
+      "link": "./projects/TempShift/index.html"
+    },
+    {
       "folder": "calcx-calculator-app",
       "path": "./projects/calcx-calculator-app/project.json",
       "link": "./projects/calcx-calculator-app/index.html"
