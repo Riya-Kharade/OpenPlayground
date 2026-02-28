@@ -444,6 +444,16 @@
       "link": "./projects/Chronova/index.html"
     },
     {
+      "folder": "StudyNova",
+      "path": "./projects/StudyNova/project.json",
+      "link": "./projects/StudyNova/index.html"
+    },
+    {
+      "folder": "Budgetly",
+      "path": "./projects/Budgetly/project.json",
+      "link": "./projects/Budgetly/index.html"
+    },
+    {
       "folder": "calcx-calculator-app",
       "path": "./projects/calcx-calculator-app/project.json",
       "link": "./projects/calcx-calculator-app/index.html"
@@ -2337,6 +2347,10 @@
       "folder": "Extinct Animals Website",
       "path": "./projects/extinct-animals-website/project.json",
       "link": "./projects/extinct-animals-website/index.html"
+   {
+      "folder": "World Wonders Gallery",
+      "path": "./projects/world-wonders-gallery/project.json",
+      "link": "./projects/world-wonders-gallery/index.html"
   }
   ]
 }

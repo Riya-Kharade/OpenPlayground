@@ -9,6 +9,7 @@ class ComponentLoader {
             'header': './components/header.html',
             'hero': './components/hero.html',
             'projects': './components/projects.html',
+            'templates': './components/templates.html',
             'contribute': './components/contribute.html',
             'contributors': './components/contributors.html',
             'footer': './components/footer.html',
@@ -103,6 +104,10 @@ class ComponentLoader {
 
         const componentMap = [
             { name: 'header', selector: '#header-placeholder' },
+            { name: 'hero', selector: '#hero-placeholder' },
+            { name: 'projects', selector: '#projects-placeholder' },
+            { name: 'templates', selector: '#templates-placeholder' },
+            { name: 'contribute', selector: '#contribute-placeholder' },
             // Only inject the hero/projects/contribute sections on the homepage
             ...(isIndex ? [
                 { name: 'hero', selector: '#hero-placeholder' },
