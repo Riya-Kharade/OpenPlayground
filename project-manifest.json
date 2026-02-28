@@ -464,6 +464,11 @@
       "link": "./projects/quick-notes/index.html"
     },
     {
+      "folder": "DiceVerse",
+      "path": "./projects/DiceVerse/project.json",
+      "link": "./projects/DiceVerse/index.html"
+    },
+    {
       "folder": "SecurePass",
       "path": "./projects/SecurePass/project.json",
       "link": "./projects/SecurePass/index.html"
