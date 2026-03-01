@@ -2034,6 +2034,11 @@
       "link": "./projects/VoiceControlledMaze/index.html"
     },
     {
+      "folder": "WanderWise-Destination-Discovery-Itinerary-Builder",
+      "path": "./projects/WanderWise-Destination-Discovery-Itinerary-Builder/project.json",
+      "link": "./projects/WanderWise-Destination-Discovery-Itinerary-Builder/index.html"
+    },
+    {
       "folder": "WeatherApp",
       "path": "./projects/WeatherApp/project.json",
       "link": "./projects/WeatherApp/index.html"
