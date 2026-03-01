@@ -474,6 +474,11 @@
       "link": "./projects/DiceVerse/index.html"
     },
     {
+     "folder": "TaskZen",
+     "path": "./projects/TaskZen/project.json",
+     "link": "./projects/TaskZen/index.html"
+    },
+    {
       "folder": "SecurePass",
       "path": "./projects/SecurePass/project.json",
       "link": "./projects/SecurePass/index.html"
