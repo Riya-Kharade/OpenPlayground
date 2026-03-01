@@ -1,7 +1,7 @@
 {
   "version": "2.1",
   "generated": "2026-03-01T00:00:00.000Z",
-  "count": 362,
+  "count": 363,
   "projects": [
     {
       "folder": "15 Sliding Puzzle",
@@ -2383,5 +2383,10 @@
     "folder": "Real-Time-Language-Translator-Chat",
     "path": "./projects/Real-Time-Language-Translator-Chat/project.json",
     "link": "./projects/Real-Time-Language-Translator-Chat/index.html"
+  },
+  {
+    "folder": "Virtual-Art-Gallery",
+    "path": "./projects/Virtual-Art-Gallery/project.json",
+    "link": "./projects/Virtual-Art-Gallery/index.html"
   }
 ]
