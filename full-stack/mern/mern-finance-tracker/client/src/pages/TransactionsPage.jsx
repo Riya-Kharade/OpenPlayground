@@ -10,12 +10,12 @@ import {
   RefreshCw,
   ArrowLeftRight,
 } from 'lucide-react'
-import api from '../../lib/api'
-import { formatCurrency, formatDate, CATEGORY_LABELS, CATEGORY_COLORS } from '../../lib/utils'
-import Modal from '../../components/common/Modal'
-import TransactionForm from '../../components/features/TransactionForm'
-import Loader from '../../components/common/Loader'
-import EmptyState from '../../components/common/EmptyState'
+import api from '../lib/api'
+import { formatCurrency, formatDate, CATEGORY_LABELS, CATEGORY_COLORS } from '../lib/utils'
+import Modal from '../components/common/Modal'
+import TransactionForm from '../components/features/TransactionForm'
+import Loader from '../components/common/Loader'
+import EmptyState from '../components/common/EmptyState'
 import toast from 'react-hot-toast'
 
 export default function TransactionsPage() {

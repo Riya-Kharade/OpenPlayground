@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
-import { useTheme } from '../../context/ThemeContext'
+import { useAuth } from '../context/AuthContext'
+import { useTheme } from '../context/ThemeContext'
 import { User, Lock, Palette, Bell, Save, Check } from 'lucide-react'
-import api from '../../lib/api'
+import api from '../lib/api'
 import toast from 'react-hot-toast'
 
 const TABS = [

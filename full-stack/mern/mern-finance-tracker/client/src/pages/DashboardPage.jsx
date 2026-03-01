@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { DollarSign, TrendingUp, TrendingDown, Wallet, ArrowRight, Plus } from 'lucide-react'
-import api from '../../lib/api'
-import { formatCurrency, formatDate, CATEGORY_LABELS, CATEGORY_COLORS } from '../../lib/utils'
-import StatCard from '../../components/common/StatCard'
-import IncomeVsExpenseChart from '../../components/charts/IncomeVsExpenseChart'
-import ExpenseBreakdownChart from '../../components/charts/ExpenseBreakdownChart'
-import Loader from '../../components/common/Loader'
+import api from '../lib/api'
+import { formatCurrency, formatDate, CATEGORY_LABELS, CATEGORY_COLORS } from '../lib/utils'
+import StatCard from '../components/common/StatCard'
+import IncomeVsExpenseChart from '../components/charts/IncomeVsExpenseChart'
+import ExpenseBreakdownChart from '../components/charts/ExpenseBreakdownChart'
+import Loader from '../components/common/Loader'
 import toast from 'react-hot-toast'
 
 export default function DashboardPage() {
