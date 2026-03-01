@@ -1,7 +1,7 @@
 {
   "version": "2.1",
   "generated": "2026-03-01T00:00:00.000Z",
-  "count": 363,
+  "count": 364,
   "projects": [
     {
       "folder": "15 Sliding Puzzle",
@@ -2388,5 +2388,10 @@
     "folder": "Virtual-Art-Gallery",
     "path": "./projects/Virtual-Art-Gallery/project.json",
     "link": "./projects/Virtual-Art-Gallery/index.html"
+  },
+  {
+    "folder": "Personal-Finance-Visualizer",
+    "path": "./projects/Personal-Finance-Visualizer/project.json",
+    "link": "./projects/Personal-Finance-Visualizer/index.html"
   }
 ]
