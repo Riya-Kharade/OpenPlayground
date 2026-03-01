@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eldermoor · Medieval Village</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Goudy Bookletter 1911', 'Georgia', serif;
+            background-color: #7a9ac4;
+            color: #f5e6d3;
+        }
+        #village-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 50;
+            background: rgba(60, 40, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border: 3px solid #b89e7b;
+            border-radius: 60px;
+            padding: 12px 32px;
+            display: flex;
+            gap: 40px;
+            border-left: 8px solid #c6a57a;
+            box-shadow: 0 0 40px rgba(200, 150, 100, 0.3);
+            pointer-events: none;
+        }
+        .village-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .village-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: #d4b68a;
+            letter-spacing: 2px;
+        }
+        .village-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f0e6d2, #c6a57a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #tavern-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(50, 35, 20, 0.85);
+            backdrop-filter: blur(16px);
+            border: 3px solid #b89e7b;
+            border-radius: 50px;
+            padding: 20px 32px;
+            z-index: 50;
+            border-right: 8px solid #c6a57a;
+            min-width: 280px;
+            box-shadow: 0 15px 35px rgba(80, 40, 10, 0.6);
+        }
+        .tavern-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 1rem;
+            border-bottom: 2px solid #8b6b45;
+            padding-bottom: 5px;
+        }
+        .tavern-label {
+            color: #d4b68a;
+        }
+        .tavern-value {
+            font-weight: 600;
+            color: #f0dbb0;
+        }
+        .pulse-village {
+            width: 14px;
+            height: 14px;
+            background: #e5b887;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #ffaa66;
+            animation: village-pulse 2.5s infinite;
+        }
+        @keyframes village-pulse {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.4); background: #ffd8a8; }
+            100% { opacity: 0.6; transform: scale(1); }
+        }
+        #village-tag {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(40, 30, 20, 0.8);
+            backdrop-filter: blur(8px);
+            border: 3px solid #6b8a5a;
+            border-radius: 40px;
+            padding: 12px 28px;
+            z-index: 50;
+            border-left: 6px solid #8b5a2b;
+            color: #e0e6b0;
+        }
+        .village-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #8b5a2b;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 15px #b88a5a;
+        }
+        #population-stats {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(50, 35, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 3px solid #b89e7b;
+            border-radius: 40px;
+            padding: 16px 28px;
+            z-index: 50;
+            text-align: right;
+            border-bottom: 6px solid #c6a57a;
+        }
+        .glow-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f0dbb0, #d4b68a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="village-panel">
+        <div class="village-item">
+            <span class="village-label">village</span>
+            <span class="village-value">ELDERMOOR</span>
+        </div>
+        <div class="village-item">
+            <span class="village-label">time</span>
+            <span class="village-value" id="time-display">14:30</span>
+        </div>
+        <div class="village-item">
+            <span class="village-label">season</span>
+            <span class="village-value" id="season">HARVEST</span>
+        </div>
+    </div>
+
+    <div id="tavern-panel">
+        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
+            <span class="pulse-village"></span>
+            <span style="font-weight: 600; font-size: 1.3rem;">🍺 THE DRAGON'S REST</span>
+        </div>
+        <div class="tavern-row">
+            <span class="tavern-label">patrons</span>
+            <span class="tavern-value" id="patrons">24</span>
+        </div>
+        <div class="tavern-row">
+            <span class="tavern-label">ale barrels</span>
+            <span class="tavern-value" id="ale">18</span>
+        </div>
+        <div class="tavern-row">
+            <span class="tavern-label">stew pot</span>
+            <span class="tavern-value">simmering</span>
+        </div>
+        <div class="tavern-row">
+            <span class="tavern-label">bard</span>
+            <span class="tavern-value">"Larkin"</span>
+        </div>
+    </div>
+
+    <div id="village-tag">
+        <span class="village-icon"></span> <span>market day · blacksmith · mill · 12°C</span>
+    </div>
+
+    <div id="population-stats">
+        <div style="font-size:1rem;">👥 VILLAGERS</div>
+        <div class="glow-number" id="population">247</div>
+        <div style="font-size:0.8rem;">livestock: 89 sheep · 34 cattle</div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+        
+        // --- Scene setup ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x87a9b0); // sky
+        scene.fog = new THREE.Fog(0x87a9b0, 40, 120);
+        
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(25, 15, 35);
+        
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+        
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0';
+        labelRenderer.domElement.style.left = '0';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+        
+        // --- Controls ---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.2;
+        controls.maxPolarAngle = Math.PI / 2.2;
+        controls.minDistance = 20;
+        controls.maxDistance = 80;
+        
+        // --- Lighting ---
+        const ambient = new THREE.AmbientLight(0x606860);
+        scene.add(ambient);
+        
+        const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
+        sunLight.position.set(30, 40, 20);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 1024;
+        sunLight.shadow.mapSize.height = 1024;
+        const d = 50;
+        sunLight.shadow.camera.left = -d;
+        sunLight.shadow.camera.right = d;
+        sunLight.shadow.camera.top = d;
+        sunLight.shadow.camera.bottom = -d;
+        sunLight.shadow.camera.near = 1;
+        sunLight.shadow.camera.far = 80;
+        scene.add(sunLight);
+        
+        // --- Ground (grass) ---
+        const groundGeo = new THREE.CircleGeometry(80, 32);
+        const groundMat = new THREE.MeshStandardMaterial({ color: 0x5a7a4a, roughness: 0.8 });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.5;
+        ground.receiveShadow = true;
+        scene.add(ground);
+        
+        // --- Paths (dirt) ---
+        const pathGeo = new THREE.PlaneGeometry(3, 40);
+        const pathMat = new THREE.MeshStandardMaterial({ color: 0x8b6b45 });
+        const path1 = new THREE.Mesh(pathGeo, pathMat);
+        path1.rotation.x = -Math.PI / 2;
+        path1.rotation.z = 0.2;
+        path1.position.set(0, -0.4, 5);
+        path1.receiveShadow = true;
+        scene.add(path1);
+        
+        const path2 = path1.clone();
+        path2.rotation.z = -0.3;
+        path2.position.set(-8, -0.4, -3);
+        scene.add(path2);
+        
+        // --- Castle (centerpiece) ---
+        const castleGroup = new THREE.Group();
+        castleGroup.position.set(0, -0.5, 0);
+        
+        // Keep
+        const keepGeo = new THREE.CylinderGeometry(3, 4, 6, 8);
+        const keepMat = new THREE.MeshStandardMaterial({ color: 0xaa8866 });
+        const keep = new THREE.Mesh(keepGeo, keepMat);
+        keep.position.y = 3;
+        keep.castShadow = true;
+        keep.receiveShadow = true;
+        castleGroup.add(keep);
+        
+        // Tower
+        const towerGeo = new THREE.CylinderGeometry(1.5, 2, 8, 6);
+        const towerMat = new THREE.MeshStandardMaterial({ color: 0xccaa88 });
+        const tower = new THREE.Mesh(towerGeo, towerMat);
+        tower.position.set(3, 4, 3);
+        tower.castShadow = true;
+        tower.receiveShadow = true;
+        castleGroup.add(tower);
+        
+        // Wall
+        const wallGeo = new THREE.BoxGeometry(10, 1.5, 1);
+        const wallMat = new THREE.MeshStandardMaterial({ color: 0xaa8866 });
+        const wall = new THREE.Mesh(wallGeo, wallMat);
+        wall.position.set(0, 1, -4);
+        wall.castShadow = true;
+        wall.receiveShadow = true;
+        castleGroup.add(wall);
+        
+        scene.add(castleGroup);
+        
+        // Castle label
+        const castleDiv = document.createElement('div');
+        castleDiv.textContent = '🏰 CASTLE ELDERMOOR';
+        castleDiv.style.background = '#332211';
+        castleDiv.style.color = '#e5c8a3';
+        castleDiv.style.border = '2px solid #b89e7b';
+        castleDiv.style.borderRadius = '30px';
+        castleDiv.style.padding = '4px 16px';
+        const castleLabel = new CSS2DObject(castleDiv);
+        castleLabel.position.set(0, 8, 0);
+        scene.add(castleLabel);
+        
+        // --- Thatched houses ---
+        function createHouse(x, z, rot) {
+            const group = new THREE.Group();
+            
+            // Base
+            const baseGeo = new THREE.BoxGeometry(2, 1.5, 2);
+            const baseMat = new THREE.MeshStandardMaterial({ color: 0xccaa88 });
+            const base = new THREE.Mesh(baseGeo, baseMat);
+            base.position.y = 0.75;
+            base.castShadow = true;
+            base.receiveShadow = true;
+            group.add(base);
+            
+            // Roof
+            const roofGeo = new THREE.ConeGeometry(1.5, 1.2, 4);
+            const roofMat = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+            const roof = new THREE.Mesh(roofGeo, roofMat);
+            roof.position.y = 1.8;
+            roof.rotation.y = Math.PI/4;
+            roof.castShadow = true;
+            group.add(roof);
+            
+            // Door
+            const doorGeo = new THREE.BoxGeometry(0.4, 0.8, 0.2);
+            const doorMat = new THREE.MeshStandardMaterial({ color: 0x5a3a1a });
+            const door = new THREE.Mesh(doorGeo, doorMat);
+            door.position.set(0, 0.4, 1.1);
+            door.castShadow = true;
+            group.add(door);
+            
+            group.position.set(x, -0.5, z);
+            group.rotation.y = rot;
+            return group;
+        }
+        
+        // Place houses around
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const radius = 8;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const house = createHouse(x, z, angle);
+            scene.add(house);
+        }
+        
+        // Additional scattered houses
+        for (let i = 0; i < 6; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 12 + Math.random() * 5;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const house = createHouse(x, z, Math.random() * Math.PI);
+            scene.add(house);
+        }
+        
+        // --- Village folk (simple figures) ---
+        function createVillager(x, z, color) {
+            const group = new THREE.Group();
+            
+            // Body
+            const bodyGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.8);
+            const bodyMat = new THREE.MeshStandardMaterial({ color: color });
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.position.y = 0.4;
+            body.castShadow = true;
+            group.add(body);
+            
+            // Head
+            const headGeo = new THREE.SphereGeometry(0.15);
+            const headMat = new THREE.MeshStandardMaterial({ color: 0xffdd99 });
+            const head = new THREE.Mesh(headGeo, headMat);
+            head.position.y = 0.85;
+            head.castShadow = true;
+            group.add(head);
+            
+            group.position.set(x, -0.5, z);
+            return group;
+        }
+        
+        const villagers = [];
+        for (let i = 0; i < 20; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 5 + Math.random() * 10;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const colors = [0x44aa88, 0xaa8844, 0x8844aa, 0xaa4444];
+            const villager = createVillager(x, z, colors[Math.floor(Math.random() * colors.length)]);
+            
+            villager.userData = {
+                angle: Math.random() * Math.PI * 2,
+                radius: radius,
+                speed: 0.005 + Math.random() * 0.01,
+                homeX: x,
+                homeZ: z
+            };
+            
+            scene.add(villager);
+            villagers.push(villager);
+        }
+        
+        // --- Market stalls ---
+        for (let i = 0; i < 4; i++) {
+            const stallGroup = new THREE.Group();
+            const x = -3 + i * 2;
+            const z = 5;
+            
+            const roofGeo = new THREE.BoxGeometry(1.8, 0.2, 1.5);
+            const roofMat = new THREE.MeshStandardMaterial({ color: 0xa55d3d });
+            const roof = new THREE.Mesh(roofGeo, roofMat);
+            roof.position.y = 1.2;
+            stallGroup.add(roof);
+            
+            const legGeo = new THREE.CylinderGeometry(0.1, 0.1, 1.2);
+            const legMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
+            for (let j = 0; j < 4; j++) {
+                const leg = new THREE.Mesh(legGeo, legMat);
+                leg.position.set(
+                    (j % 2 === 0 ? -0.8 : 0.8),
+                    0.6,
+                    (j < 2 ? -0.5 : 0.5)
+                );
+                stallGroup.add(leg);
+            }
+            
+            stallGroup.position.set(x, -0.5, z);
+            scene.add(stallGroup);
+        }
+        
+        // --- Animals (sheep) ---
+        for (let i = 0; i < 8; i++) {
+            const sheepGroup = new THREE.Group();
+            
+            const bodyGeo = new THREE.SphereGeometry(0.3);
+            const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.scale.set(1.2, 0.6, 0.8);
+            body.castShadow = true;
+            sheepGroup.add(body);
+            
+            const headGeo = new THREE.SphereGeometry(0.15);
+            const head = new THREE.Mesh(headGeo, bodyMat);
+            head.position.set(0.4, 0.2, 0);
+            sheepGroup.add(head);
+            
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 12 + Math.random() * 5;
+            sheepGroup.position.set(
+                Math.cos(angle) * radius,
+                -0.3,
+                Math.sin(angle) * radius
+            );
+            
+            scene.add(sheepGroup);
+        }
+        
+        // --- Animate ---
+        let time = 0;
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            time += 0.005;
+            
+            // Villagers wander
+            villagers.forEach(v => {
+                v.userData.angle += v.userData.speed;
+                v.position.x = v.userData.homeX + Math.cos(v.userData.angle) * 1.5;
+                v.position.z = v.userData.homeZ + Math.sin(v.userData.angle) * 1.5;
+            });
+            
+            // Update displays
+            const hours = 14 + Math.floor(time * 0.1) % 12;
+            const mins = Math.floor(time * 60) % 60;
+            document.getElementById('time-display').innerText = `${hours}:${mins.toString().padStart(2,'0')}`;
+            document.getElementById('season').innerText = ['HARVEST', 'WINTER', 'SPRING', 'SUMMER'][Math.floor(time * 0.05) % 4];
+            document.getElementById('patrons').innerText = 24 + Math.floor(Math.sin(time)*5);
+            document.getElementById('ale').innerText = 18 + Math.floor(Math.sin(time*2)*2);
+            document.getElementById('population').innerText = 247 + Math.floor(Math.sin(time)*3);
+            
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
