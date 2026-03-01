@@ -1,511 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eldermoor · Medieval Village</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Goudy Bookletter 1911', 'Georgia', serif;
-            background-color: #7a9ac4;
-            color: #f5e6d3;
-        }
-        #village-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 50;
-            background: rgba(60, 40, 20, 0.8);
-            backdrop-filter: blur(12px);
-            border: 3px solid #b89e7b;
-            border-radius: 60px;
-            padding: 12px 32px;
-            display: flex;
-            gap: 40px;
-            border-left: 8px solid #c6a57a;
-            box-shadow: 0 0 40px rgba(200, 150, 100, 0.3);
-            pointer-events: none;
-        }
-        .village-item {
-            display: flex;
-            flex-direction: column;
-        }
-        .village-label {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            color: #d4b68a;
-            letter-spacing: 2px;
-        }
-        .village-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #f0e6d2, #c6a57a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        #tavern-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(50, 35, 20, 0.85);
-            backdrop-filter: blur(16px);
-            border: 3px solid #b89e7b;
-            border-radius: 50px;
-            padding: 20px 32px;
-            z-index: 50;
-            border-right: 8px solid #c6a57a;
-            min-width: 280px;
-            box-shadow: 0 15px 35px rgba(80, 40, 10, 0.6);
-        }
-        .tavern-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 1rem;
-            border-bottom: 2px solid #8b6b45;
-            padding-bottom: 5px;
-        }
-        .tavern-label {
-            color: #d4b68a;
-        }
-        .tavern-value {
-            font-weight: 600;
-            color: #f0dbb0;
-        }
-        .pulse-village {
-            width: 14px;
-            height: 14px;
-            background: #e5b887;
-            border-radius: 50%;
-            box-shadow: 0 0 30px #ffaa66;
-            animation: village-pulse 2.5s infinite;
-        }
-        @keyframes village-pulse {
-            0% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.4); background: #ffd8a8; }
-            100% { opacity: 0.6; transform: scale(1); }
-        }
-        #village-tag {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            background: rgba(40, 30, 20, 0.8);
-            backdrop-filter: blur(8px);
-            border: 3px solid #6b8a5a;
-            border-radius: 40px;
-            padding: 12px 28px;
-            z-index: 50;
-            border-left: 6px solid #8b5a2b;
-            color: #e0e6b0;
-        }
-        .village-icon {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: #8b5a2b;
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 15px #b88a5a;
-        }
-        #population-stats {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(50, 35, 20, 0.85);
-            backdrop-filter: blur(8px);
-            border: 3px solid #b89e7b;
-            border-radius: 40px;
-            padding: 16px 28px;
-            z-index: 50;
-            text-align: right;
-            border-bottom: 6px solid #c6a57a;
-        }
-        .glow-number {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #f0dbb0, #d4b68a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎵 ECHO CHAMBER · resonant ideas</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #20192b, #151024);
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .echo-lab {
+      max-width: 1400px;
+      width: 100%;
+      background: #2f2645d9;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 80px 80px 60px 60px;
+      padding: 30px 30px 35px;
+      border: 3px solid #c09bdf;
+      box-shadow: 0 30px 50px -15px #0b0712, inset 0 0 40px #936fd6;
+    }
+
+    /* header with resonance */
+    .echo-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      background: #3e315bcc;
+      border-radius: 100px;
+      padding: 12px 35px 12px 40px;
+      margin-bottom: 30px;
+      border: 2px solid #dbb9ff;
+    }
+
+    .title-echo {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .title-echo h1 {
+      font-size: 3rem;
+      font-weight: 500;
+      background: linear-gradient(145deg, #f0d6ff, #cfb0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 2px;
+    }
+
+    .echo-counter {
+      background: #624d8f;
+      border-radius: 60px;
+      padding: 10px 30px;
+      color: #f3e7ff;
+      font-weight: 600;
+      font-size: 1.5rem;
+      border: 2px solid #dbb9ff;
+    }
+
+    /* main chamber */
+    .chamber {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    /* sound garden (visual echoes) */
+    .garden {
+      flex: 2;
+      min-width: 400px;
+      background: #332a47b3;
+      border-radius: 70px;
+      padding: 25px;
+      border: 3px solid #c9a7ff;
+    }
+
+    .garden-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #ebdbff;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      padding-left: 15px;
+    }
+
+    #echoCanvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #1e1633;
+      border-radius: 60px;
+      border: 2px solid #b28dff;
+      cursor: pointer;
+    }
+
+    /* control panel */
+    .echo-controls {
+      flex: 1;
+      min-width: 300px;
+      background: #332a47b3;
+      border-radius: 70px;
+      padding: 30px 25px;
+      border: 3px solid #c9a7ff;
+    }
+
+    .sound-palette h3 {
+      color: #eeddff;
+      font-size: 2rem;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tone-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 35px;
+    }
+
+    .tone-chip {
+      background: #4d3d72;
+      border-radius: 60px;
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border: 3px solid #c7abff;
+      box-shadow: 0 7px 0 #352b52;
+      cursor: pointer;
+      transition: 0.07s;
+      width: 120px;
+    }
+
+    .tone-chip:active {
+      transform: translateY(7px);
+      box-shadow: 0 0px 0 #352b52;
+    }
+
+    .tone-emoji {
+      font-size: 3rem;
+    }
+
+    .tone-name {
+      font-size: 1.2rem;
+      color: #f2e6ff;
+      font-weight: 500;
+    }
+
+    .tone-freq {
+      background: #28213e;
+      border-radius: 30px;
+      padding: 4px 14px;
+      color: #b7d0ff;
+      font-size: 0.9rem;
+    }
+
+    /* echo parameters */
+    .echo-params {
+      background: #28213e;
+      border-radius: 60px;
+      padding: 25px 20px;
+      border: 2px solid #b797ff;
+    }
+
+    .param-slider {
+      margin-bottom: 25px;
+    }
+
+    .param-slider label {
+      display: block;
+      color: #dcc9ff;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 8px;
+      background: #4f3e70;
+      border-radius: 10px;
+    }
+
+    .echo-btn {
+      background: #7b62b3;
+      border: none;
+      color: #f2e2ff;
+      font-size: 1.6rem;
+      padding: 15px 25px;
+      border-radius: 60px;
+      width: 100%;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #4d3980;
+      transition: 0.07s;
+      border: 2px solid #e5c9ff;
+      margin-top: 15px;
+    }
+
+    .echo-btn:active {
+      transform: translateY(8px);
+      box-shadow: 0 1px 0 #4d3980;
+    }
+
+    /* echo history */
+    .echo-history {
+      margin-top: 25px;
+      background: #2f2547b3;
+      border-radius: 60px;
+      padding: 20px 25px;
+      border: 2px solid #c3a1ff;
+    }
+
+    .history-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #e9d9ff;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+
+    .history-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      min-height: 80px;
+    }
+
+    .echo-chip {
+      background: #4f3f77;
+      border-radius: 50px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border: 2px solid #cbadff;
+    }
+
+    .echo-chip span {
+      font-size: 1.3rem;
+      color: #f0e4ff;
+    }
+
+    .empty-history {
+      color: #ab93d6;
+      font-size: 1.4rem;
+      padding: 25px 20px;
+      border: 2px dashed #9d82d0;
+      border-radius: 50px;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div id="village-panel">
-        <div class="village-item">
-            <span class="village-label">village</span>
-            <span class="village-value">ELDERMOOR</span>
-        </div>
-        <div class="village-item">
-            <span class="village-label">time</span>
-            <span class="village-value" id="time-display">14:30</span>
-        </div>
-        <div class="village-item">
-            <span class="village-label">season</span>
-            <span class="village-value" id="season">HARVEST</span>
-        </div>
+  <div class="echo-lab">
+    <div class="echo-header">
+      <div class="title-echo">
+        <h1>🎵 ECHO CHAMBER</h1>
+      </div>
+      <div class="echo-counter" id="echoCounter">0 echoes</div>
     </div>
 
-    <div id="tavern-panel">
-        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
-            <span class="pulse-village"></span>
-            <span style="font-weight: 600; font-size: 1.3rem;">🍺 THE DRAGON'S REST</span>
+    <!-- main chamber -->
+    <div class="chamber">
+      <!-- visual sound garden -->
+      <div class="garden">
+        <div class="garden-label">
+          <span>🌊</span> resonance field
         </div>
-        <div class="tavern-row">
-            <span class="tavern-label">patrons</span>
-            <span class="tavern-value" id="patrons">24</span>
+        <canvas id="echoCanvas" width="700" height="400"></canvas>
+      </div>
+
+      <!-- control panel -->
+      <div class="echo-controls">
+        <div class="sound-palette">
+          <h3><span>🎼</span> tone bank</h3>
+          <div class="tone-grid" id="toneGrid"></div>
         </div>
-        <div class="tavern-row">
-            <span class="tavern-label">ale barrels</span>
-            <span class="tavern-value" id="ale">18</span>
+
+        <div class="echo-params">
+          <div class="param-slider">
+            <label>🎚️ decay <span id="decayValue">0.95</span></label>
+            <input type="range" id="decaySlider" min="0.7" max="0.99" step="0.01" value="0.95">
+          </div>
+          <div class="param-slider">
+            <label>⏱️ interval <span id="intervalValue">0.3</span>s</label>
+            <input type="range" id="intervalSlider" min="0.1" max="0.8" step="0.05" value="0.3">
+          </div>
+          <button class="echo-btn" id="clearEchoBtn">🌀 clear echoes</button>
         </div>
-        <div class="tavern-row">
-            <span class="tavern-label">stew pot</span>
-            <span class="tavern-value">simmering</span>
-        </div>
-        <div class="tavern-row">
-            <span class="tavern-label">bard</span>
-            <span class="tavern-value">"Larkin"</span>
-        </div>
+      </div>
     </div>
 
-    <div id="village-tag">
-        <span class="village-icon"></span> <span>market day · blacksmith · mill · 12°C</span>
+    <!-- echo history -->
+    <div class="echo-history">
+      <div class="history-header">
+        <span>📻</span> echo trail
+      </div>
+      <div class="history-grid" id="historyContainer">
+        <div class="empty-history">✨ tap canvas to create echoes</div>
+      </div>
     </div>
+  </div>
 
-    <div id="population-stats">
-        <div style="font-size:1rem;">👥 VILLAGERS</div>
-        <div class="glow-number" id="population">247</div>
-        <div style="font-size:0.8rem;">livestock: 89 sheep · 34 cattle</div>
-    </div>
+  <script>
+    (function() {
+      const canvas = document.getElementById('echoCanvas');
+      const ctx = canvas.getContext('2d');
+      const toneGrid = document.getElementById('toneGrid');
+      const historyContainer = document.getElementById('historyContainer');
+      const echoCounter = document.getElementById('echoCounter');
+      const decaySlider = document.getElementById('decaySlider');
+      const intervalSlider = document.getElementById('intervalSlider');
+      const decayValue = document.getElementById('decayValue');
+      const intervalValue = document.getElementById('intervalValue');
+      const clearBtn = document.getElementById('clearEchoBtn');
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-        
-        // --- Scene setup ---
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x87a9b0); // sky
-        scene.fog = new THREE.Fog(0x87a9b0, 40, 120);
-        
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 200);
-        camera.position.set(25, 15, 35);
-        
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.body.appendChild(renderer.domElement);
-        
-        const labelRenderer = new CSS2DRenderer();
-        labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        labelRenderer.domElement.style.position = 'absolute';
-        labelRenderer.domElement.style.top = '0';
-        labelRenderer.domElement.style.left = '0';
-        labelRenderer.domElement.style.pointerEvents = 'none';
-        document.body.appendChild(labelRenderer.domElement);
-        
-        // --- Controls ---
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.2;
-        controls.maxPolarAngle = Math.PI / 2.2;
-        controls.minDistance = 20;
-        controls.maxDistance = 80;
-        
-        // --- Lighting ---
-        const ambient = new THREE.AmbientLight(0x606860);
-        scene.add(ambient);
-        
-        const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
-        sunLight.position.set(30, 40, 20);
-        sunLight.castShadow = true;
-        sunLight.shadow.mapSize.width = 1024;
-        sunLight.shadow.mapSize.height = 1024;
-        const d = 50;
-        sunLight.shadow.camera.left = -d;
-        sunLight.shadow.camera.right = d;
-        sunLight.shadow.camera.top = d;
-        sunLight.shadow.camera.bottom = -d;
-        sunLight.shadow.camera.near = 1;
-        sunLight.shadow.camera.far = 80;
-        scene.add(sunLight);
-        
-        // --- Ground (grass) ---
-        const groundGeo = new THREE.CircleGeometry(80, 32);
-        const groundMat = new THREE.MeshStandardMaterial({ color: 0x5a7a4a, roughness: 0.8 });
-        const ground = new THREE.Mesh(groundGeo, groundMat);
-        ground.rotation.x = -Math.PI / 2;
-        ground.position.y = -0.5;
-        ground.receiveShadow = true;
-        scene.add(ground);
-        
-        // --- Paths (dirt) ---
-        const pathGeo = new THREE.PlaneGeometry(3, 40);
-        const pathMat = new THREE.MeshStandardMaterial({ color: 0x8b6b45 });
-        const path1 = new THREE.Mesh(pathGeo, pathMat);
-        path1.rotation.x = -Math.PI / 2;
-        path1.rotation.z = 0.2;
-        path1.position.set(0, -0.4, 5);
-        path1.receiveShadow = true;
-        scene.add(path1);
-        
-        const path2 = path1.clone();
-        path2.rotation.z = -0.3;
-        path2.position.set(-8, -0.4, -3);
-        scene.add(path2);
-        
-        // --- Castle (centerpiece) ---
-        const castleGroup = new THREE.Group();
-        castleGroup.position.set(0, -0.5, 0);
-        
-        // Keep
-        const keepGeo = new THREE.CylinderGeometry(3, 4, 6, 8);
-        const keepMat = new THREE.MeshStandardMaterial({ color: 0xaa8866 });
-        const keep = new THREE.Mesh(keepGeo, keepMat);
-        keep.position.y = 3;
-        keep.castShadow = true;
-        keep.receiveShadow = true;
-        castleGroup.add(keep);
-        
-        // Tower
-        const towerGeo = new THREE.CylinderGeometry(1.5, 2, 8, 6);
-        const towerMat = new THREE.MeshStandardMaterial({ color: 0xccaa88 });
-        const tower = new THREE.Mesh(towerGeo, towerMat);
-        tower.position.set(3, 4, 3);
-        tower.castShadow = true;
-        tower.receiveShadow = true;
-        castleGroup.add(tower);
-        
-        // Wall
-        const wallGeo = new THREE.BoxGeometry(10, 1.5, 1);
-        const wallMat = new THREE.MeshStandardMaterial({ color: 0xaa8866 });
-        const wall = new THREE.Mesh(wallGeo, wallMat);
-        wall.position.set(0, 1, -4);
-        wall.castShadow = true;
-        wall.receiveShadow = true;
-        castleGroup.add(wall);
-        
-        scene.add(castleGroup);
-        
-        // Castle label
-        const castleDiv = document.createElement('div');
-        castleDiv.textContent = '🏰 CASTLE ELDERMOOR';
-        castleDiv.style.background = '#332211';
-        castleDiv.style.color = '#e5c8a3';
-        castleDiv.style.border = '2px solid #b89e7b';
-        castleDiv.style.borderRadius = '30px';
-        castleDiv.style.padding = '4px 16px';
-        const castleLabel = new CSS2DObject(castleDiv);
-        castleLabel.position.set(0, 8, 0);
-        scene.add(castleLabel);
-        
-        // --- Thatched houses ---
-        function createHouse(x, z, rot) {
-            const group = new THREE.Group();
-            
-            // Base
-            const baseGeo = new THREE.BoxGeometry(2, 1.5, 2);
-            const baseMat = new THREE.MeshStandardMaterial({ color: 0xccaa88 });
-            const base = new THREE.Mesh(baseGeo, baseMat);
-            base.position.y = 0.75;
-            base.castShadow = true;
-            base.receiveShadow = true;
-            group.add(base);
-            
-            // Roof
-            const roofGeo = new THREE.ConeGeometry(1.5, 1.2, 4);
-            const roofMat = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
-            const roof = new THREE.Mesh(roofGeo, roofMat);
-            roof.position.y = 1.8;
-            roof.rotation.y = Math.PI/4;
-            roof.castShadow = true;
-            group.add(roof);
-            
-            // Door
-            const doorGeo = new THREE.BoxGeometry(0.4, 0.8, 0.2);
-            const doorMat = new THREE.MeshStandardMaterial({ color: 0x5a3a1a });
-            const door = new THREE.Mesh(doorGeo, doorMat);
-            door.position.set(0, 0.4, 1.1);
-            door.castShadow = true;
-            group.add(door);
-            
-            group.position.set(x, -0.5, z);
-            group.rotation.y = rot;
-            return group;
-        }
-        
-        // Place houses around
-        for (let i = 0; i < 8; i++) {
-            const angle = (i / 8) * Math.PI * 2;
-            const radius = 8;
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
-            const house = createHouse(x, z, angle);
-            scene.add(house);
-        }
-        
-        // Additional scattered houses
-        for (let i = 0; i < 6; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const radius = 12 + Math.random() * 5;
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
-            const house = createHouse(x, z, Math.random() * Math.PI);
-            scene.add(house);
-        }
-        
-        // --- Village folk (simple figures) ---
-        function createVillager(x, z, color) {
-            const group = new THREE.Group();
-            
-            // Body
-            const bodyGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.8);
-            const bodyMat = new THREE.MeshStandardMaterial({ color: color });
-            const body = new THREE.Mesh(bodyGeo, bodyMat);
-            body.position.y = 0.4;
-            body.castShadow = true;
-            group.add(body);
-            
-            // Head
-            const headGeo = new THREE.SphereGeometry(0.15);
-            const headMat = new THREE.MeshStandardMaterial({ color: 0xffdd99 });
-            const head = new THREE.Mesh(headGeo, headMat);
-            head.position.y = 0.85;
-            head.castShadow = true;
-            group.add(head);
-            
-            group.position.set(x, -0.5, z);
-            return group;
-        }
-        
-        const villagers = [];
-        for (let i = 0; i < 20; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const radius = 5 + Math.random() * 10;
-            const x = Math.cos(angle) * radius;
-            const z = Math.sin(angle) * radius;
-            const colors = [0x44aa88, 0xaa8844, 0x8844aa, 0xaa4444];
-            const villager = createVillager(x, z, colors[Math.floor(Math.random() * colors.length)]);
-            
-            villager.userData = {
-                angle: Math.random() * Math.PI * 2,
-                radius: radius,
-                speed: 0.005 + Math.random() * 0.01,
-                homeX: x,
-                homeZ: z
-            };
-            
-            scene.add(villager);
-            villagers.push(villager);
-        }
-        
-        // --- Market stalls ---
-        for (let i = 0; i < 4; i++) {
-            const stallGroup = new THREE.Group();
-            const x = -3 + i * 2;
-            const z = 5;
-            
-            const roofGeo = new THREE.BoxGeometry(1.8, 0.2, 1.5);
-            const roofMat = new THREE.MeshStandardMaterial({ color: 0xa55d3d });
-            const roof = new THREE.Mesh(roofGeo, roofMat);
-            roof.position.y = 1.2;
-            stallGroup.add(roof);
-            
-            const legGeo = new THREE.CylinderGeometry(0.1, 0.1, 1.2);
-            const legMat = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
-            for (let j = 0; j < 4; j++) {
-                const leg = new THREE.Mesh(legGeo, legMat);
-                leg.position.set(
-                    (j % 2 === 0 ? -0.8 : 0.8),
-                    0.6,
-                    (j < 2 ? -0.5 : 0.5)
-                );
-                stallGroup.add(leg);
-            }
-            
-            stallGroup.position.set(x, -0.5, z);
-            scene.add(stallGroup);
-        }
-        
-        // --- Animals (sheep) ---
-        for (let i = 0; i < 8; i++) {
-            const sheepGroup = new THREE.Group();
-            
-            const bodyGeo = new THREE.SphereGeometry(0.3);
-            const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
-            const body = new THREE.Mesh(bodyGeo, bodyMat);
-            body.scale.set(1.2, 0.6, 0.8);
-            body.castShadow = true;
-            sheepGroup.add(body);
-            
-            const headGeo = new THREE.SphereGeometry(0.15);
-            const head = new THREE.Mesh(headGeo, bodyMat);
-            head.position.set(0.4, 0.2, 0);
-            sheepGroup.add(head);
-            
-            const angle = Math.random() * Math.PI * 2;
-            const radius = 12 + Math.random() * 5;
-            sheepGroup.position.set(
-                Math.cos(angle) * radius,
-                -0.3,
-                Math.sin(angle) * radius
-            );
-            
-            scene.add(sheepGroup);
-        }
-        
-        // --- Animate ---
-        let time = 0;
-        
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            time += 0.005;
-            
-            // Villagers wander
-            villagers.forEach(v => {
-                v.userData.angle += v.userData.speed;
-                v.position.x = v.userData.homeX + Math.cos(v.userData.angle) * 1.5;
-                v.position.z = v.userData.homeZ + Math.sin(v.userData.angle) * 1.5;
-            });
-            
-            // Update displays
-            const hours = 14 + Math.floor(time * 0.1) % 12;
-            const mins = Math.floor(time * 60) % 60;
-            document.getElementById('time-display').innerText = `${hours}:${mins.toString().padStart(2,'0')}`;
-            document.getElementById('season').innerText = ['HARVEST', 'WINTER', 'SPRING', 'SUMMER'][Math.floor(time * 0.05) % 4];
-            document.getElementById('patrons').innerText = 24 + Math.floor(Math.sin(time)*5);
-            document.getElementById('ale').innerText = 18 + Math.floor(Math.sin(time*2)*2);
-            document.getElementById('population').innerText = 247 + Math.floor(Math.sin(time)*3);
-            
-            controls.update();
-            renderer.render(scene, camera);
-            labelRenderer.render(scene, camera);
-        }
-        
-        animate();
-        
-        // Resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+      // resize canvas
+      let width = canvas.width;
+      let height = canvas.height;
+      function resizeCanvas() {
+        const container = document.querySelector('.garden');
+        if (!container) return;
+        const w = container.clientWidth - 50;
+        canvas.width = w;
+        canvas.height = 400;
+        width = canvas.width;
+        height = canvas.height;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      setTimeout(resizeCanvas, 50);
+
+      // ---- tone library ----
+      const tones = [
+        { emoji: '🔔', name: 'bell', freq: 440 },
+        { emoji: '🎸', name: 'guitar', freq: 220 },
+        { emoji: '🎹', name: 'piano', freq: 330 },
+        { emoji: '🎻', name: 'violin', freq: 550 },
+        { emoji: '🥁', name: 'drum', freq: 120 },
+        { emoji: '🪇', name: 'shaker', freq: 800 }
+      ];
+
+      // state
+      let activeTone = tones[0]; // default
+      let echoes = []; // { x, y, tone, age, id, volume }
+      let echoHistory = []; // store last 10 unique echoes
+
+      // parameters
+      let decay = 0.95;
+      let interval = 0.3; // seconds
+
+      // render tone palette
+      function renderTones() {
+        let html = '';
+        tones.forEach((t, idx) => {
+          html += `
+            <div class="tone-chip ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+              <span class="tone-emoji">${t.emoji}</span>
+              <span class="tone-name">${t.name}</span>
+              <span class="tone-freq">${t.freq}Hz</span>
+            </div>
+          `;
         });
-    </script>
+        toneGrid.innerHTML = html;
+
+        document.querySelectorAll('.tone-chip').forEach((chip, idx) => {
+          chip.addEventListener('click', () => {
+            document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            activeTone = tones[idx];
+          });
+        });
+      }
+
+      // draw echoes on canvas
+      function drawEchoes() {
+        ctx.clearRect(0, 0, width, height);
+
+        // draw subtle grid
+        ctx.strokeStyle = '#4f3d7a';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < width; i += 40) {
+          ctx.beginPath();
+          ctx.moveTo(i, 0);
+          ctx.lineTo(i, height);
+          ctx.strokeStyle = '#3a2d58';
+          ctx.stroke();
+        }
+        for (let i = 0; i < height; i += 40) {
+          ctx.beginPath();
+          ctx.moveTo(0, i);
+          ctx.lineTo(width, i);
+          ctx.strokeStyle = '#3a2d58';
+          ctx.stroke();
+        }
+
+        // draw each echo as a ripple
+        echoes.forEach(e => {
+          const radius = 20 + (1 - e.age) * 40; // age 0-1, older = smaller
+          const alpha = Math.max(0, e.age * 0.8);
+
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, radius, 0, 2 * Math.PI);
+          ctx.strokeStyle = `rgba(255, 200, 255, ${alpha})`;
+          ctx.lineWidth = 4;
+          ctx.stroke();
+
+          ctx.font = '24px "Segoe UI Emoji", "Apple Color Emoji"';
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(e.tone.emoji, e.x, e.y - 10);
+
+          // draw frequency
+          ctx.font = '12px monospace';
+          ctx.fillStyle = `rgba(200, 220, 255, ${alpha})`;
+          ctx.fillText(e.tone.freq + 'Hz', e.x, e.y + 25);
+        });
+      }
+
+      // update echoes (age them)
+      function updateEchoes() {
+        echoes = echoes.filter(e => {
+          e.age *= decay; // decay factor
+          return e.age > 0.05; // remove when too faint
+        });
+        drawEchoes();
+        updateCounter();
+      }
+
+      // add new echo at click position
+      function addEcho(x, y) {
+        const newEcho = {
+          id: 'echo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          x, y,
+          tone: activeTone,
+          age: 1.0,
+          volume: 1.0
+        };
+        echoes.push(newEcho);
+
+        // add to history (limited to 8)
+        echoHistory.unshift({
+          id: newEcho.id,
+          tone: activeTone,
+          time: new Date().toLocaleTimeString().slice(0,5)
+        });
+        if (echoHistory.length > 8) echoHistory.pop();
+        renderHistory();
+
+        drawEchoes();
+      }
+
+      // canvas click handler
+      canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+        addEcho(x, y);
+      });
+
+      // echo generation loop (auto-echo)
+      setInterval(() => {
+        // generate new echoes based on existing ones?
+        if (echoes.length > 0) {
+          // each existing echo spawns a weaker copy nearby
+          const newEchoes = [];
+          echoes.forEach(e => {
+            if (Math.random() < 0.3) { // 30% chance to echo
+              const angle = Math.random() * Math.PI * 2;
+              const dist = 40 + Math.random() * 60;
+              const nx = e.x + Math.cos(angle) * dist;
+              const ny = e.y + Math.sin(angle) * dist;
+              // keep in bounds
+              if (nx > 20 && nx < width - 20 && ny > 20 && ny < height - 20) {
+                newEchoes.push({
+                  id: 'echo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+                  x: nx,
+                  y: ny,
+                  tone: e.tone,
+                  age: e.age * 0.7 // weaker
+                });
+              }
+            }
+          });
+          echoes = [...echoes, ...newEchoes];
+        }
+        updateEchoes();
+      }, interval * 1000);
+
+      // update counter
+      function updateCounter() {
+        echoCounter.innerText = echoes.length + ' echo' + (echoes.length !== 1 ? 'es' : '');
+      }
+
+      // render history
+      function renderHistory() {
+        if (echoHistory.length === 0) {
+          historyContainer.innerHTML = '<div class="empty-history">✨ tap canvas to create echoes</div>';
+          return;
+        }
+        let html = '';
+        echoHistory.forEach(h => {
+          html += `
+            <div class="echo-chip">
+              <span>${h.tone.emoji}</span>
+              <span>${h.tone.name}</span>
+              <span>${h.time}</span>
+            </div>
+          `;
+        });
+        historyContainer.innerHTML = html;
+      }
+
+      // clear all echoes
+      clearBtn.addEventListener('click', () => {
+        echoes = [];
+        drawEchoes();
+        updateCounter();
+      });
+
+      // slider updates
+      decaySlider.addEventListener('input', (e) => {
+        decay = parseFloat(e.target.value);
+        decayValue.innerText = decay.toFixed(2);
+      });
+      intervalSlider.addEventListener('input', (e) => {
+        interval = parseFloat(e.target.value);
+        intervalValue.innerText = interval.toFixed(2);
+      });
+
+      // initialize
+      renderTones();
+
+      // demo echoes
+      function initDemo() {
+        setTimeout(() => {
+          addEcho(300, 200);
+          addEcho(500, 280);
+          addEcho(200, 350);
+        }, 200);
+      }
+      initDemo();
+    })();
+  </script>
 </body>
 </html>
