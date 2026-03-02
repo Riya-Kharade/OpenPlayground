@@ -1,0 +1,1578 @@
+// Variables
+$c-main: hsla(0, 100%, 100%, 1);
+$c-element-other-nonmetals: hsla(184, 9%, 62%, 1);
+$c-element-alkali-metals: hsla(6, 78%, 57%, 1);
+$c-element-alkali-earth-metals: hsla(28, 80%, 52%, 1);
+$c-element-transition-metals: hsla(48, 89%, 50%, 1);
+$c-element-lanthanoids: hsla(21, 78%, 81%, 1);
+$c-element-actinoids: hsla(20, 74%, 68%, 1);
+$c-element-post-transition-metals: hsla(168, 76%, 42%, 1);
+$c-element-metalloids: hsla(204, 70%, 53%, 1);
+$c-element-noble-gas: hsla(282, 44%, 47%, 1);
+$c-element-unknown: darken($c-element-transition-metals, 12%);
+$c-element-self: (
+  hydrogen: "hsla(0, 100%, 100%, 1)"
+);
+$c-shadow-main: hsla(0, 1%, 53%, 1);
+$bg-main: hsla(210, 3%, 15%, 1);
+$table-min-width: 1300px;
+$element-width: 70px;
+$grid-gap: 5px;
+$modal-width: 750px;
+$cubic-bezier: cubic-bezier(0.23, 1, 0.32, 1);
+$scale: 1.075;
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans|Montserrat");
+
+// General
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  font-size: 16px; // 1rem=16px
+  color: $c-main;
+  font-family: "Josefin Sans", "Roboto", sans-serif;
+  overflow: auto;
+  @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 2) {
+    justify-content: normal;
+  }
+}
+
+main {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 100dvh;
+  @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 2) {
+    justify-content: normal;
+  }
+  @media screen and (min-aspect-ratio: 1 / 1) {
+    height: 150vh;
+  }
+  @media screen and (min-aspect-ratio: 1 / 4) {
+    height: 155vh;
+  }
+  @media screen and (max-aspect-ratio: 1 / 5) {
+    height: 50vw;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+li {
+  position: relative;
+  cursor: pointer;
+  z-index: 10;
+}
+
+sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+// Specific
+.flex-row-wrap {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-row-nowrap {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.flex-column-nowrap {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.flex-column-wrap {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.group-period {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  min-width: $table-min-width + $element-width * 2 + $grid-gap * 2;
+  background: radial-gradient(lighten($bg-main, 25%), $bg-main);
+}
+
+.group,
+.period {
+  &__list {
+    background: lighten($bg-main, 2.5%);
+    box-shadow: 0 0 0.5rem $bg-main;
+  }
+  &__item {
+    cursor: default;
+    span {
+      transition: all 0.2s ease;
+    }
+    &:hover {
+      span {
+        box-shadow: 0 0 1rem darken($c-shadow-main, 30%);
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+.group {
+  &__list {
+    position: sticky;
+    top: 0;
+    display: grid;
+    grid-template: repeat(1, $element-width / 1.5) / repeat(18, $element-width);
+    grid-gap: $grid-gap;
+    justify-content: center;
+    width: 100%;
+    min-width: $table-min-width;
+    height: $element-width / 1.5;
+    margin: 0 auto;
+    font-size: 1rem;
+    z-index: 10;
+    &.--is-fixed {
+      z-index: 20;
+      .group-1 {
+        &::before {
+          display: none;
+        }
+        &::after {
+          @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 2) {
+            transform: translateX(-25%) rotate(0);
+          }
+        }
+      }
+    }
+  }
+  &__item {
+    width: $element-width;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid $c-main;
+    span:nth-of-type(2) {
+      flex-basis: 100%;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+    &.group-1 {
+      border-left: 1px solid $c-main;
+      transition: all 0.2s ease;
+      &::after {
+        content: "Group";
+        position: absolute;
+        top: 50%;
+        font-size: 0.75rem;
+        left: -$element-width / 2 - $grid-gap;
+        transform: translateY(-50%);
+        cursor: auto;
+        transition: all 0.2s ease;
+        @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 2) {
+          top: 1.25rem;
+          left: -$element-width / 2 - $grid-gap + 5;
+          transform: translateY(-50%) rotate(45deg);
+        }
+      }
+      &::before {
+        transition: all 0.2s ease;
+        @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 2) {
+          content: "";
+          position: absolute;
+          width: 50px;
+          height: 1px;
+          background-color: $c-main;
+          transform: rotate(45deg);
+          left: -$element-width / 2 - 20px;
+        }
+      }
+    }
+    &.group-15,
+    &.group-16,
+    &.group-17 {
+      span:nth-of-type(1) {
+        margin-top: 0.75rem;
+      }
+    }
+  }
+}
+
+.period {
+  &__list {
+    position: absolute;
+    display: grid;
+    grid-template: repeat(8, $element-width) / repeat(1, $element-width / 1.5);
+    grid-gap: $grid-gap;
+    width: 100%;
+    min-width: $element-width / 1.5;
+    max-width: $element-width / 1.5;
+    padding-top: 0.4rem;
+    font-size: 1rem;
+    &.--is-fixed {
+      z-index: 10;
+      .period-1 {
+        &::before {
+          content: "";
+          position: absolute;
+          background: lighten($bg-main, 2.5%);
+          width: 100%;
+          height: 75%;
+          box-shadow: 0 0 0.5rem $bg-main;
+          transform: translate(0, -125%);
+        }
+        &::after {
+          transform: translateX(25%) rotate(0);
+        }
+      }
+    }
+  }
+  &__item {
+    width: $element-width / 1.5;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid $c-main;
+    &.period-1 {
+      border-top: 1px solid $c-main;
+      &::before {
+        @media screen and (min-width: $table-min-width + $element-width * 4 + $grid-gap * 2) {
+          content: "";
+          position: absolute;
+          background: lighten($bg-main, 2.5%);
+          width: 100%;
+          height: 75%;
+          box-shadow: 0 0 0.5rem $bg-main;
+          transform: translate(0, -125%);
+        }
+      }
+      &::after {
+        content: "Period";
+        position: absolute;
+        font-size: 0.75rem;
+        top: -0.5rem;
+        transform: translateY(-50%);
+        cursor: auto;
+        transition: all 0.2s ease;
+        @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 2) {
+          top: -1.25rem;
+          left: -3px;
+          transform: translateY(-50%) rotate(45deg);
+        }
+      }
+    }
+  }
+}
+
+.dynamic-periodic-table {
+  display: grid;
+  position: absolute;
+  top: $element-width / 1.5;
+  grid-gap: $grid-gap;
+  grid-template: repeat(10, $element-width) / repeat(18, $element-width); // Shorthand that represents <grid-template-rows> / <grid-template-columns>
+  align-self: center;
+  justify-self: center;
+  justify-content: center;
+  width: 100%;
+  min-width: $table-min-width;
+  margin-top: 0.4rem;
+  @media screen and (max-width: $table-min-width + $element-width * 2 + $grid-gap * 1.5) {
+    justify-content: normal;
+    margin-left: $element-width - ($grid-gap * 3) - 2;
+  }
+}
+
+.key,
+.element {
+  border: 2px solid;
+  font-family: "Montserrat", sans-serif;
+  &__abbr,
+  &__name {
+    flex-basis: 100%;
+    text-align: center;
+  }
+  &__name {
+    text-align: center;
+    word-break: break-word;
+  }
+  &__abbr {
+    font-size: 1rem;
+  }
+  &__atomic-number {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    font-size: 0.65rem;
+  }
+}
+
+.key {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  grid-area: 1 / 4 / 3 / 5;
+  align-self: center;
+  justify-self: center;
+  width: $element-width * 1.75;
+  height: $element-width * 1.75;
+  border-color: $c-main;
+  font-size: 1rem;
+  &__abbr {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  &::after {
+    content: "Key:";
+    position: absolute;
+    top: -1.15rem;
+    left: -0.2rem;
+    font-family: "Josefin Sans", "Roboto", sans-serif;
+  }
+}
+
+.legend {
+  position: relative;
+  align-self: center;
+  justify-self: center;
+  justify-content: space-between;
+  align-items: center;
+  grid-area: 1 / 7 / 3 / 11;
+  width: ($element-width * 5.75) + ($element-width * 1.75 + $grid-gap * 1.75);
+  height: $element-width * 1.75;
+  &__element-type {
+    width: $element-width * 5.75;
+    justify-content: space-between;
+    height: 100%;
+    &-box {
+      cursor: default;
+    }
+    &__metals,
+    &__nonmetals {
+      position: relative;
+      align-self: flex-end;
+      justify-content: space-between;
+      height: 85%;
+      &__alkali-metal,
+      &__alkali-earth-metal,
+      &__transition-metal,
+      &__post-transition-metal {
+        justify-content: center;
+        width: $element-width / 2;
+        height: 100%;
+        text-align: center;
+        margin-right: $grid-gap;
+        border: 2px solid;
+        transition: all 0.2s ease;
+        &:hover {
+          transform: scale($scale);
+        }
+        span {
+          float: left; // Emulates an auto width
+          font-size: 0.85rem;
+          width: 100px;
+        }
+      }
+      &__lanthanoid-actinoid {
+        align-content: space-between;
+        justify-content: center;
+        width: $element-width * 1.5;
+        margin-right: $grid-gap;
+        .lanthanoid,
+        .actinoid {
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100% / 2 - 2;
+          border: 2px solid;
+          transition: all 0.2s ease;
+          span {
+            font-size: 0.85rem;
+          }
+          &:hover {
+            transform: scale($scale);
+          }
+        }
+        .lanthanoid {
+          border-color: $c-element-lanthanoids;
+          color: $c-element-lanthanoids;
+        }
+        .actinoid {
+          border-color: $c-element-actinoids;
+          color: $c-element-actinoids;
+        }
+      }
+      &__alkali-metal {
+        border-color: $c-element-alkali-metals;
+        color: $c-element-alkali-metals;
+        span {
+          transform: rotate(90deg) translate(0, 280%);
+        }
+      }
+      &__alkali-earth-metal {
+        border-color: $c-element-alkali-earth-metals;
+        color: $c-element-alkali-earth-metals;
+        span {
+          transform: rotate(90deg) translate(0, 140%);
+        }
+      }
+      &__transition-metal {
+        border-color: $c-element-transition-metals;
+        color: $c-element-transition-metals;
+        span {
+          transform: rotate(90deg) translate(0, 138%);
+        }
+      }
+      &__post-transition-metal {
+        margin-right: 0;
+        border-color: $c-element-post-transition-metals;
+        color: $c-element-post-transition-metals;
+        span {
+          transform: rotate(90deg) translate(0, 138%);
+        }
+      }
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin-top: -3px;
+        border-right: 2px solid $c-main;
+        border-left: 2px solid $c-main;
+        transform: translateY(-100%);
+      }
+    }
+    &__metals {
+      width: $element-width * 3.5;
+      &::after {
+        content: "Metals";
+      }
+    }
+    &__nonmetals {
+      width: $element-width;
+      &__other-nonmetal,
+      &__noble-gas {
+        width: $element-width / 2 - $grid-gap / 2;
+        text-align: center;
+        transition: all 0.2s ease;
+        span {
+          transform: rotate(90deg) translate(35%, 138%);
+        }
+        &:hover {
+          transform: scale($scale);
+        }
+      }
+      &__other-nonmetal {
+        margin-right: $grid-gap;
+        border: 2px solid $c-element-other-nonmetals;
+        color: $c-element-other-nonmetals;
+      }
+      &__noble-gas {
+        border: 2px solid $c-element-noble-gas;
+        color: $c-element-noble-gas;
+        span {
+          transform: rotate(90deg) translate(45%, 280%);
+        }
+      }
+      span {
+        float: left;
+        font-size: 0.85rem;
+        width: 100px;
+      }
+      &::after {
+        content: "Non-metals";
+      }
+    }
+    &__metalloid {
+      height: 100%;
+      width: $element-width / 2;
+      color: $c-element-metalloids;
+      border: 2px solid $c-element-metalloids;
+      transition: all 0.2s ease;
+      span {
+        float: left;
+        font-size: 0.85rem;
+        width: 100px;
+        transform: rotate(90deg) translate(70%, 265%);
+      }
+      &:hover {
+        transform: scale($scale);
+      }
+    }
+    &__unknown {
+      width: $element-width / 2;
+      height: 100%;
+      border: 2px solid $c-element-unknown;
+      color: $c-element-unknown;
+      transition: all 0.2s ease;
+      span {
+        float: left;
+        font-size: 0.85rem;
+        width: 100px;
+        transform: rotate(90deg) translate(0, 55%);
+      }
+      &:hover {
+        transform: scale($scale);
+      }
+    }
+  }
+  &__element-state {
+    justify-content: space-between;
+    align-content: space-between;
+    width: $element-width * 1.75 + $grid-gap / 2;
+    height: 100%;
+    &__gas,
+    &__liquid,
+    &__solid,
+    &__unknown {
+      justify-content: center;
+      align-items: center;
+      width: ($element-width * 1.75 + $grid-gap) / 2 - $grid-gap;
+      height: ($element-width * 1.75 + $grid-gap) / 2 - $grid-gap;
+      border: 2px $c-main;
+      transition: all 0.2s ease;
+      span {
+        flex-basis: 100%;
+        text-align: center;
+        font-size: 0.85rem;
+      }
+      &:hover {
+        transform: scale($scale);
+      }
+    }
+    &__gas {
+      border-style: dashed;
+    }
+    &__liquid {
+      border-style: solid;
+    }
+    &__solid {
+      border: double;
+    }
+    &__unknown {
+      border-style: dotted;
+    }
+  }
+}
+
+.temperature {
+  align-items: center;
+  justify-content: space-between;
+  grid-area: 3 / 3 / 3 / 13;
+  margin-left: $element-width / 1.5;
+  &__inputs {
+    align-items: center;
+    &__slider {
+      position: relative;
+      width: $element-width * 5.75 - $grid-gap;
+      height: $grid-gap / 1.5;
+      border-radius: $grid-gap;
+      background-color: $c-main;
+      padding: 0;
+      margin: 0 $grid-gap * 2 0 0;
+      appearance: none;
+      outline: none;
+      &::after {
+        content: "Drag and drop to modify temperature and element's state";
+        position: absolute;
+        top: -1.5rem;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: "Josefin Sans", "Roboto", sans-serif;
+        color: $c-main;
+      }
+      &::-webkit-slider-thumb {
+        width: $grid-gap * 4;
+        height: $grid-gap * 4;
+        appearance: none;
+        border-radius: 50%;
+        background-color: lighten($bg-main, 30%);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        &::after {
+          background-color: lighten($bg-main, 30%);
+        }
+        &:hover {
+          background-color: lighten($bg-main, 50%);
+        }
+        &:active::-webkit-slider-thumb {
+          background-color: lighten($bg-main, 40%);
+        }
+      }
+      &::-moz-range-thumb {
+        width: $grid-gap * 3.5;
+        height: $grid-gap * 3.5;
+        appearance: none;
+        border-radius: 50%;
+        background-color: lighten($bg-main, 30%);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+          background-color: lighten($bg-main, 50%);
+        }
+        &::-moz-range-thumb {
+          background-color: lighten($bg-main, 40%);
+        }
+      }
+    }
+    ::-moz-range-track {
+      background: $c-main;
+      border: 0;
+    }
+    input::-moz-focus-inner,
+    input::-moz-focus-outer {
+      border: 0;
+    }
+    &__result {
+      position: relative;
+      align-items: center;
+      justify-content: center;
+      width: $element-width - $grid-gap;
+      height: $element-width / 2;
+      color: $c-main;
+      border: 2px solid lighten($bg-main, 30%);
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: $grid-gap / 5;
+        left: 0;
+        border-top: $grid-gap solid transparent;
+        border-right: $grid-gap * 1.5 solid lighten($bg-main, 30%);
+        border-bottom: $grid-gap solid transparent;
+        transform: translate(-100%, -100%);
+      }
+    }
+  }
+  &__unit-conversion {
+    align-content: space-evenly;
+    text-align: center;
+    width: $element-width * 1.5;
+    height: 100%;
+    p {
+      flex-basis: 100%;
+      opactity: 0.5;
+    }
+  }
+  .reset__temperature {
+    opacity: 0;
+    visibility: hidden;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+    width: $element-width * 1.5;
+    height: $element-width / 1.5;
+    overflow: hidden;
+    background: transparent;
+    margin-right: 1.85rem;
+    font-family: "Josefin Sans", "Roboto", sans-serif;
+    color: $c-main;
+    border: 2px solid lighten($bg-main, 30%);
+    background: none;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+    z-index: 0;
+    transition: all 0.3s ease;
+    span {
+      position: relative;
+      z-index: 100;
+    }
+    &.--is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: $grid-gap * 3;
+      height: $grid-gap * 3;
+      background-color: lighten($bg-main, 30%);
+      border-radius: 50%;
+    }
+    &::before {
+      left: -1.25rem;
+      transform: translate(-50%, -50%);
+    }
+    &::after {
+      right: -1.25rem;
+      transform: translate(50%, -50%);
+    }
+    &:hover {
+      animation: focus 0.001s 0.8s forwards;
+      &::before {
+        animation: criss-cross-left 1s both alternate,
+          lighten-background 0.001s 0.8s forwards;
+      }
+      &::after {
+        animation: criss-cross-right 1s both alternate,
+          lighten-background 0.001s 0.8s forwards;
+      }
+    }
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}
+
+.element {
+  position: relative;
+  width: $element-width;
+  height: $element-width;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+  &[data-element-type="other-nonmetal"] {
+    color: $c-element-other-nonmetals;
+    border-color: $c-element-other-nonmetals;
+  }
+  &[data-element-type="alkali-metal"] {
+    color: $c-element-alkali-metals;
+    border-color: $c-element-alkali-metals;
+  }
+  &[data-element-type="alkali-earth-metal"] {
+    color: $c-element-alkali-earth-metals;
+    border-color: $c-element-alkali-earth-metals;
+  }
+  &[data-element-type="transition-metal"] {
+    color: $c-element-transition-metals;
+    border-color: $c-element-transition-metals;
+  }
+  &[data-element-type="Lanthanoid"] {
+    color: $c-element-lanthanoids;
+    border-color: $c-element-lanthanoids;
+  }
+  &[data-element-type="Actinoid"] {
+    color: $c-element-actinoids;
+    border-color: $c-element-actinoids;
+  }
+  &[data-element-type="post-transition-metal"] {
+    color: $c-element-post-transition-metals;
+    border-color: $c-element-post-transition-metals;
+  }
+  &[data-element-type="metalloid"] {
+    color: $c-element-metalloids;
+    border-color: $c-element-metalloids;
+  }
+  &[data-element-type="noble-gas"] {
+    color: $c-element-noble-gas;
+    border-color: $c-element-noble-gas;
+  }
+  &[data-element-type="unknown"] {
+    color: $c-element-unknown;
+    border-color: $c-element-unknown;
+  }
+  &[data-element-state="gas"] {
+    border-style: dashed;
+  }
+  &[data-element-state="liquid"] {
+    border-style: solid;
+  }
+  &[data-element-state="solid"] {
+    border: double;
+  }
+  &[data-element-state="unknown"] {
+    border-style: dotted;
+  }
+  &[data-element-name="Hydrogen"] {
+    grid-area: 1 / 1;
+    margin-top: 1px;
+  }
+  &[data-element-name="Lithium"] {
+    grid-area: 2 / 1;
+  }
+  &[data-element-name="Sodium"] {
+    grid-area: 3 / 1;
+  }
+  &[data-element-name="Potassium"] {
+    grid-area: 4 / 1;
+  }
+  &[data-element-name="Rubidium"] {
+    grid-area: 5 / 1;
+  }
+  &[data-element-name="Caesium"] {
+    grid-area: 6 / 1;
+  }
+  &[data-element-name="Francium"] {
+    grid-area: 7 / 1;
+  }
+  &[data-element-name="Beryllium"] {
+    grid-area: 2 / 2;
+  }
+  &[data-element-name="Magnesium"] {
+    grid-area: 3 / 2;
+  }
+  &[data-element-name="Calcium"] {
+    grid-area: 4 / 2;
+  }
+  &[data-element-name="Stronium"] {
+    grid-area: 5 / 2;
+  }
+  &[data-element-name="Barium"] {
+    grid-area: 6 / 2;
+  }
+  &[data-element-name="Radium"] {
+    grid-area: 7 / 2;
+  }
+  &[data-element-name="Scandium"] {
+    grid-area: 4 / 3;
+  }
+  &[data-element-name="Yttrium"] {
+    grid-area: 5 / 3;
+  }
+  &[data-element-name="Lanthanoids"] {
+    grid-area: 6 / 3;
+  }
+  &[data-element-name="Actinoids"] {
+    grid-area: 7 / 3;
+  }
+  &[data-element-name="Titanium"] {
+    grid-area: 4 / 4;
+  }
+  &[data-element-name="Zirconium"] {
+    grid-area: 5 / 4;
+  }
+  &[data-element-name="Hafnium"] {
+    grid-area: 6 / 4;
+  }
+  &[data-element-name="Rutherfordium"] {
+    grid-area: 7 / 4;
+  }
+  &[data-element-name="Vanadium"] {
+    grid-area: 4 / 5;
+  }
+  &[data-element-name="Niobium"] {
+    grid-area: 5 / 5;
+  }
+  &[data-element-name="Tantalum"] {
+    grid-area: 6 / 5;
+  }
+  &[data-element-name="Dubnium"] {
+    grid-area: 7 / 5;
+  }
+  &[data-element-name="Chromium"] {
+    grid-area: 4 / 6;
+  }
+  &[data-element-name="Molybdenum"] {
+    grid-area: 5 / 6;
+  }
+  &[data-element-name="Tungsten"] {
+    grid-area: 6 / 6;
+  }
+  &[data-element-name="Seaborgium"] {
+    grid-area: 7 / 6;
+  }
+  &[data-element-name="Manganese"] {
+    grid-area: 4 / 7;
+  }
+  &[data-element-name="Technetium"] {
+    grid-area: 5 / 7;
+  }
+  &[data-element-name="Rhenium"] {
+    grid-area: 6 / 7;
+  }
+  &[data-element-name="Bohrium"] {
+    grid-area: 7 / 7;
+  }
+  &[data-element-name="Iron"] {
+    grid-area: 4 / 8;
+  }
+  &[data-element-name="Ruthenium"] {
+    grid-area: 5 / 8;
+  }
+  &[data-element-name="Osmium"] {
+    grid-area: 6 / 8;
+  }
+  &[data-element-name="Hassium"] {
+    grid-area: 7 / 8;
+  }
+  &[data-element-name="Cobalt"] {
+    grid-area: 4 / 9;
+  }
+  &[data-element-name="Rhodium"] {
+    grid-area: 5 / 9;
+  }
+  &[data-element-name="Iridium"] {
+    grid-area: 6 / 9;
+  }
+  &[data-element-name="Meitnerium"] {
+    grid-area: 7 / 9;
+  }
+  &[data-element-name="Nickel"] {
+    grid-area: 4 / 10;
+  }
+  &[data-element-name="Palladium"] {
+    grid-area: 5 / 10;
+  }
+  &[data-element-name="Platinum"] {
+    grid-area: 6 / 10;
+  }
+  &[data-element-name="Darmstadtium"] {
+    grid-area: 7 / 10;
+  }
+  &[data-element-name="Copper"] {
+    grid-area: 4 / 11;
+  }
+  &[data-element-name="Silver"] {
+    grid-area: 5 / 11;
+  }
+  &[data-element-name="Gold"] {
+    grid-area: 6 / 11;
+  }
+  &[data-element-name="Roentgenium"] {
+    grid-area: 7 / 11;
+  }
+  &[data-element-name="Zinc"] {
+    grid-area: 4 / 12;
+  }
+  &[data-element-name="Cadmium"] {
+    grid-area: 5 / 12;
+  }
+  &[data-element-name="Mercury"] {
+    grid-area: 6 / 12;
+  }
+  &[data-element-name="Copernicium"] {
+    grid-area: 7 / 12;
+  }
+  &[data-element-name="Boron"] {
+    grid-area: 2 / 13;
+  }
+  &[data-element-name="Aluminium"] {
+    grid-area: 3 / 13;
+  }
+  &[data-element-name="Galium"] {
+    grid-area: 4 / 13;
+  }
+  &[data-element-name="Indium"] {
+    grid-area: 5 / 13;
+  }
+  &[data-element-name="Thalium"] {
+    grid-area: 6 / 13;
+  }
+  &[data-element-name="Nihonium"] {
+    grid-area: 7 / 13;
+  }
+  &[data-element-name="Carbon"] {
+    grid-area: 2 / 14;
+  }
+  &[data-element-name="Silicon"] {
+    grid-area: 3 / 14;
+  }
+  &[data-element-name="Germanium"] {
+    grid-area: 4 / 14;
+  }
+  &[data-element-name="Tin"] {
+    grid-area: 5 / 14;
+  }
+  &[data-element-name="Lead"] {
+    grid-area: 6 / 14;
+  }
+  &[data-element-name="Flerovium"] {
+    grid-area: 7 / 14;
+  }
+  &[data-element-name="Nitrogen"] {
+    grid-area: 2 / 15;
+  }
+  &[data-element-name="Phosphorus"] {
+    grid-area: 3 / 15;
+  }
+  &[data-element-name="Arsenic"] {
+    grid-area: 4 / 15;
+  }
+  &[data-element-name="Antimony"] {
+    grid-area: 5 / 15;
+  }
+  &[data-element-name="Bismuth"] {
+    grid-area: 6 / 15;
+  }
+  &[data-element-name="Moscovium"] {
+    grid-area: 7 / 15;
+  }
+  &[data-element-name="Oxygen"] {
+    grid-area: 2 / 16;
+  }
+  &[data-element-name="Sulfur"] {
+    grid-area: 3 / 16;
+  }
+  &[data-element-name="Selenium"] {
+    grid-area: 4 / 16;
+  }
+  &[data-element-name="Tellurium"] {
+    grid-area: 5 / 16;
+  }
+  &[data-element-name="Polonium"] {
+    grid-area: 6 / 16;
+  }
+  &[data-element-name="Livemorium"] {
+    grid-area: 7 / 16;
+  }
+  &[data-element-name="Fluorine"] {
+    grid-area: 2 / 17;
+  }
+  &[data-element-name="Chlorine"] {
+    grid-area: 3 / 17;
+  }
+  &[data-element-name="Bromine"] {
+    grid-area: 4 / 17;
+  }
+  &[data-element-name="Iodine"] {
+    grid-area: 5 / 17;
+  }
+  &[data-element-name="Astatine"] {
+    grid-area: 6 / 17;
+  }
+  &[data-element-name="Tennessine"] {
+    grid-area: 7 / 17;
+  }
+  &[data-element-name="Helium"] {
+    grid-area: 1 / 18;
+  }
+  &[data-element-name="Neon"] {
+    grid-area: 2 / 18;
+  }
+  &[data-element-name="Argon"] {
+    grid-area: 3 / 18;
+  }
+  &[data-element-name="Krypton"] {
+    grid-area: 4 / 18;
+  }
+  &[data-element-name="Xenon"] {
+    grid-area: 5 / 18;
+  }
+  &[data-element-name="Radon"] {
+    grid-area: 6 / 18;
+  }
+  &[data-element-name="Oganesson"] {
+    grid-area: 7 / 18;
+  }
+  &[data-element-name="Lanthanum"] {
+    grid-area: 9 / 3;
+  }
+  &[data-element-name="Cerium"] {
+    grid-area: 9 / 4;
+  }
+  &[data-element-name="Praseodymium"] {
+    grid-area: 9 / 5;
+  }
+  &[data-element-name="Neodymium"] {
+    grid-area: 9 / 6;
+  }
+  &[data-element-name="Promethium"] {
+    grid-area: 9 / 7;
+  }
+  &[data-element-name="Samarium"] {
+    grid-area: 9 / 8;
+  }
+  &[data-element-name="Europium"] {
+    grid-area: 9 / 9;
+  }
+  &[data-element-name="Gadolinium"] {
+    grid-area: 9 / 10;
+  }
+  &[data-element-name="Terbium"] {
+    grid-area: 9 / 11;
+  }
+  &[data-element-name="Dysprosium"] {
+    grid-area: 9 / 12;
+  }
+  &[data-element-name="Holmium"] {
+    grid-area: 9 / 13;
+  }
+  &[data-element-name="Erbium"] {
+    grid-area: 9 / 14;
+  }
+  &[data-element-name="Thulium"] {
+    grid-area: 9 / 15;
+  }
+  &[data-element-name="Ytterbium"] {
+    grid-area: 9 / 16;
+  }
+  &[data-element-name="Lutetium"] {
+    grid-area: 9 / 17;
+  }
+  &[data-element-name="Actinium"] {
+    grid-area: 10 / 3;
+  }
+  &[data-element-name="Thorium"] {
+    grid-area: 10 / 4;
+  }
+  &[data-element-name="Protactinium"] {
+    grid-area: 10 / 5;
+  }
+  &[data-element-name="Uranium"] {
+    grid-area: 10 / 6;
+  }
+  &[data-element-name="Neptunium"] {
+    grid-area: 10 / 7;
+  }
+  &[data-element-name="Plutonium"] {
+    grid-area: 10 / 8;
+  }
+  &[data-element-name="Americium"] {
+    grid-area: 10 / 9;
+  }
+  &[data-element-name="Curium"] {
+    grid-area: 10 / 10;
+  }
+  &[data-element-name="Berkelium"] {
+    grid-area: 10 / 11;
+  }
+  &[data-element-name="Californium"] {
+    grid-area: 10 / 12;
+  }
+  &[data-element-name="Einsteinium"] {
+    grid-area: 10 / 13;
+  }
+  &[data-element-name="Fermium"] {
+    grid-area: 10 / 14;
+  }
+  &[data-element-name="Mendelevium"] {
+    grid-area: 10 / 15;
+  }
+  &[data-element-name="Nobelium"] {
+    grid-area: 10 / 16;
+  }
+  &[data-element-name="Lawrencium"] {
+    grid-area: 10 / 17;
+  }
+  .tooltip {
+    position: absolute;
+    padding: 0.25rem;
+    text-align: center;
+    background-color: darken($bg-main, 5%);
+    color: $c-main;
+    border-radius: 1px;
+    visibility: hidden;
+    z-index: 100;
+    transition: visibility 0.15s $cubic-bezier;
+    &.--is-hidden {
+      display: none;
+    }
+    &.right-tooltip {
+      left: 100%;
+      margin-left: 0.75rem;
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        border-top: 5px solid transparent;
+        border-right: 7.5px solid darken($bg-main, 5%);
+        border-bottom: 5px solid transparent;
+        transform: translateY(-50%);
+      }
+    }
+    &.left-tooltip {
+      right: 100%;
+      margin-right: 0.75rem;
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        border-top: 5px solid transparent;
+        border-left: 7.5px solid darken($bg-main, 5%);
+        border-bottom: 5px solid transparent;
+        transform: translateY(-50%);
+      }
+    }
+    &.top-tooltip {
+      top: -0.75rem;
+      transform: translateY(-100%);
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -0.9rem;
+        left: 50%;
+        border-top: 7.5px solid darken($bg-main, 5%);
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        transform: translate(-50%, -100%);
+      }
+    }
+    &.bottom-tooltip {
+      bottom: -0.75rem;
+      transform: translateY(100%);
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0.75rem;
+        left: 50%;
+        border-bottom: 7.5px solid darken($bg-main, 5%);
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        transform: translate(-50%, -100%);
+      }
+    }
+  }
+  &:hover:not([data-element-name="Lanthanoids"]):not([data-element-name="Actinoids"]),
+  &.--is-active {
+    box-shadow: 0 0 1rem $c-shadow-main;
+    transform: scale($scale);
+  }
+  &.--is-triggered {
+    z-index: 10;
+  }
+  &:hover {
+    &[data-element-name="Lanthanoids"],
+    &[data-element-name="Actinoids"] {
+      transform: scale($scale);
+    }
+    .tooltip {
+      visibility: visible;
+    }
+  }
+}
+
+.modal {
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  visibility: hidden;
+  opacity: 0;
+  background-color: darken(rgba($c-shadow-main, 0.975), 30%);
+  z-index: 1000;
+  will-change: visibility, opacity;
+  transition: all 0.5s $cubic-bezier;
+  &__dialog {
+    position: relative;
+    max-width: $modal-width;
+    width: 100%;
+    max-height: 90%;
+    height: 100%;
+    padding: 1.2rem;
+    border: none;
+    background: none;
+  }
+  &__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 1.5rem;
+    opacity: 0;
+    border: 3px solid transparent;
+    transition: all 0.25s $cubic-bezier;
+    &.--is-visible {
+      opacity: 1;
+      border: 3px solid transparent;
+      color: $c-main;
+      &::before,
+      &::after {
+        transform: scale(1);
+      }
+    }
+    .atom {
+      position: absolute;
+      top: $element-width + $grid-gap * 2;
+      left: 0;
+      right: 0;
+      animation: up-and-down 7s ease infinite;
+      &__core {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background-color: darken($c-shadow-main, 5%);
+        z-index: 0;
+      }
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -($element-width - $grid-gap) 0 - ($element-width - $grid-gap) 0;
+        width: $element-width * 2 + $grid-gap * 2;
+        height: $element-width * 2 + $grid-gap * 2;
+        border-radius: 50%;
+        border: 4px solid darken($c-shadow-main, 5%);
+      }
+      &::before {
+        z-index: 1;
+        animation: clockwise-rotation-2 2s linear infinite;
+      }
+      &::after {
+        z-index: 2;
+        animation: clockwise-rotation-1 2s linear infinite;
+      }
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      transform: scale(0);
+      transition: all 0.7s $cubic-bezier;
+    }
+    &::before {
+      border-bottom: 3px solid darken($c-shadow-main, 5%);
+      border-left: 3px solid darken($c-shadow-main, 5%);
+      transform-origin: 0 100%;
+    }
+    &::after {
+      border-top: 3px solid darken($c-shadow-main, 5%);
+      border-right: 3px solid darken($c-shadow-main, 5%);
+      transform-origin: 100% 0%;
+    }
+    &__properties {
+      display: grid;
+      gap: 0 0.5rem;
+      grid-template: repeat(auto-fill, minmax($element-width, 1fr)) / repeat(
+          9,
+          $element-width
+        );
+      height: 100%;
+    }
+  }
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0.15rem;
+    background: transparent;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.5s $cubic-bezier;
+    svg {
+      width: 1.75rem;
+      height: 1.75rem;
+      border: 2px solid darken($c-shadow-main, 5%);
+      fill: darken($c-shadow-main, 5%);
+      pointer-events: none;
+      transition: all 0.5s $cubic-bezier;
+    }
+    &:hover {
+      svg {
+        background: darken($c-shadow-main, 5%);
+        fill: darken($c-shadow-main, 30%);
+      }
+    }
+  }
+  &.--modal__background {
+    background: $c-shadow-main;
+  }
+  &.--is-visible {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.modal__content__properties {
+  .content {
+    text-transform: math-auto;
+  }
+  .element-property {
+    text-align: center;
+    gap: 0.25rem;
+    .title {
+      border-bottom: 1px solid darken($c-shadow-main, 5%);
+      margin: 0 1rem;
+    }
+  }
+  .element-name {
+    grid-row: 3;
+    grid-column: 1/3;
+  }
+
+  .element-symbol {
+    grid-row: 3;
+    grid-column: 3/5;
+  }
+
+  .element-atomic-number {
+    grid-row: 3;
+    grid-column: 5/7;
+  }
+
+  .element-atomic-weight {
+    grid-row: 3;
+    grid-column: 7/10;
+  }
+
+  .element-group {
+    grid-row: 4;
+    grid-column: 1/2;
+  }
+
+  .element-period {
+    grid-row: 4;
+    grid-column: 2/3;
+  }
+
+  .element-category {
+    grid-row: 4;
+    grid-column: 3/8;
+  }
+
+  .element-block {
+    grid-row: 4;
+    grid-column: 8/10;
+  }
+  .element-electron-configuration {
+    grid-row: 5;
+    grid-column: 1/4;
+  }
+  .element-electron-per-shell {
+    grid-row: 5;
+    grid-column: 4/7;
+  }
+  .element-phase-at-STP {
+    grid-row: 5;
+    grid-column: 7/10;
+  }
+  .element-melting-point {
+    grid-row: 6;
+    grid-column: 1/3;
+  }
+  .element-boiling-point {
+    grid-row: 6;
+    grid-column: 3/6;
+  }
+  .element-oxidation-states {
+    grid-row: 6;
+    grid-column: 6/10;
+  }
+  .element-electronegativity {
+    grid-row: 7;
+    grid-column: 1/3;
+  }
+  .element-ionization-energy {
+    grid-row: 7;
+    grid-column: 3/6;
+  }
+  .element-covalent-radius {
+    grid-row: 7;
+    grid-column: 6/10;
+  }
+  .element-van-der-waals-radius {
+    grid-row: 8;
+    grid-column: 1/5;
+  }
+  .element-crystal-structure {
+    grid-row: 8;
+    grid-column: 5/10;
+  }
+  .element-thermal-conductivity {
+    grid-row: 9;
+    grid-column: 1/4;
+  }
+  .element-magnetic-order {
+    grid-row: 9;
+    grid-column: 4/7;
+  }
+  .element-magnetic-susceptibility {
+    grid-row: 9;
+    grid-column: 7/10;
+  }
+  .element-miscellaneous {
+    grid-row: 10;
+    grid-column: 1/11;
+  }
+}
+
+// Animations
+@keyframes criss-cross-left {
+  0% {
+    left: -1.5rem;
+  }
+  50% {
+    left: 50%;
+    width: $grid-gap * 3;
+    height: $grid-gap * 3;
+  }
+  100% {
+    left: 50%;
+    width: 150%;
+    height: 150%;
+  }
+}
+
+@keyframes criss-cross-right {
+  0% {
+    right: -1.5rem;
+  }
+  50% {
+    right: 50%;
+    width: $grid-gap * 3;
+    height: $grid-gap * 3;
+  }
+  100% {
+    right: 50%;
+    width: 150%;
+    height: 150%;
+  }
+}
+
+@keyframes focus {
+  to {
+    border: 2px solid lighten($bg-main, 10%);
+    color: lighten($bg-main, 10%);
+    font-weight: 600;
+    box-shadow: 0 0 1rem $c-shadow-main;
+  }
+}
+
+@keyframes lighten-background {
+  to {
+    background-color: lighten($bg-main, 30%);
+  }
+}
+
+@keyframes clockwise-rotation-1 {
+  from {
+    transform: perspective(1000px) rotate3d(1, 1, 1, 0deg);
+  }
+  to {
+    transform: perspective(1000px) rotate3d(1, 1, 1, 360deg);
+  }
+}
+
+@keyframes clockwise-rotation-2 {
+  from {
+    transform: perspective(1000px) rotate3d(1, -1, 1, 0deg);
+  }
+  to {
+    transform: perspective(1000px) rotate3d(1, -1, 1, 360deg);
+  }
+}
+
+@keyframes up-and-down {
+  0% {
+    margin-top: -1rem;
+  }
+  50% {
+    margin-top: 1rem;
+  }
+  100% {
+    margin-top: -1rem;
+  }
+}
