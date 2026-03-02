@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableSpoon · Simple Recipe Book</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f6f9fc;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            color: #1e303e;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.8rem;
+        }
+
+        .title h1 {
+            font-size: 2.8rem;
+            font-weight: 500;
+            background: linear-gradient(145deg, #2e4a3a, #517a5f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title p {
+            color: #607d6b;
+            margin-top: 0.2rem;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 60px;
+            padding: 0.2rem 0.2rem 0.2rem 2rem;
+            display: flex;
+            align-items: center;
+            border: 2px solid #dde9e0;
+            box-shadow: 0 8px 16px -14px rgba(0,0,0,0.1);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            padding: 0.9rem 0.5rem;
+            width: 240px;
+            outline: none;
+            color: #1d4631;
+        }
+
+        .search-bar input::placeholder {
+            color: #98b0a3;
+        }
+
+        .search-bar button {
+            background: #e7f2ea;
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            color: #2d6043;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #c3ddd0;
+        }
+
+        .search-bar button:hover {
+            background: #d3eadb;
+        }
+
+        /* category filter */
+        .category-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 2.5rem;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            border: 1px solid #e0ede5;
+        }
+
+        .category-chip {
+            background: #f0f7f2;
+            border: 2px solid #d3e8dc;
+            padding: 0.6rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #2f604a;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .category-chip.active {
+            background: #3b6b52;
+            border-color: #3b6b52;
+            color: white;
+        }
+
+        .category-chip:hover {
+            background: #d5eadf;
+        }
+
+        /* recipe grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 36px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -18px rgba(0,0,0,0.15);
+            border: 1px solid #e0ede5;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 40px -20px rgba(0,0,0,0.2);
+            border-color: #bad6cb;
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: #cbdcd2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #55806b;
+        }
+
+        .recipe-info {
+            padding: 1.5rem 1.5rem 1.8rem;
+        }
+
+        .recipe-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #1b4635;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            color: #5d8270;
+            font-size: 0.9rem;
+            margin: 0.6rem 0;
+        }
+
+        .recipe-category {
+            background: #e2f0e8;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            color: #2b6248;
+        }
+
+        /* modal (recipe detail) */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1.5rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 48px;
+            box-shadow: 0 35px 60px -25px rgba(0,0,0,0.2);
+            border: 1px solid #cfdfd6;
+            overflow: hidden;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            0% { opacity: 0.4; transform: scale(0.96); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            font-weight: 500;
+            color: #14462e;
+        }
+
+        .modal-close {
+            background: #eef7f1;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #286549;
+            border: 1px solid #c2dfd1;
+        }
+
+        .modal-body {
+            padding: 1rem 2rem 2.5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .modal-ingredients {
+            flex: 1 1 200px;
+        }
+
+        .modal-ingredients h3, .modal-instructions h3 {
+            color: #1c553b;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .modal-ingredients ul {
+            list-style: none;
+        }
+
+        .modal-ingredients li {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #ebf3ef;
+            color: #2b5d47;
+        }
+
+        .modal-instructions {
+            flex: 2 1 300px;
+        }
+
+        .modal-instructions p {
+            line-height: 1.6;
+            color: #2c4b3d;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #6f8f80;
+            margin-top: 2rem;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 50px;
+            color: #5f7e6e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <h1>🥘 TableSpoon</h1>
+                <p>simple recipes · cooking inspiration</p>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search recipe..." id="searchInput">
+                <button id="searchBtn">Search</button>
+            </div>
+        </div>
+
+        <!-- category filters -->
+        <div class="category-bar" id="categoryBar">
+            <span class="category-chip active" data-category="all">All</span>
+            <span class="category-chip" data-category="breakfast">Breakfast</span>
+            <span class="category-chip" data-category="lunch">Lunch</span>
+            <span class="category-chip" data-category="dinner">Dinner</span>
+            <span class="category-chip" data-category="dessert">Dessert</span>
+            <span class="category-chip" data-category="vegetarian">Vegetarian</span>
+        </div>
+
+        <!-- recipe grid -->
+        <div class="recipe-grid" id="recipeGrid"></div>
+
+        <!-- footer -->
+        <div class="footer-note">
+            ✦ click any card to view full recipe ✦
+        </div>
+    </div>
+
+    <!-- modal detail view -->
+    <div class="modal" id="recipeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Recipe</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-ingredients">
+                    <h3>📝 ingredients</h3>
+                    <ul id="modalIngredients"></ul>
+                </div>
+                <div class="modal-instructions">
+                    <h3>👩‍🍳 instructions</h3>
+                    <p id="modalInstructions"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- RECIPE DATASET -----
+            const recipes = [
+                {
+                    id: 1,
+                    name: "Fluffy Pancakes",
+                    category: "breakfast",
+                    image: "🥞",
+                    time: "20 min",
+                    difficulty: "easy",
+                    ingredients: ["1 cup flour", "2 tbsp sugar", "1 egg", "3/4 cup milk", "1 tsp baking powder", "pinch salt"],
+                    instructions: "Mix dry ingredients. Whisk in egg and milk until smooth. Heat pan, pour batter, cook until bubbles form, flip and cook golden."
+                },
+                {
+                    id: 2,
+                    name: "Caprese Salad",
+                    category: "lunch",
+                    image: "🥗",
+                    time: "10 min",
+                    difficulty: "easy",
+                    ingredients: ["2 tomatoes", "1 ball mozzarella", "fresh basil", "olive oil", "balsamic glaze", "salt & pepper"],
+                    instructions: "Slice tomatoes and mozzarella. Arrange alternately with basil leaves. Drizzle with olive oil and balsamic glaze. Season."
+                },
+                {
+                    id: 3,
+                    name: "Creamy Mushroom Pasta",
+                    category: "dinner",
+                    image: "🍝",
+                    time: "30 min",
+                    difficulty: "medium",
+                    ingredients: ["250g pasta", "200g mushrooms", "1 onion", "2 cloves garlic", "200ml cream", "parmesan", "parsley"],
+                    instructions: "Cook pasta. Sauté onion, garlic, mushrooms. Add cream and simmer. Mix with pasta, top with parmesan and parsley."
+                },
+                {
+                    id: 4,
+                    name: "Chocolate Lava Cake",
+                    category: "dessert",
+                    image: "🍫",
+                    time: "25 min",
+                    difficulty: "medium",
+                    ingredients: ["100g dark chocolate", "100g butter", "2 eggs", "2 egg yolks", "50g sugar", "40g flour"],
+                    instructions: "Melt chocolate and butter. Whisk eggs, yolks, sugar. Fold in flour, then chocolate. Bake in ramekins at 200°C for 12 min."
+                },
+                {
+                    id: 5,
+                    name: "Vegetable Stir Fry",
+                    category: "vegetarian",
+                    image: "🥦",
+                    time: "15 min",
+                    difficulty: "easy",
+                    ingredients: ["broccoli", "carrot", "bell pepper", "snap peas", "soy sauce", "ginger", "garlic"],
+                    instructions: "Chop veggies. Stir-fry in hot wok with oil. Add grated ginger and garlic, soy sauce. Cook 5-7 min, serve with rice."
+                },
+                {
+                    id: 6,
+                    name: "Avocado Toast",
+                    category: "breakfast",
+                    image: "🥑",
+                    time: "10 min",
+                    difficulty: "easy",
+                    ingredients: ["2 slices bread", "1 avocado", "lemon juice", "red pepper flakes", "salt", "poached egg (optional)"],
+                    instructions: "Toast bread. Mash avocado with lemon juice, salt. Spread on toast, top with pepper flakes and egg if desired."
+                },
+                {
+                    id: 7,
+                    name: "Chicken Curry",
+                    category: "dinner",
+                    image: "🍛",
+                    time: "40 min",
+                    difficulty: "medium",
+                    ingredients: ["500g chicken", "1 onion", "2 garlic cloves", "1 tbsp curry powder", "400ml coconut milk", "rice"],
+                    instructions: "Sauté onion, garlic. Add chicken, brown. Add curry powder, coconut milk. Simmer 25 min. Serve with rice."
+                },
+                {
+                    id: 8,
+                    name: "Berry Smoothie Bowl",
+                    category: "breakfast",
+                    image: "🫐",
+                    time: "5 min",
+                    difficulty: "easy",
+                    ingredients: ["1 banana", "1 cup mixed berries", "1/2 cup yogurt", "granola", "chia seeds"],
+                    instructions: "Blend banana, berries, yogurt until smooth. Pour into bowl, top with granola and chia seeds."
+                }
+            ];
+
+            // ----- state -----
+            let activeCategory = 'all';
+            let searchQuery = '';
+            let selectedRecipe = null;
+
+            // DOM elements
+            const recipeGrid = document.getElementById('recipeGrid');
+            const categoryChips = document.querySelectorAll('.category-chip');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const modal = document.getElementById('recipeModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalIngredients = document.getElementById('modalIngredients');
+            const modalInstructions = document.getElementById('modalInstructions');
+
+            // filter recipes
+            function getFilteredRecipes() {
+                return recipes.filter(recipe => {
+                    // category filter
+                    if (activeCategory !== 'all' && recipe.category !== activeCategory) return false;
+                    
+                    // search filter (case insensitive)
+                    if (searchQuery && !recipe.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+                    
+                    return true;
+                });
+            }
+
+            // render grid
+            function renderGrid() {
+                const filtered = getFilteredRecipes();
+
+                if (filtered.length === 0) {
+                    recipeGrid.innerHTML = `<div class="empty-state">🍽️ no recipes match your filters</div>`;
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach(recipe => {
+                    html += `
+                        <div class="recipe-card" data-id="${recipe.id}">
+                            <div class="recipe-image">${recipe.image}</div>
+                            <div class="recipe-info">
+                                <div class="recipe-name">${recipe.name}</div>
+                                <div class="recipe-meta">
+                                    <span>⏱️ ${recipe.time}</span>
+                                    <span>📊 ${recipe.difficulty}</span>
+                                </div>
+                                <span class="recipe-category">${recipe.category}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                recipeGrid.innerHTML = html;
+
+                // attach click listeners to cards
+                document.querySelectorAll('.recipe-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const id = parseInt(card.getAttribute('data-id'));
+                        const recipe = recipes.find(r => r.id === id);
+                        if (recipe) {
+                            openModal(recipe);
+                        }
+                    });
+                });
+            }
+
+            // open modal with recipe details
+            function openModal(recipe) {
+                selectedRecipe = recipe;
+                modalTitle.innerText = recipe.name;
+                
+                // ingredients list
+                let ingHtml = '';
+                recipe.ingredients.forEach(ing => {
+                    ingHtml += `<li>• ${ing}</li>`;
+                });
+                modalIngredients.innerHTML = ingHtml;
+                
+                modalInstructions.innerText = recipe.instructions;
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // close modal
+            function closeModalFn() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // event listeners for category
+            categoryChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    categoryChips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    
+                    const category = chip.getAttribute('data-category');
+                    activeCategory = category;
+                    renderGrid();
+                });
+            });
+
+            // search
+            function performSearch() {
+                searchQuery = searchInput.value.trim();
+                renderGrid();
+            }
+
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+
+            // modal close
+            closeModal.addEventListener('click', closeModalFn);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModalFn();
+            });
+
+            // initial render
+            renderGrid();
+
+            // escape key close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModalFn();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
