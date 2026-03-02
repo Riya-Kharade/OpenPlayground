@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyView · Weather Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f0f4fa;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            color: #1d2f4a;
+        }
+
+        .dashboard {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header with search */
+        .header-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .title h1 {
+            font-size: 2.5rem;
+            font-weight: 500;
+            background: linear-gradient(145deg, #1e3f60, #4874a5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .title p {
+            color: #647e9e;
+            margin-top: 0.2rem;
+        }
+
+        .search-bar {
+            background: white;
+            padding: 0.3rem 0.3rem 0.3rem 1.8rem;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 18px -12px rgba(0,0,0,0.12);
+            border: 1px solid #d7e2f2;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 0.7rem 0.5rem 0.7rem 0;
+            width: 240px;
+            outline: none;
+            color: #1b3a5c;
+        }
+
+        .search-bar input::placeholder {
+            color: #9fb3d0;
+        }
+
+        .search-bar button {
+            background: #e9f0fa;
+            border: none;
+            border-radius: 50px;
+            padding: 0.7rem 2rem;
+            font-weight: 600;
+            color: #2b4a73;
+            cursor: pointer;
+            transition: 0.15s;
+            border: 1px solid #c6d9f5;
+            font-size: 1rem;
+        }
+
+        .search-bar button:hover {
+            background: #d6e4fa;
+        }
+
+        /* current weather card */
+        .current-weather {
+            background: white;
+            border-radius: 42px;
+            padding: 2.2rem 2.8rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 18px 35px -18px rgba(0,0,0,0.1);
+            border: 1px solid #e2ecfc;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .location-temp h2 {
+            font-size: 2.8rem;
+            font-weight: 500;
+            color: #173456;
+        }
+
+        .location-name {
+            font-size: 1.4rem;
+            color: #54749e;
+            margin-bottom: 1rem;
+        }
+
+        .temp-large {
+            font-size: 5rem;
+            font-weight: 400;
+            color: #1c3b5e;
+        }
+
+        .condition {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .condition-icon {
+            font-size: 4rem;
+        }
+
+        .condition-text {
+            font-size: 1.5rem;
+            color: #40658b;
+        }
+
+        .details-grid {
+            display: flex;
+            gap: 2.5rem;
+            background: #f4f9ff;
+            padding: 1.4rem 2.2rem;
+            border-radius: 50px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #6f8db2;
+        }
+
+        .detail-value {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #1a3c60;
+        }
+
+        /* forecast section */
+        .forecast-title {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin: 2rem 0 1.5rem 0;
+            color: #1d3855;
+        }
+
+        .forecast-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .forecast-card {
+            background: white;
+            border-radius: 34px;
+            padding: 1.6rem 1rem;
+            text-align: center;
+            box-shadow: 0 10px 22px -14px rgba(0,0,0,0.08);
+            border: 1px solid #deecfd;
+            transition: 0.15s;
+        }
+
+        .forecast-card:hover {
+            transform: translateY(-4px);
+            border-color: #b3cff2;
+        }
+
+        .forecast-day {
+            font-weight: 600;
+            color: #3c6088;
+            font-size: 1.2rem;
+        }
+
+        .forecast-icon {
+            font-size: 2.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .forecast-temp {
+            font-size: 2rem;
+            color: #1f3d62;
+        }
+
+        .forecast-desc {
+            color: #6d8bb2;
+            text-transform: capitalize;
+        }
+
+        /* chart area (simulated with css bars) */
+        .chart-container {
+            background: white;
+            border-radius: 42px;
+            padding: 2rem 2rem;
+            border: 1px solid #e1edfd;
+            margin-top: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 1.8rem;
+            color: #1d3a5c;
+        }
+
+        .chart-bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 200px;
+            gap: 0.8rem;
+        }
+
+        .bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+
+        .bar {
+            width: 40px;
+            background: linear-gradient(to top, #4e8fd9, #96c0f0);
+            border-radius: 30px 30px 6px 6px;
+            transition: height 0.3s;
+            box-shadow: 0 -3px 10px rgba(78,143,217,0.2);
+        }
+
+        .bar-label {
+            margin-top: 0.8rem;
+            font-weight: 500;
+            color: #3f5e83;
+        }
+
+        .bar-temp {
+            font-size: 0.9rem;
+            color: #4a6f99;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #7d9ac2;
+            margin-top: 2.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* demo data info */
+        .demo-hint {
+            background: #e1edfc;
+            border-radius: 40px;
+            padding: 0.6rem 1.5rem;
+            color: #33577b;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header-section">
+            <div class="title">
+                <h1>☀️ SkyView</h1>
+                <p>live weather & forecast (demo data)</p>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="City name..." id="cityInput" value="San Francisco">
+                <button id="searchBtn">update</button>
+            </div>
+        </div>
+
+        <!-- demo hint -->
+        <div class="demo-hint">✨ demo uses static dataset · search updates city name only</div>
+
+        <!-- current weather card -->
+        <div class="current-weather" id="currentWeather">
+            <!-- filled via js -->
+        </div>
+
+        <!-- 5-day forecast -->
+        <div class="forecast-title">📅 5‑day forecast</div>
+        <div class="forecast-cards" id="forecastCards"></div>
+
+        <!-- temperature chart (simulated) -->
+        <div class="chart-container">
+            <div class="chart-title">📊 temperature trend (next 5 days)</div>
+            <div class="chart-bars" id="chartBars"></div>
+        </div>
+
+        <div class="footer-note">
+            ⚡ light theme · smooth ui · fictional data for demonstration
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- MOCK WEATHER DATASET (by city name) -----
+            const weatherDB = {
+                "san francisco": {
+                    city: "San Francisco",
+                    country: "US",
+                    temp: 17,
+                    feelsLike: 15,
+                    condition: "Partly Cloudy",
+                    humidity: 72,
+                    wind: 12,
+                    pressure: 1015,
+                    icon: "⛅",
+                    forecast: [
+                        { day: "Mon", temp: 18, desc: "sunny", icon: "☀️" },
+                        { day: "Tue", temp: 19, desc: "clear", icon: "☀️" },
+                        { day: "Wed", temp: 17, desc: "cloudy", icon: "☁️" },
+                        { day: "Thu", temp: 16, desc: "rain", icon: "🌧️" },
+                        { day: "Fri", temp: 15, desc: "showers", icon: "🌦️" }
+                    ]
+                },
+                "new york": {
+                    city: "New York",
+                    country: "US",
+                    temp: 22,
+                    feelsLike: 24,
+                    condition: "Sunny",
+                    humidity: 55,
+                    wind: 8,
+                    pressure: 1018,
+                    icon: "☀️",
+                    forecast: [
+                        { day: "Mon", temp: 23, desc: "sunny", icon: "☀️" },
+                        { day: "Tue", temp: 24, desc: "clear", icon: "☀️" },
+                        { day: "Wed", temp: 21, desc: "cloudy", icon: "☁️" },
+                        { day: "Thu", temp: 20, desc: "partly cloudy", icon: "⛅" },
+                        { day: "Fri", temp: 22, desc: "sunny", icon: "☀️" }
+                    ]
+                },
+                "london": {
+                    city: "London",
+                    country: "UK",
+                    temp: 13,
+                    feelsLike: 11,
+                    condition: "Light Rain",
+                    humidity: 81,
+                    wind: 15,
+                    pressure: 1009,
+                    icon: "🌧️",
+                    forecast: [
+                        { day: "Mon", temp: 12, desc: "rain", icon: "🌧️" },
+                        { day: "Tue", temp: 13, desc: "cloudy", icon: "☁️" },
+                        { day: "Wed", temp: 14, desc: "drizzle", icon: "🌦️" },
+                        { day: "Thu", temp: 12, desc: "rain", icon: "🌧️" },
+                        { day: "Fri", temp: 11, desc: "showers", icon: "🌧️" }
+                    ]
+                },
+                "tokyo": {
+                    city: "Tokyo",
+                    country: "JP",
+                    temp: 21,
+                    feelsLike: 22,
+                    condition: "Clear",
+                    humidity: 48,
+                    wind: 6,
+                    pressure: 1021,
+                    icon: "☀️",
+                    forecast: [
+                        { day: "Mon", temp: 22, desc: "sunny", icon: "☀️" },
+                        { day: "Tue", temp: 23, desc: "clear", icon: "☀️" },
+                        { day: "Wed", temp: 21, desc: "partly cloudy", icon: "⛅" },
+                        { day: "Thu", temp: 20, desc: "cloudy", icon: "☁️" },
+                        { day: "Fri", temp: 22, desc: "sunny", icon: "☀️" }
+                    ]
+                },
+                "sydney": {
+                    city: "Sydney",
+                    country: "AU",
+                    temp: 19,
+                    feelsLike: 18,
+                    condition: "Windy",
+                    humidity: 62,
+                    wind: 22,
+                    pressure: 1012,
+                    icon: "💨",
+                    forecast: [
+                        { day: "Mon", temp: 20, desc: "windy", icon: "💨" },
+                        { day: "Tue", temp: 19, desc: "cloudy", icon: "☁️" },
+                        { day: "Wed", temp: 21, desc: "sunny", icon: "☀️" },
+                        { day: "Thu", temp: 20, desc: "partly cloudy", icon: "⛅" },
+                        { day: "Fri", temp: 18, desc: "showers", icon: "🌦️" }
+                    ]
+                }
+            };
+
+            // default city
+            let currentCity = "san francisco";
+
+            // DOM elements
+            const currentDiv = document.getElementById('currentWeather');
+            const forecastDiv = document.getElementById('forecastCards');
+            const chartBarsDiv = document.getElementById('chartBars');
+            const cityInput = document.getElementById('cityInput');
+            const searchBtn = document.getElementById('searchBtn');
+
+            // helper to normalize input
+            function normalizeCity(input) {
+                return input.trim().toLowerCase();
+            }
+
+            // render all data for given city key
+            function renderDashboard(cityKey) {
+                const data = weatherDB[cityKey];
+                if (!data) {
+                    // fallback to san francisco
+                    renderDashboard('san francisco');
+                    return;
+                }
+
+                // update current weather
+                currentDiv.innerHTML = `
+                    <div>
+                        <div class="location-name">${data.city}, ${data.country}</div>
+                        <div class="temp-large">${data.temp}°C</div>
+                        <div class="condition">
+                            <span class="condition-icon">${data.icon}</span>
+                            <span class="condition-text">${data.condition}</span>
+                        </div>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">feels like</span>
+                            <span class="detail-value">${data.feelsLike}°</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">humidity</span>
+                            <span class="detail-value">${data.humidity}%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">wind</span>
+                            <span class="detail-value">${data.wind} km/h</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">pressure</span>
+                            <span class="detail-value">${data.pressure} hPa</span>
+                        </div>
+                    </div>
+                `;
+
+                // render forecast cards
+                let forecastHtml = '';
+                data.forecast.forEach(f => {
+                    forecastHtml += `
+                        <div class="forecast-card">
+                            <div class="forecast-day">${f.day}</div>
+                            <div class="forecast-icon">${f.icon}</div>
+                            <div class="forecast-temp">${f.temp}°C</div>
+                            <div class="forecast-desc">${f.desc}</div>
+                        </div>
+                    `;
+                });
+                forecastDiv.innerHTML = forecastHtml;
+
+                // render chart bars
+                let chartHtml = '';
+                const maxTemp = Math.max(...data.forecast.map(f => f.temp)) + 2;
+                data.forecast.forEach(f => {
+                    const barHeight = (f.temp / maxTemp) * 150; // 150px max
+                    chartHtml += `
+                        <div class="bar-item">
+                            <div class="bar" style="height: ${barHeight}px;"></div>
+                            <span class="bar-label">${f.day}</span>
+                            <span class="bar-temp">${f.temp}°</span>
+                        </div>
+                    `;
+                });
+                chartBarsDiv.innerHTML = chartHtml;
+            }
+
+            // search handler
+            function searchCity() {
+                let raw = cityInput.value;
+                const normalized = normalizeCity(raw);
+                if (weatherDB[normalized]) {
+                    currentCity = normalized;
+                } else {
+                    // if not found, use default but show alert? we'll just set to san francisco and update input
+                    alert(`"${raw}" not in demo dataset. Showing San Francisco.`);
+                    cityInput.value = "San Francisco";
+                    currentCity = "san francisco";
+                }
+                renderDashboard(currentCity);
+            }
+
+            searchBtn.addEventListener('click', searchCity);
+            cityInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchCity();
+            });
+
+            // initial render
+            renderDashboard('san francisco');
+            cityInput.value = 'San Francisco';
+        })();
+    </script>
+</body>
+</html>
