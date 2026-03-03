@@ -2465,6 +2465,10 @@
     "folder": "mental-health-awareness",
     "path": "./projects/mental-health-awareness/project.json",
     "link": "./projects/mental-health-awareness/index.html"
+    {
+    "folder": "personality-types-quiz",
+    "path": "./projects/personality-types-quiz/project.json",
+    "link": "./projects/personality-types-quiz/index.html"
   }
 ]
 }
