@@ -2466,5 +2466,10 @@
     "folder": "cyber-safety-guide",
     "path": "./projects/cyber-safety-guide/project.json",
     "link": "./projects/cyber-safety-guide/index.html"
+   },
+    {
+    "folder": "personality-types-quiz",
+    "path": "./projects/personality-types-quiz/project.json",
+    "link": "./projects/personality-types-quiz/index.html"
   }
 ]
