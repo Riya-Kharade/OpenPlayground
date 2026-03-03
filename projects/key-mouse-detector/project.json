@@ -1,0 +1,14 @@
+{
+    "title": "key-mouse detector",
+    "category": "fun",
+    "difficulty": "Intermediate",
+    "description": "3d pixi js project to detect all interactivity of the mouse and keyboard",
+    "tech": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "pixijs"
+    ],
+    "icon": "ri-brush-line",
+    "coverStyle": "background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;"
+}
