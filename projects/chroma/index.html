@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chroma · Color Palette Studio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            color: #1e2e42;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .title h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            background: linear-gradient(145deg, #2a405b, #557da5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title p {
+            color: #657e9f;
+            margin-top: 0.2rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: white;
+            border: 2px solid #d6e3f5;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #2f4a70;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 6px 12px -10px rgba(0,0,0,0.1);
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: #e7f0ff;
+            border-color: #a3c1e8;
+        }
+
+        /* main palette grid */
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .color-card {
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -15px rgba(0,0,0,0.1);
+            border: 1px solid #e2ecfd;
+            transition: 0.15s;
+        }
+
+        .color-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 35px -18px rgba(0,0,0,0.15);
+        }
+
+        .color-swatch {
+            height: 170px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.1s;
+            border-bottom: 3px solid #ffffff50;
+        }
+
+        .color-info {
+            padding: 1.2rem 1.2rem 1.4rem;
+            text-align: center;
+        }
+
+        .color-hex {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: #f0f6ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 0.7rem;
+            color: #1c3860;
+            border: 1px solid #caddf5;
+        }
+
+        .color-rgb {
+            font-size: 0.9rem;
+            color: #59789e;
+            margin-bottom: 0.5rem;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 2px solid #c3d8f5;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #2e4d79;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .copy-btn:hover {
+            background: #ddeaff;
+        }
+
+        /* controls row */
+        .control-panel {
+            background: white;
+            border-radius: 60px;
+            padding: 1.8rem 2.2rem;
+            margin: 2rem 0;
+            border: 1px solid #deecfd;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #f5f9ff;
+            padding: 0.6rem 1.6rem;
+            border-radius: 60px;
+            border: 1px solid #d2e2f8;
+        }
+
+        .control-item label {
+            font-weight: 500;
+            color: #36608b;
+        }
+
+        .control-item input[type="range"] {
+            width: 150px;
+        }
+
+        .control-item input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: 2px solid #b3cdf2;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        /* contrast checker */
+        .contrast-card {
+            background: white;
+            border-radius: 40px;
+            padding: 1.8rem 2.2rem;
+            border: 1px solid #e0ebfc;
+            margin-top: 2rem;
+        }
+
+        .contrast-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #1d3855;
+        }
+
+        .contrast-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .contrast-box {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            background: #f4f9ff;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            flex-wrap: wrap;
+        }
+
+        .contrast-sample {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #c1d6f0;
+        }
+
+        .contrast-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contrast-ratio {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #173456;
+        }
+
+        .contrast-aa {
+            font-size: 1rem;
+            color: #2e6b3e;
+            background: #e2f7e9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .contrast-aaa {
+            font-size: 1rem;
+            color: #1f6b4a;
+            background: #e2f7e9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #7d99bf;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <h1>🎨 Chroma</h1>
+                <p>palette generator · contrast checker</p>
+            </div>
+            <div class="actions">
+                <button class="btn" id="randomPaletteBtn">✨ random palette</button>
+                <button class="btn" id="exportBtn">📋 export css</button>
+            </div>
+        </div>
+
+        <!-- palette grid (will be filled by js) -->
+        <div class="palette-grid" id="paletteGrid"></div>
+
+        <!-- controls -->
+        <div class="control-panel">
+            <div class="control-item">
+                <label>hue shift</label>
+                <input type="range" id="hueRange" min="0" max="360" value="0">
+            </div>
+            <div class="control-item">
+                <label>base color</label>
+                <input type="color" id="baseColorPicker" value="#3a6ea5">
+            </div>
+            <div class="control-item">
+                <label>palette size</label>
+                <input type="range" id="sizeRange" min="3" max="8" value="5">
+            </div>
+        </div>
+
+        <!-- contrast checker -->
+        <div class="contrast-card">
+            <div class="contrast-title">🔍 contrast checker</div>
+            <div class="contrast-row">
+                <div class="contrast-box">
+                    <div class="contrast-sample" id="sampleBg" style="background-color: #3a6ea5;"></div>
+                    <div class="contrast-meta">
+                        <span class="contrast-ratio" id="contrastRatio">4.5:1</span>
+                        <span id="aaBadge" class="contrast-aa">AA pass</span>
+                        <span id="aaaBadge" class="contrast-aaa" style="background:#e2f7e9;">AAA pass</span>
+                    </div>
+                </div>
+                <div class="contrast-box">
+                    <div class="contrast-sample" id="sampleFg" style="background-color: #ffffff;"></div>
+                    <div>
+                        <input type="color" id="fgColorPicker" value="#ffffff" style="width:60px; height:50px; border-radius:30px; border:2px solid #b3cdf2;">
+                        <span style="margin-left:0.5rem;">foreground</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            ⚡ click any hex to copy · adjust hue & base
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // DOM elements
+            const paletteGrid = document.getElementById('paletteGrid');
+            const hueRange = document.getElementById('hueRange');
+            const baseColorPicker = document.getElementById('baseColorPicker');
+            const sizeRange = document.getElementById('sizeRange');
+            const randomBtn = document.getElementById('randomPaletteBtn');
+            const exportBtn = document.getElementById('exportBtn');
+            const sampleBg = document.getElementById('sampleBg');
+            const sampleFg = document.getElementById('sampleFg');
+            const contrastRatioSpan = document.getElementById('contrastRatio');
+            const aaBadge = document.getElementById('aaBadge');
+            const aaaBadge = document.getElementById('aaaBadge');
+            const fgColorPicker = document.getElementById('fgColorPicker');
+
+            // current palette array (hex strings)
+            let currentPalette = [];
+
+            // helper: generate shades from base color + hue shift
+            function generatePalette(baseHex, hueOffset, count) {
+                // parse base color to HSL
+                const rgb = hexToRgb(baseHex);
+                let [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
+                
+                const colors = [];
+                for (let i = 0; i < count; i++) {
+                    // vary hue by offset * i, and lightness
+                    let newH = (h + hueOffset * i * 10) % 360;
+                    if (newH < 0) newH += 360;
+                    // vary lightness: 30% to 80%
+                    let newL = 30 + (i * 50 / (count - 1)) % 51;
+                    let newS = Math.min(100, s + 10 * i);
+                    
+                    const hex = hslToHex(newH, s, newL);
+                    colors.push(hex);
+                }
+                return colors;
+            }
+
+            // hex to rgb
+            function hexToRgb(hex) {
+                let r = parseInt(hex.slice(1,3), 16);
+                let g = parseInt(hex.slice(3,5), 16);
+                let b = parseInt(hex.slice(5,7), 16);
+                return { r, g, b };
+            }
+
+            // rgb to hsl
+            function rgbToHsl(r, g, b) {
+                r /= 255; g /= 255; b /= 255;
+                let max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0;
+                } else {
+                    let d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                return [h * 360, s * 100, l * 100];
+            }
+
+            // hsl to hex
+            function hslToHex(h, s, l) {
+                l /= 100;
+                const a = s * Math.min(l, 1 - l) / 100;
+                const f = n => {
+                    const k = (n + h / 30) % 12;
+                    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                    return Math.round(255 * color).toString(16).padStart(2, '0');
+                };
+                return `#${f(0)}${f(8)}${f(4)}`;
+            }
+
+            // luminance calculation for contrast
+            function luminance(r, g, b) {
+                let a = [r, g, b].map(v => {
+                    v /= 255;
+                    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+                });
+                return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+            }
+
+            function contrastRatio(rgb1, rgb2) {
+                let lum1 = luminance(rgb1.r, rgb1.g, rgb1.b);
+                let lum2 = luminance(rgb2.r, rgb2.g, rgb2.b);
+                let brightest = Math.max(lum1, lum2);
+                let darkest = Math.min(lum1, lum2);
+                return (brightest + 0.05) / (darkest + 0.05);
+            }
+
+            // render palette to grid
+            function renderPalette(palette) {
+                let html = '';
+                palette.forEach((hex, idx) => {
+                    const rgb = hexToRgb(hex);
+                    html += `
+                        <div class="color-card">
+                            <div class="color-swatch" style="background-color: ${hex};" data-hex="${hex}"></div>
+                            <div class="color-info">
+                                <span class="color-hex" data-hex="${hex}">${hex.toUpperCase()}</span>
+                                <div class="color-rgb">${rgb.r}, ${rgb.g}, ${rgb.b}</div>
+                                <button class="copy-btn" data-hex="${hex}">copy hex</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                paletteGrid.innerHTML = html;
+
+                // attach copy events
+                document.querySelectorAll('.copy-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const hex = e.target.getAttribute('data-hex');
+                        navigator.clipboard.writeText(hex).then(() => {
+                            alert(`copied ${hex}`);
+                        }).catch(() => alert('press Ctrl+C'));
+                        e.stopPropagation();
+                    });
+                });
+
+                // swatch click also copies
+                document.querySelectorAll('.color-swatch').forEach(swatch => {
+                    swatch.addEventListener('click', (e) => {
+                        const hex = swatch.getAttribute('data-hex');
+                        navigator.clipboard.writeText(hex).then(() => {
+                            alert(`copied ${hex}`);
+                        });
+                    });
+                });
+            }
+
+            // update contrast from pickers
+            function updateContrast() {
+                const bgHex = sampleBg.style.backgroundColor ? rgbStringToHex(sampleBg.style.backgroundColor) : '#3a6ea5';
+                const fgHex = fgColorPicker.value;
+                
+                const bgRgb = hexToRgb(bgHex);
+                const fgRgb = hexToRgb(fgHex);
+                
+                const ratio = contrastRatio(bgRgb, fgRgb);
+                contrastRatioSpan.innerText = ratio.toFixed(2) + ':1';
+                
+                // AA pass (>=4.5 for normal text)
+                if (ratio >= 4.5) {
+                    aaBadge.innerText = 'AA pass';
+                    aaBadge.style.background = '#e2f7e9';
+                } else {
+                    aaBadge.innerText = 'AA fail';
+                    aaBadge.style.background = '#ffe2e2';
+                }
+                // AAA pass (>=7)
+                if (ratio >= 7) {
+                    aaaBadge.innerText = 'AAA pass';
+                    aaaBadge.style.background = '#e2f7e9';
+                } else {
+                    aaaBadge.innerText = 'AAA fail';
+                    aaaBadge.style.background = '#ffe2e2';
+                }
+            }
+
+            // helper to convert rgb string like "rgb(58, 110, 165)" to hex
+            function rgbStringToHex(rgbStr) {
+                const matches = rgbStr.match(/\d+/g);
+                if (!matches || matches.length < 3) return '#3a6ea5';
+                const r = parseInt(matches[0]);
+                const g = parseInt(matches[1]);
+                const b = parseInt(matches[2]);
+                return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+            }
+
+            // generate and render from current controls
+            function updatePalette() {
+                const baseHex = baseColorPicker.value;
+                const hueOffset = parseInt(hueRange.value, 10);
+                const count = parseInt(sizeRange.value, 10);
+                
+                // update sample bg to base color
+                sampleBg.style.backgroundColor = baseHex;
+                
+                const palette = generatePalette(baseHex, hueOffset, count);
+                currentPalette = palette;
+                renderPalette(palette);
+                updateContrast();
+            }
+
+            // random base color
+            function randomColor() {
+                const letters = '0123456789ABCDEF';
+                let color = '#';
+                for (let i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            // event listeners
+            hueRange.addEventListener('input', updatePalette);
+            baseColorPicker.addEventListener('input', updatePalette);
+            sizeRange.addEventListener('input', updatePalette);
+            randomBtn.addEventListener('click', () => {
+                baseColorPicker.value = randomColor();
+                updatePalette();
+            });
+
+            fgColorPicker.addEventListener('input', (e) => {
+                sampleFg.style.backgroundColor = e.target.value;
+                updateContrast();
+            });
+
+            // export as css variables
+            exportBtn.addEventListener('click', () => {
+                let cssVars = ':root {\n';
+                currentPalette.forEach((hex, idx) => {
+                    cssVars += `  --color-${idx + 1}: ${hex};\n`;
+                });
+                cssVars += '}';
+                navigator.clipboard.writeText(cssVars).then(() => {
+                    alert('CSS variables copied to clipboard');
+                });
+            });
+
+            // initial sample fg
+            sampleFg.style.backgroundColor = fgColorPicker.value;
+
+            // first render
+            updatePalette();
+        })();
+    </script>
+</body>
+</html>
