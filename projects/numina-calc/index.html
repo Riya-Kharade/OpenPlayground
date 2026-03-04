@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numina · Minimalist Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f0f5fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            color: #1e3b4f;
+        }
+
+        .calculator-card {
+            max-width: 420px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 70px;
+            box-shadow: 0 30px 50px -20px rgba(0,0,0,0.2), 0 0 0 2px #d0e2f0 inset;
+            padding: 2rem 1.8rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #d0e2f0;
+            padding-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title h1 {
+            font-size: 2rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            background: linear-gradient(145deg, #2e5a7a, #558bb5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title p {
+            color: #5d7e9c;
+            font-size: 0.8rem;
+        }
+
+        .theme-indicator {
+            background: #e6f0fa;
+            border-radius: 30px;
+            padding: 0.3rem 1.2rem;
+            color: #2b6286;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* display */
+        .display-area {
+            background: #f4faff;
+            border-radius: 40px;
+            padding: 1.5rem 2rem;
+            border: 3px solid #d0e2f0;
+            margin-bottom: 2rem;
+            text-align: right;
+            box-shadow: inset 0 5px 10px -5px rgba(0,0,0,0.05);
+        }
+
+        .expression {
+            font-size: 1rem;
+            color: #6f8fb0;
+            min-height: 1.6rem;
+            word-wrap: break-word;
+        }
+
+        .result {
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: #1d4a6b;
+            line-height: 1.2;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* button grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .calc-btn {
+            background: #f8fcff;
+            border: 3px solid #c1d9f0;
+            border-radius: 30px;
+            padding: 1.2rem 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #1e3b4f;
+            cursor: pointer;
+            transition: 0.08s;
+            box-shadow: 0 5px 0 #9fb5cf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #9fb5cf;
+        }
+
+        .calc-btn.operator {
+            background: #e6f0fa;
+            color: #2b6286;
+            font-weight: 600;
+        }
+
+        .calc-btn.equals {
+            background: #2f6d97;
+            border-color: #2f6d97;
+            color: white;
+            box-shadow: 0 5px 0 #1a4560;
+        }
+
+        .calc-btn.clear {
+            background: #ffeed9;
+            border-color: #e5c8a3;
+            color: #a1622b;
+        }
+
+        .calc-btn.zero {
+            grid-column: span 2;
+        }
+
+        /* keyboard hint */
+        .keyboard-hint {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            color: #7d9bc0;
+            font-size: 0.8rem;
+            background: #f0f7ff;
+            border-radius: 60px;
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #d0e2f0;
+            margin-top: 1rem;
+        }
+
+        .keyboard-hint kbd {
+            background: white;
+            border: 2px solid #b8cfe8;
+            border-radius: 10px;
+            padding: 0.2rem 0.8rem;
+            font-family: monospace;
+            color: #2b6286;
+        }
+
+        .footer {
+            text-align: center;
+            color: #9bb7d4;
+            font-size: 0.8rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-card">
+        <div class="header">
+            <div class="title">
+                <h1>🧮 Numina</h1>
+                <p>minimalist calculator</p>
+            </div>
+            <div class="theme-indicator">light</div>
+        </div>
+
+        <!-- display -->
+        <div class="display-area">
+            <div class="expression" id="expression"></div>
+            <div class="result" id="result">0</div>
+        </div>
+
+        <!-- buttons -->
+        <div class="button-grid">
+            <button class="calc-btn clear" id="clear">C</button>
+            <button class="calc-btn operator" id="backspace">⌫</button>
+            <button class="calc-btn operator" id="percent">%</button>
+            <button class="calc-btn operator" id="divide">÷</button>
+
+            <button class="calc-btn" id="7">7</button>
+            <button class="calc-btn" id="8">8</button>
+            <button class="calc-btn" id="9">9</button>
+            <button class="calc-btn operator" id="multiply">×</button>
+
+            <button class="calc-btn" id="4">4</button>
+            <button class="calc-btn" id="5">5</button>
+            <button class="calc-btn" id="6">6</button>
+            <button class="calc-btn operator" id="subtract">−</button>
+
+            <button class="calc-btn" id="1">1</button>
+            <button class="calc-btn" id="2">2</button>
+            <button class="calc-btn" id="3">3</button>
+            <button class="calc-btn operator" id="add">+</button>
+
+            <button class="calc-btn zero" id="0">0</button>
+            <button class="calc-btn" id="dot">.</button>
+            <button class="calc-btn equals" id="equals">=</button>
+        </div>
+
+        <!-- keyboard hint -->
+        <div class="keyboard-hint">
+            <span><kbd>0-9</kbd> <kbd>.</kbd> <kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd> <kbd>Enter</kbd> <kbd>Esc</kbd></span>
+        </div>
+
+        <div class="footer">
+            ⚡ keyboard supported · clean & simple
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- calculator state -----
+            let currentOperand = '';
+            let previousOperand = '';
+            let operation = null;
+            let shouldResetScreen = false;
+
+            // DOM elements
+            const resultDisplay = document.getElementById('result');
+            const expressionDisplay = document.getElementById('expression');
+            
+            // number buttons
+            const numberButtons = document.querySelectorAll('.calc-btn:not(.operator):not(.equals):not(.clear)');
+            const operatorButtons = document.querySelectorAll('.operator:not(#clear):not(#backspace):not(#percent)');
+            const equalsButton = document.getElementById('equals');
+            const clearButton = document.getElementById('clear');
+            const backspaceButton = document.getElementById('backspace');
+            const percentButton = document.getElementById('percent');
+
+            // helper: update display
+            function updateDisplay() {
+                if (operation && previousOperand !== '') {
+                    expressionDisplay.innerText = `${previousOperand} ${operation} ${currentOperand || ''}`;
+                } else {
+                    expressionDisplay.innerText = '';
+                }
+                resultDisplay.innerText = currentOperand || '0';
+            }
+
+            // append number
+            function appendNumber(number) {
+                if (number === '.' && currentOperand.includes('.')) return;
+                if (shouldResetScreen) {
+                    currentOperand = '';
+                    shouldResetScreen = false;
+                }
+                currentOperand = currentOperand.toString() + number.toString();
+                updateDisplay();
+            }
+
+            // choose operation
+            function chooseOperation(op) {
+                if (currentOperand === '') return;
+                if (previousOperand !== '') {
+                    compute();
+                }
+                operation = op;
+                previousOperand = currentOperand;
+                currentOperand = '';
+                updateDisplay();
+            }
+
+            // compute result
+            function compute() {
+                let computation;
+                const prev = parseFloat(previousOperand);
+                const curr = parseFloat(currentOperand);
+                if (isNaN(prev) || isNaN(curr)) return;
+
+                switch (operation) {
+                    case '+': computation = prev + curr; break;
+                    case '−': computation = prev - curr; break;
+                    case '×': computation = prev * curr; break;
+                    case '÷': 
+                        if (curr === 0) {
+                            clear();
+                            resultDisplay.innerText = 'Error';
+                            return;
+                        }
+                        computation = prev / curr; 
+                        break;
+                    default: return;
+                }
+
+                currentOperand = computation.toString();
+                operation = null;
+                previousOperand = '';
+                shouldResetScreen = true;
+                updateDisplay();
+            }
+
+            // clear all
+            function clear() {
+                currentOperand = '';
+                previousOperand = '';
+                operation = null;
+                updateDisplay();
+            }
+
+            // backspace
+            function backspace() {
+                if (currentOperand === '') return;
+                currentOperand = currentOperand.slice(0, -1);
+                updateDisplay();
+            }
+
+            // percent (divide by 100)
+            function percent() {
+                if (currentOperand === '') return;
+                currentOperand = (parseFloat(currentOperand) / 100).toString();
+                updateDisplay();
+            }
+
+            // event listeners for buttons
+            numberButtons.forEach(btn => {
+                // filter out non-number buttons (like clear, etc) – we use ids
+                if (btn.id !== 'clear' && btn.id !== 'backspace' && btn.id !== 'percent' && btn.id !== 'equals' && !btn.classList.contains('operator')) {
+                    btn.addEventListener('click', () => {
+                        appendNumber(btn.innerText);
+                    });
+                }
+            });
+
+            // handle dot separately (it's in numberButtons but we want to allow only one)
+            document.getElementById('dot').addEventListener('click', () => {
+                appendNumber('.');
+            });
+
+            // numbers 0-9 also by id
+            for (let i = 0; i <= 9; i++) {
+                const btn = document.getElementById(i.toString());
+                if (btn) {
+                    btn.addEventListener('click', () => appendNumber(i));
+                }
+            }
+
+            // operators
+            operatorButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    let op = btn.innerText;
+                    if (op === '÷') op = '÷';
+                    else if (op === '×') op = '×';
+                    else if (op === '−') op = '−';
+                    else if (op === '+') op = '+';
+                    chooseOperation(op);
+                });
+            });
+
+            equalsButton.addEventListener('click', compute);
+            clearButton.addEventListener('click', clear);
+            backspaceButton.addEventListener('click', backspace);
+            percentButton.addEventListener('click', percent);
+
+            // keyboard support
+            window.addEventListener('keydown', (e) => {
+                const key = e.key;
+
+                // numbers
+                if (key >= '0' && key <= '9') {
+                    appendNumber(key);
+                }
+                // decimal
+                if (key === '.') {
+                    appendNumber('.');
+                }
+                // operators
+                if (key === '+' || key === '-') {
+                    chooseOperation(key === '-' ? '−' : '+');
+                }
+                if (key === '*') {
+                    chooseOperation('×');
+                }
+                if (key === '/') {
+                    e.preventDefault(); // avoid quick search
+                    chooseOperation('÷');
+                }
+                // enter / equals
+                if (key === 'Enter' || key === '=') {
+                    compute();
+                }
+                // backspace
+                if (key === 'Backspace') {
+                    backspace();
+                }
+                // escape clear
+                if (key === 'Escape') {
+                    clear();
+                }
+                // percent
+                if (key === '%') {
+                    percent();
+                }
+            });
+
+            // initial display
+            clear();
+        })();
+    </script>
+</body>
+</html>
