@@ -1,0 +1,9 @@
+{
+  "title": "Tension Drop",
+  "category": "game",
+  "description": "A physics-based 2D web simulating slicing rope game.",
+  "tech": ["HTML", "CSS", "JavaScript"],
+  "link": "./projects/tension-drop/index.html",
+  "icon": "ri-line-chart-line",
+  "coverStyle": "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+}
