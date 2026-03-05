@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Words Master</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            overflow-x: hidden;
+            touch-action: none; /* Prevents scrolling while dragging on mobile */
+        }
+
+        .word-grid {
+            display: grid;
+            gap: 4px;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .letter-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter-cell:hover {
+            background: #334155;
+            transform: scale(1.05);
+        }
+
+        .letter-cell.selecting {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+
+        .letter-cell.found {
+            background: #10b981;
+            color: white;
+            animation: pulse 0.5s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .word-item.found {
+            text-decoration: line-through;
+            opacity: 0.4;
+            color: #10b981;
+        }
+
+        #selection-line {
+            position: absolute;
+            pointer-events: none;
+            background: rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            z-index: 5;
+            transform-origin: 0 50%;
+        }
+
+        .win-overlay {
+            display: none;
+            backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="w-full max-w-4xl flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
+                HIDDEN WORDS
+            </h1>
+            <p class="text-slate-400 text-sm">Find all the tech-themed words!</p>
+        </div>
+        <div class="flex gap-4">
+            <div class="bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+                <span class="text-xs block text-slate-500 uppercase font-bold">Progress</span>
+                <span id="progress-text" class="text-xl font-mono">0/8</span>
+            </div>
+            <button onclick="initGame()" class="bg-indigo-600 hover:bg-indigo-500 p-3 rounded-xl transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
+        <!-- Word List -->
+        <div class="lg:col-span-1 order-2 lg:order-1">
+            <div class="glass-panel rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-4 text-indigo-300 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Word List
+                </h2>
+                <div id="word-list" class="grid grid-cols-2 lg:grid-cols-1 gap-3">
+                    <!-- Words populated via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- The Grid -->
+        <div class="lg:col-span-2 order-1 lg:order-2 flex flex-col items-center">
+            <div id="grid-container" class="word-grid relative w-full max-w-[500px]">
+                <!-- Grid populated via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Win Screen -->
+    <div id="win-screen" class="win-overlay fixed inset-0 flex items-center justify-center z-50 p-6">
+        <div class="glass-panel max-w-md w-full p-8 rounded-3xl text-center scale-90 transition-transform duration-500">
+            <div class="w-24 h-24 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h2 class="text-4xl font-extrabold mb-2">WELL DONE!</h2>
+            <p class="text-slate-400 mb-8">You found all the words and mastered the grid.</p>
+            <button onclick="initGame()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-95">
+                Play Again
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const WORDS = ["REACT", "TAILWIND", "JAVASCRIPT", "PYTHON", "DATABASE", "FRONTEND", "BACKEND", "MOBILE"];
+        const GRID_SIZE = 10;
+        
+        let grid = [];
+        let foundWords = [];
+        let isSelecting = false;
+        let startCell = null;
+        let currentSelection = [];
+
+        const gridEl = document.getElementById('grid-container');
+        const wordListEl = document.getElementById('word-list');
+        const progressEl = document.getElementById('progress-text');
+        const winScreen = document.getElementById('win-screen');
+
+        function initGame() {
+            foundWords = [];
+            grid = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(''));
+            winScreen.style.display = 'none';
+            updateProgress();
+            
+            // 1. Place words
+            WORDS.forEach(word => placeWord(word));
+
+            // 2. Fill remaining with random letters
+            for(let r=0; r<GRID_SIZE; r++) {
+                for(let c=0; c<GRID_SIZE; c++) {
+                    if(!grid[r][c]) {
+                        grid[r][c] = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                    }
+                }
+            }
+
+            // 3. Render
+            renderGrid();
+            renderWordList();
+        }
+
+        function placeWord(word) {
+            const directions = [
+                [0, 1], [1, 0], [1, 1], [-1, 1] // Horizontal, Vertical, Diagonal Down, Diagonal Up
+            ];
+            
+            let placed = false;
+            while(!placed) {
+                const dir = directions[Math.floor(Math.random() * directions.length)];
+                const startR = Math.floor(Math.random() * GRID_SIZE);
+                const startC = Math.floor(Math.random() * GRID_SIZE);
+                
+                if(canPlace(word, startR, startC, dir)) {
+                    for(let i=0; i<word.length; i++) {
+                        grid[startR + i*dir[0]][startC + i*dir[1]] = word[i];
+                    }
+                    placed = true;
+                }
+            }
+        }
+
+        function canPlace(word, r, c, dir) {
+            for(let i=0; i<word.length; i++) {
+                const nr = r + i*dir[0];
+                const nc = c + i*dir[1];
+                if(nr < 0 || nr >= GRID_SIZE || nc < 0 || nc >= GRID_SIZE) return false;
+                if(grid[nr][nc] && grid[nr][nc] !== word[i]) return false;
+            }
+            return true;
+        }
+
+        function renderGrid() {
+            gridEl.innerHTML = '';
+            gridEl.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+            
+            for(let r=0; r<GRID_SIZE; r++) {
+                for(let c=0; c<GRID_SIZE; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'letter-cell';
+                    cell.textContent = grid[r][c];
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+                    
+                    // Interaction Events
+                    cell.addEventListener('mousedown', startSelection);
+                    cell.addEventListener('mouseover', updateSelection);
+                    cell.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        const touch = e.touches[0];
+                        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                        if(target && target.dataset.r) startSelection({ target });
+                    });
+                    cell.addEventListener('touchmove', (e) => {
+                        const touch = e.touches[0];
+                        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                        if(target && target.dataset.r) updateSelection({ target });
+                    });
+
+                    gridEl.appendChild(cell);
+                }
+            }
+        }
+
+        function renderWordList() {
+            wordListEl.innerHTML = '';
+            WORDS.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-item bg-slate-700/50 p-2 px-4 rounded-lg font-bold border border-slate-600 transition-all';
+                div.id = `word-${word}`;
+                div.textContent = word;
+                wordListEl.appendChild(div);
+            });
+        }
+
+        function startSelection(e) {
+            isSelecting = true;
+            startCell = { r: parseInt(e.target.dataset.r), c: parseInt(e.target.dataset.c) };
+            updateSelection(e);
+        }
+
+        function updateSelection(e) {
+            if(!isSelecting) return;
+            
+            const currentCell = { r: parseInt(e.target.dataset.r), c: parseInt(e.target.dataset.c) };
+            
+            // Calculate valid line
+            const dr = currentCell.r - startCell.r;
+            const dc = currentCell.c - startCell.c;
+            const dist = Math.max(Math.abs(dr), Math.abs(dc));
+            
+            // Normalize direction
+            const stepR = dr === 0 ? 0 : dr / Math.abs(dr);
+            const stepC = dc === 0 ? 0 : dc / Math.abs(dc);
+            
+            // Check if it's a straight or 45-degree line
+            if(dr !== 0 && dc !== 0 && Math.abs(dr) !== Math.abs(dc)) return;
+
+            // Clear visual selecting
+            document.querySelectorAll('.letter-cell').forEach(c => c.classList.remove('selecting'));
+            
+            currentSelection = [];
+            for(let i=0; i<=dist; i++) {
+                const r = startCell.r + (i * stepR);
+                const c = startCell.c + (i * stepC);
+                const cell = document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+                if(cell) {
+                    cell.classList.add('selecting');
+                    currentSelection.push({ r, c, char: cell.textContent });
+                }
+            }
+        }
+
+        function stopSelection() {
+            if(!isSelecting) return;
+            isSelecting = false;
+            
+            const selectedWord = currentSelection.map(s => s.char).join('');
+            const reversedWord = selectedWord.split('').reverse().join('');
+            
+            if(WORDS.includes(selectedWord) && !foundWords.includes(selectedWord)) {
+                markFound(selectedWord, currentSelection);
+            } else if(WORDS.includes(reversedWord) && !foundWords.includes(reversedWord)) {
+                markFound(reversedWord, currentSelection);
+            }
+            
+            document.querySelectorAll('.letter-cell').forEach(c => c.classList.remove('selecting'));
+        }
+
+        function markFound(word, cells) {
+            foundWords.push(word);
+            cells.forEach(pos => {
+                const cell = document.querySelector(`[data-r="${pos.r}"][data-c="${pos.c}"]`);
+                cell.classList.add('found');
+            });
+            
+            document.getElementById(`word-${word}`).classList.add('found');
+            updateProgress();
+            
+            if(foundWords.length === WORDS.length) {
+                setTimeout(showWin, 500);
+            }
+        }
+
+        function updateProgress() {
+            progressEl.textContent = `${foundWords.length}/${WORDS.length}`;
+        }
+
+        function showWin() {
+            winScreen.style.display = 'flex';
+            setTimeout(() => {
+                winScreen.querySelector('.glass-panel').style.transform = 'scale(1)';
+            }, 10);
+        }
+
+        window.addEventListener('mouseup', stopSelection);
+        window.addEventListener('touchend', stopSelection);
+
+        // Start
+        window.onload = initGame;
+    </script>
+</body>
+</html>
