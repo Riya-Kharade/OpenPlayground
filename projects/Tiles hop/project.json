@@ -1,0 +1,16 @@
+{
+  "title": "Tiles hop",
+  "category": "fun",
+  "difficulty": "intermediate",
+  "description": "Tiles Hop is a web-based game where players control a bouncing ball that hops on a series of tiles. The objective is to keep the ball bouncing on the tiles without falling off, while collecting points and power-ups along the way. The game features simple controls, colorful graphics, and an engaging soundtrack to create an enjoyable gaming experience.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Canvas API for rendering the game",
+    "Web Audio API for background music and sound effects",
+    "Local Storage for saving player progress and high scores"
+  ],
+  "icon": "ri-tools-line",
+  "coverStyle": "background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;"
+}
