@@ -2416,14 +2416,13 @@
       "folder": "Famous Scientists Gallery",
       "path": "./projects/famous-scientists-gallery/project.json",
       "link": "./projects/famous-scientists-gallery/index.html"
+    },
    {
       "folder": "World Wonders Gallery",
       "path": "./projects/world-wonders-gallery/project.json",
       "link": "./projects/world-wonders-gallery/index.html"
-  }
-  ]
-}
-[
+  },
+
   {
     "name": "EcoRoute",
     "type": "Frontend (HTML/CSS/JS)",
@@ -2467,6 +2466,10 @@
     "path": "./projects/Personal-Finance-Visualizer/project.json",
     "link": "./projects/Personal-Finance-Visualizer/index.html"
   },
+  {
+    "folder": "mental-health-awareness",
+    "path": "./projects/mental-health-awareness/project.json",
+    "link": "./projects/mental-health-awareness/index.html"
    {
     "folder": "cyber-safety-guide",
     "path": "./projects/cyber-safety-guide/project.json",
@@ -2478,3 +2481,4 @@
     "link": "./projects/personality-types-quiz/index.html"
   }
 ]
+}
