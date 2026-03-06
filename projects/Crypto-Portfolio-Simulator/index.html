@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Portfolio Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1/build/global/luxon.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fab fa-bitcoin"></i>
+                <span>Crypto Portfolio Simulator</span>
+            </div>
+            <div class="nav-controls">
+                <button id="theme-toggle" class="nav-btn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="refresh-prices" class="nav-btn" title="Refresh Prices">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button id="save-portfolio" class="nav-btn" title="Save Portfolio">
+                    <i class="fas fa-save"></i>
+                </button>
+                <button id="export-portfolio" class="nav-btn" title="Export Portfolio">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1><i class="fab fa-bitcoin"></i> Crypto Portfolio Simulator</h1>
+            <p>Track your cryptocurrency investments, analyze performance, and simulate trading strategies</p>
+            <div class="market-status">
+                <span id="market-status" class="market-indicator">
+                    <i class="fas fa-circle"></i> Market Status: <span id="market-text">Loading...</span>
+                </span>
+                <span id="last-update" class="last-update">Last updated: --</span>
+            </div>
+        </header>
+
+        <!-- Portfolio Overview -->
+        <section class="portfolio-overview">
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="total-value">$0.00</div>
+                        <div class="card-label">Total Portfolio Value</div>
+                        <div class="card-change" id="total-change">+0.00%</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="total-pnl">$0.00</div>
+                        <div class="card-label">Total P&L</div>
+                        <div class="card-change" id="pnl-change">+0.00%</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="risk-score">0</div>
+                        <div class="card-label">Risk Score</div>
+                        <div class="card-change" id="risk-level">Low</div>
+                    </div>
+                </div>
+
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-value" id="total-coins">0</div>
+                        <div class="card-label">Total Coins</div>
+                        <div class="card-change" id="best-performer">--</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Holdings Table -->
+        <section class="holdings-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Portfolio Holdings</h2>
+                <div class="section-actions">
+                    <button id="add-holding" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Holding
+                    </button>
+                    <div class="search-filter">
+                        <input type="text" id="coin-search" placeholder="Search coins...">
+                        <select id="sort-by">
+                            <option value="value">Sort by Value</option>
+                            <option value="pnl">Sort by P&L</option>
+                            <option value="name">Sort by Name</option>
+                            <option value="change">Sort by Change</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="holdings-table-container">
+                <table class="holdings-table" id="holdings-table">
+                    <thead>
+                        <tr>
+                            <th>Coin</th>
+                            <th>Symbol</th>
+                            <th>Holdings</th>
+                            <th>Avg. Buy Price</th>
+                            <th>Current Price</th>
+                            <th>Market Value</th>
+                            <th>P&L</th>
+                            <th>Change 24h</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="holdings-body">
+                        <tr class="empty-row">
+                            <td colspan="9">
+                                <div class="empty-state">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <h3>No holdings yet</h3>
+                                    <p>Click "Add Holding" to start building your portfolio</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> Performance Analytics</h2>
+                <div class="chart-controls">
+                    <select id="chart-timeframe">
+                        <option value="7d">7 Days</option>
+                        <option value="30d">30 Days</option>
+                        <option value="90d">90 Days</option>
+                        <option value="1y">1 Year</option>
+                    </select>
+                    <select id="chart-type">
+                        <option value="portfolio">Portfolio Value</option>
+                        <option value="pnl">Profit & Loss</option>
+                        <option value="allocation">Asset Allocation</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <canvas id="portfolio-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="allocation-chart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Analysis Section -->
+        <section class="risk-section">
+            <div class="section-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Risk Analysis</h2>
+                <p>Portfolio risk assessment and volatility metrics</p>
+            </div>
+
+            <div class="risk-metrics">
+                <div class="risk-metric">
+                    <div class="metric-header">
+                        <h3>Volatility Index</h3>
+                        <div class="metric-value" id="volatility-index">0.00</div>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="volatility-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="metric-label">Portfolio volatility compared to market</div>
+                </div>
+
+                <div class="risk-metric">
+                    <div class="metric-header">
+                        <h3>Diversification Score</h3>
+                        <div class="metric-value" id="diversification-score">0%</div>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="diversification-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="metric-label">How well your portfolio is diversified</div>
+                </div>
+
+                <div class="risk-metric">
+                    <div class="metric-header">
+                        <h3>Sharpe Ratio</h3>
+                        <div class="metric-value" id="sharpe-ratio">0.00</div>
+                    </div>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="sharpe-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="metric-label">Risk-adjusted return performance</div>
+                </div>
+            </div>
+
+            <div class="risk-recommendations" id="risk-recommendations">
+                <h3>Risk Recommendations</h3>
+                <ul id="recommendations-list">
+                    <li>Loading recommendations...</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add Holding Modal -->
+    <div id="add-holding-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add/Edit Holding</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="holding-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="coin-search-modal">Search Coin</label>
+                            <input type="text" id="coin-search-modal" placeholder="Type to search cryptocurrencies...">
+                            <div class="coin-suggestions" id="coin-suggestions"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="selected-coin">Selected Coin</label>
+                            <div class="selected-coin-display" id="selected-coin-display">
+                                <span class="no-coin">No coin selected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="holding-amount">Amount</label>
+                            <input type="number" id="holding-amount" placeholder="0.00" step="0.00000001" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="buy-price">Buy Price (USD)</label>
+                            <input type="number" id="buy-price" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="buy-date">Purchase Date</label>
+                            <input type="date" id="buy-date" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes (Optional)</label>
+                            <textarea id="notes" placeholder="Add any notes about this purchase..."></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="save-holding" class="btn btn-primary">Save Holding</button>
+                <button id="cancel-holding" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coin Details Modal -->
+    <div id="coin-details-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="coin-details-title">Coin Details</h3>
+                <button class="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="coin-details-header">
+                    <div class="coin-info">
+                        <img id="coin-image" src="" alt="Coin" class="coin-logo">
+                        <div>
+                            <h4 id="coin-name">Loading...</h4>
+                            <p id="coin-symbol">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="coin-price">
+                        <div class="current-price" id="coin-current-price">$0.00</div>
+                        <div class="price-change" id="coin-price-change">+0.00%</div>
+                    </div>
+                </div>
+
+                <div class="coin-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Market Cap</span>
+                        <span class="stat-value" id="coin-market-cap">$0.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">24h Volume</span>
+                        <span class="stat-value" id="coin-volume">$0.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Circulating Supply</span>
+                        <span class="stat-value" id="coin-supply">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Max Supply</span>
+                        <span class="stat-value" id="coin-max-supply">0</span>
+                    </div>
+                </div>
+
+                <div class="coin-chart-container">
+                    <canvas id="coin-price-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loading-text">Loading market data...</div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

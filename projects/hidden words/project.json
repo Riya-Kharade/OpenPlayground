@@ -1,0 +1,17 @@
+{
+  "title": "Hidden Words game",
+  "category": "game",
+  "difficulty": "Intermediate",
+  "description": "A simple hidden words game with a grid of letters",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Canvas API",
+        "Local Storage for saving progress",
+        
+    "Responsive Design (for making the game playable on different devices and screen sizes)"
+  ],
+  "icon": "ri-code-s-slash-line",
+  "coverStyle": "background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;"
+}

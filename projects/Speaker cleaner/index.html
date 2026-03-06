@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaker Cleaner Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+        .ripple-effect {
+            animation: ripple 1.5s infinite;
+        }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="max-w-md w-full glass-morphism rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                Speaker Cleaner
+            </h1>
+            <p class="text-slate-400 text-sm mt-2">Eject water and dust using sound waves</p>
+        </div>
+
+        <!-- Visualizer Area -->
+        <div class="relative flex justify-center items-center h-48 mb-10">
+            <div id="visualizer-circle" class="w-32 h-32 rounded-full bg-blue-600/20 flex items-center justify-center relative transition-all duration-300">
+                <div id="ripple-1" class="absolute inset-0 rounded-full border-2 border-blue-500/30 hidden"></div>
+                <div id="ripple-2" class="absolute inset-0 rounded-full border-2 border-purple-500/30 hidden" style="animation-delay: 0.5s;"></div>
+                
+                <svg id="icon-speaker" class="w-16 h-16 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                </svg>
+
+                <div id="frequency-display" class="absolute -bottom-8 text-xl font-mono font-bold text-blue-400 opacity-0 transition-opacity">
+                    165 Hz
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="space-y-6">
+            <div class="flex gap-2 p-1 bg-slate-900/50 rounded-xl">
+                <button onclick="setMode('auto')" id="mode-auto" class="flex-1 py-2 rounded-lg transition-all active-btn">Auto</button>
+                <button onclick="setMode('manual')" id="mode-manual" class="flex-1 py-2 rounded-lg transition-all">Manual</button>
+            </div>
+
+            <!-- Auto Mode Settings -->
+            <div id="auto-settings" class="space-y-4">
+                <div class="flex justify-between text-sm text-slate-400 px-1">
+                    <span>Cleaning Progress</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-blue-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Manual Mode Settings (Hidden by default) -->
+            <div id="manual-settings" class="hidden space-y-4">
+                <div class="flex justify-between text-sm text-slate-400 px-1">
+                    <span>Frequency</span>
+                    <span id="freq-val">165 Hz</span>
+                </div>
+                <input type="range" id="freq-slider" min="100" max="500" value="165" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+            </div>
+
+            <!-- Action Button -->
+            <button id="main-btn" onclick="toggleCleaning()" class="w-full py-5 rounded-2xl bg-blue-600 hover:bg-blue-500 font-bold text-lg shadow-lg shadow-blue-900/20 transform transition active:scale-95">
+                START CLEANING
+            </button>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-8 text-xs text-slate-500 bg-black/20 p-4 rounded-xl">
+            <p class="mb-2"><strong>Tip:</strong> Turn your volume to 100% and face the speakers downward for maximum effectiveness.</p>
+            <p>Do not use headphones while cleaning.</p>
+        </div>
+    </div>
+
+    <!-- UI Overlay for Message -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 glass-morphism px-6 py-3 rounded-full text-sm opacity-0 transition-opacity pointer-events-none">
+        Cleaning completed!
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let oscillator = null;
+        let gainNode = null;
+        let isCleaning = false;
+        let mode = 'auto';
+        let autoInterval = null;
+        let progress = 0;
+
+        const mainBtn = document.getElementById('main-btn');
+        const freqDisplay = document.getElementById('frequency-display');
+        const freqSlider = document.getElementById('freq-slider');
+        const freqValText = document.getElementById('freq-val');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const ripple1 = document.getElementById('ripple-1');
+        const ripple2 = document.getElementById('ripple-2');
+        const speakerIcon = document.getElementById('icon-speaker');
+
+        function setMode(newMode) {
+            if (isCleaning) stopCleaning();
+            mode = newMode;
+            
+            // UI Toggle
+            document.getElementById('mode-auto').classList.toggle('active-btn', mode === 'auto');
+            document.getElementById('mode-manual').classList.toggle('active-btn', mode === 'manual');
+            document.getElementById('auto-settings').classList.toggle('hidden', mode !== 'auto');
+            document.getElementById('manual-settings').classList.toggle('hidden', mode !== 'manual');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => toast.style.opacity = '0', 3000);
+        }
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function startCleaning() {
+            initAudio();
+            isCleaning = true;
+            mainBtn.innerText = 'STOP';
+            mainBtn.classList.replace('bg-blue-600', 'bg-red-600');
+            
+            // Animation
+            ripple1.classList.remove('hidden');
+            ripple1.classList.add('ripple-effect');
+            ripple2.classList.remove('hidden');
+            ripple2.classList.add('ripple-effect');
+            freqDisplay.style.opacity = '1';
+            speakerIcon.classList.add('animate-bounce');
+
+            // Setup Sound
+            oscillator = audioCtx.createOscillator();
+            gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.type = 'sine';
+            
+            if (mode === 'auto') {
+                runAutoMode();
+            } else {
+                oscillator.frequency.value = freqSlider.value;
+                freqDisplay.innerText = freqSlider.value + ' Hz';
+            }
+
+            oscillator.start();
+            gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + 0.1);
+        }
+
+        function stopCleaning() {
+            isCleaning = false;
+            mainBtn.innerText = 'START CLEANING';
+            mainBtn.classList.replace('bg-red-600', 'bg-blue-600');
+            
+            ripple1.classList.add('hidden');
+            ripple1.classList.remove('ripple-effect');
+            ripple2.classList.add('hidden');
+            ripple2.classList.remove('ripple-effect');
+            freqDisplay.style.opacity = '0';
+            speakerIcon.classList.remove('animate-bounce');
+
+            if (oscillator) {
+                oscillator.stop();
+                oscillator.disconnect();
+            }
+            if (autoInterval) clearInterval(autoInterval);
+            
+            progress = 0;
+            updateProgress(0);
+        }
+
+        function toggleCleaning() {
+            if (isCleaning) {
+                stopCleaning();
+            } else {
+                startCleaning();
+            }
+        }
+
+        function updateProgress(val) {
+            progressBar.style.width = val + '%';
+            progressText.innerText = Math.floor(val) + '%';
+        }
+
+        function runAutoMode() {
+            let step = 0;
+            const duration = 30000; // 30 seconds
+            const intervalTime = 100;
+            const totalSteps = duration / intervalTime;
+
+            autoInterval = setInterval(() => {
+                step++;
+                progress = (step / totalSteps) * 100;
+                updateProgress(progress);
+
+                // Sweep frequency from 100Hz to 250Hz repeatedly
+                let f = 100 + (Math.sin(step * 0.1) * 75 + 75);
+                oscillator.frequency.value = f;
+                freqDisplay.innerText = Math.round(f) + ' Hz';
+
+                // Pulsing volume for "vibration" effect
+                let vol = 0.5 + (Math.sin(step * 0.5) * 0.5);
+                gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+
+                if (step >= totalSteps) {
+                    stopCleaning();
+                    showToast("Cleaning Cycle Finished!");
+                }
+            }, intervalTime);
+        }
+
+        // Manual slider interaction
+        freqSlider.oninput = function() {
+            const val = this.value;
+            freqValText.innerText = val + ' Hz';
+            if (isCleaning && mode === 'manual') {
+                oscillator.frequency.value = val;
+                freqDisplay.innerText = val + ' Hz';
+            }
+        };
+
+        // Handle Audio Context Suspend (Browser Security)
+        document.addEventListener('click', () => {
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        });
+    </script>
+</body>
+</html>

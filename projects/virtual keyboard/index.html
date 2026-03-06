@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro-Touch Virtual Keyboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --key-bg: linear-gradient(180deg, #2d3a4f 0%, #1e293b 100%);
+            --key-active: #3b82f6;
+            --key-text: #f8fafc;
+            --accent: #3b82f6;
+            --glow-color: rgba(59, 130, 246, 0.5);
+            --key-shadow-bottom: #0f172a;
+        }
+
+        body {
+            background: #020617;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.3) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.3) 0px, transparent 50%);
+            min-height: 100vh;
+            color: white;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .keyboard-case {
+            border-bottom: 6px solid #080c14;
+            border-right: 3px solid #080c14;
+            border-left: 3px solid #1e293b;
+            padding: 25px;
+            position: relative;
+            background: #111827;
+            width: 100%;
+        }
+
+        .lighting-strip {
+            position: absolute;
+            bottom: -2px;
+            left: 5%;
+            right: 5%;
+            height: 3px;
+            background: var(--accent);
+            box-shadow: 0 0 25px 3px var(--glow-color);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .keyboard-key {
+            position: relative;
+            transition: all 0.05s ease-out;
+            user-select: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-weight: 700;
+            background: var(--key-bg);
+            color: var(--key-text);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                0 5px 0 var(--key-shadow-bottom),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            font-size: 1.1rem;
+            flex: 1;
+            min-width: 0; /* Allows keys to shrink correctly within flexbox */
+        }
+
+        .keyboard-key:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .keyboard-key:active, .keyboard-key.active {
+            transform: translateY(4px);
+            background: var(--key-active);
+            box-shadow: 
+                0 1px 0 var(--key-shadow-bottom),
+                inset 0 1px 4px rgba(0, 0, 0, 0.4);
+            color: white;
+            filter: drop-shadow(0 0 12px var(--glow-color));
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .keyboard-key.special {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: #94a3b8;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* Responsive Flex Sizes */
+        .keyboard-key.wide { flex: 1.8; }
+        .keyboard-key.extra-wide { flex: 2.2; }
+        .keyboard-key.space { 
+            flex: 6; 
+            background: linear-gradient(180deg, #334155 0%, #1e293b 100%); 
+        }
+
+        .led-indicator {
+            width: 10px;
+            height: 4px;
+            border-radius: 4px;
+            background: #0f172a;
+            transition: all 0.3s;
+        }
+
+        .led-active {
+            background: var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+        }
+
+        .key-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            height: 64px;
+        }
+
+        #display-area {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            caret-color: var(--accent);
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+        }
+
+        .rgb-text {
+            animation: rgb-glow 5s linear infinite;
+        }
+
+        @keyframes rgb-glow {
+            0% { color: #60a5fa; }
+            33% { color: #34d399; }
+            66% { color: #f472b6; }
+            100% { color: #60a5fa; }
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div class="w-full max-w-6xl space-y-6">
+        
+        <!-- Header -->
+        <div class="text-center">
+            <h1 class="text-3xl font-black tracking-tighter rgb-text">
+                CORE PRO <span class="text-white font-light">X1</span>
+            </h1>
+            <p class="text-slate-500 text-[9px] uppercase tracking-[0.3em] font-bold mt-1">Ultra-Wide Layout v2.2</p>
+        </div>
+
+        <!-- Text Input Area -->
+        <div class="glass rounded-3xl p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500 opacity-70"></div>
+            <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex space-x-6">
+                    <div class="flex flex-col items-start gap-1">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Caps Lock</span>
+                        <div id="caps-led" class="led-indicator"></div>
+                    </div>
+                    <div class="flex flex-col items-start gap-1">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Backlight</span>
+                        <div id="backlight-led" class="led-indicator led-active"></div>
+                    </div>
+                </div>
+                <button onclick="clearText()" class="px-3 py-1 rounded-lg border border-slate-700 text-[9px] font-bold text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-all hover:border-red-500/50">WIPE BUFFER</button>
+            </div>
+            <textarea id="display-area" 
+                class="w-full bg-transparent border-none outline-none text-xl resize-none h-32 text-slate-100 placeholder-slate-800"
+                placeholder="Awaiting input..." readonly></textarea>
+        </div>
+
+        <!-- Keyboard UI -->
+        <div id="keyboard-container" class="keyboard-case glass rounded-[28px] space-y-2 select-none">
+            <!-- Rows injected by JS -->
+            <div class="lighting-strip" id="rgb-strip"></div>
+        </div>
+
+        <!-- Settings Bar -->
+        <div class="flex justify-between items-center px-6 py-3 glass rounded-2xl text-[10px] font-bold text-slate-500">
+            <div class="flex space-x-6">
+                <label class="flex items-center space-x-2 cursor-pointer group">
+                    <input type="checkbox" id="sound-toggle" checked class="hidden">
+                    <div class="w-8 h-4 bg-slate-900 rounded-full relative transition-colors group-hover:bg-slate-800 border border-slate-700">
+                        <div id="toggle-dot" class="absolute left-1 top-1 w-2 h-2 bg-blue-500 rounded-full transition-all translate-x-4"></div>
+                    </div>
+                    <span id="sound-status" class="text-blue-400 uppercase ml-1">Audio On</span>
+                </label>
+                <div class="flex items-center gap-2">
+                    <span class="text-slate-600">GLOW:</span>
+                    <input type="range" id="light-intensity" min="0" max="100" value="80" class="w-20 accent-blue-500 opacity-50 hover:opacity-100 transition-opacity">
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="char-count" class="bg-slate-950 px-3 py-1 rounded-md border border-slate-800 text-blue-400">LEN: 000</span>
+                <span class="text-slate-600 tracking-widest uppercase">System Ready</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display-area');
+        const keyboard = document.getElementById('keyboard-container');
+        const capsLed = document.getElementById('caps-led');
+        const charCount = document.getElementById('char-count');
+        const soundToggle = document.getElementById('sound-toggle');
+        const toggleDot = document.getElementById('toggle-dot');
+        const rgbStrip = document.getElementById('rgb-strip');
+        const lightIntensity = document.getElementById('light-intensity');
+
+        let isCaps = false;
+        let isShift = false;
+        let currentLayout = 'main';
+        let accentHue = 217;
+
+        const layouts = {
+            main: [
+                ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', { label: '⌫', code: 'backspace', class: 'wide special' }],
+                [{ label: 'Tab', code: 'tab', class: 'special' }, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+                [{ label: 'Caps', code: 'caps', class: 'wide special' }, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", { label: '↵ Enter', code: 'extra-wide special' }],
+                [{ label: '⇧ Shift', code: 'shift', class: 'extra-wide special' }, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', { label: '⇧', code: 'shift', class: 'wide special' }],
+                [{ label: '?123', code: 'layout_sym', class: 'wide special' }, { label: '', code: 'space', class: 'space' }, { label: 'ESC', code: 'clear', class: 'wide special' }]
+            ],
+            symbols: [
+                ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', { label: '⌫', code: 'backspace', class: 'wide special' }],
+                ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'],
+                ['{', '}', '[', ']', '|', ':', '"', '<', '>', '?', '/'],
+                [{ label: 'ABC', code: 'layout_main', class: 'wide special' }, { label: '', code: 'space', class: 'space' }, { label: '.', code: '.', class: 'special' }]
+            ]
+        };
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playClick(freq = 150) {
+            if (!soundToggle.checked) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+
+        function updateLighting() {
+            const opacity = lightIntensity.value / 100;
+            document.documentElement.style.setProperty('--glow-color', `hsla(${accentHue}, 90%, 60%, ${opacity})`);
+            document.documentElement.style.setProperty('--accent', `hsl(${accentHue}, 90%, 60%)`);
+            rgbStrip.style.boxShadow = `0 0 ${30 * opacity}px ${4 * opacity}px var(--glow-color)`;
+            accentHue = (accentHue + 0.5) % 360;
+        }
+
+        function renderKeyboard(layoutKey) {
+            // Keep lighting strip
+            const rows = keyboard.querySelectorAll('.key-row');
+            rows.forEach(r => r.remove());
+
+            layouts[layoutKey].forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'key-row';
+                
+                row.forEach(key => {
+                    const keyBtn = document.createElement('div');
+                    const isObj = typeof key === 'object';
+                    const label = isObj ? key.label : key;
+                    const code = isObj ? key.code : key;
+                    
+                    keyBtn.className = `keyboard-key ${isObj ? (key.class || '') : ''}`;
+                    keyBtn.textContent = isCaps && !isObj ? label.toUpperCase() : label;
+                    
+                    keyBtn.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        handleKeyPress(code, label);
+                        keyBtn.classList.add('active');
+                    });
+                    
+                    window.addEventListener('mouseup', () => keyBtn.classList.remove('active'));
+                    rowDiv.appendChild(keyBtn);
+                });
+                keyboard.appendChild(rowDiv);
+            });
+            updateLighting();
+        }
+
+        function handleKeyPress(code, label) {
+            playClick(code === 'space' ? 90 : 200);
+            
+            rgbStrip.style.opacity = "1";
+            setTimeout(() => rgbStrip.style.opacity = "0.7", 150);
+
+            switch(code) {
+                case 'backspace':
+                    display.value = display.value.slice(0, -1);
+                    break;
+                case 'space':
+                    display.value += ' ';
+                    break;
+                case 'enter':
+                    display.value += '\n';
+                    break;
+                case 'tab':
+                    display.value += '    ';
+                    break;
+                case 'caps':
+                    isCaps = !isCaps;
+                    capsLed.classList.toggle('led-active', isCaps);
+                    renderKeyboard(currentLayout);
+                    break;
+                case 'shift':
+                    isShift = !isShift;
+                    isCaps = !isCaps;
+                    renderKeyboard(currentLayout);
+                    break;
+                case 'layout_sym':
+                    currentLayout = 'symbols';
+                    renderKeyboard(currentLayout);
+                    break;
+                case 'layout_main':
+                    currentLayout = 'main';
+                    renderKeyboard(currentLayout);
+                    break;
+                case 'clear':
+                    clearText();
+                    break;
+                default:
+                    let char = isObjLabel(label) ? code : label;
+                    if (isCaps) char = char.toUpperCase();
+                    display.value += char;
+                    
+                    if (isShift) {
+                        isShift = false;
+                        isCaps = !isCaps;
+                        renderKeyboard(currentLayout);
+                    }
+            }
+            
+            updateStats();
+            display.scrollTop = display.scrollHeight;
+        }
+
+        function isObjLabel(label) {
+            return ['⌫', '↵ Enter', '⇧ Shift', 'Tab', 'Caps', 'ABC', '?123', 'ESC'].includes(label);
+        }
+
+        function clearText() {
+            display.value = '';
+            updateStats();
+        }
+
+        function updateStats() {
+            const count = display.value.length;
+            charCount.textContent = `LEN: ${count.toString().padStart(3, '0')}`;
+        }
+
+        soundToggle.addEventListener('change', () => {
+            const isActive = soundToggle.checked;
+            toggleDot.style.transform = isActive ? 'translateX(16px)' : 'translateX(0px)';
+            document.getElementById('sound-status').className = isActive ? 'text-blue-400 uppercase ml-1' : 'text-slate-600 uppercase ml-1';
+        });
+
+        lightIntensity.addEventListener('input', updateLighting);
+
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            const allKeys = document.querySelectorAll('.keyboard-key');
+            allKeys.forEach(k => {
+                const kText = k.textContent.toLowerCase();
+                if (kText === key || 
+                   (key === 'backspace' && kText === '⌫') ||
+                   (key === 'enter' && kText.includes('enter')) ||
+                   (key === 'tab' && kText === 'tab') ||
+                   (key === 'shift' && kText.includes('shift'))) {
+                    k.classList.add('active');
+                    setTimeout(() => k.classList.remove('active'), 100);
+                }
+            });
+
+            if (e.key === 'CapsLock') {
+                isCaps = !isCaps;
+                capsLed.classList.toggle('led-active', isCaps);
+                renderKeyboard(currentLayout);
+            }
+        });
+
+        setInterval(updateLighting, 50);
+        renderKeyboard('main');
+    </script>
+</body>
+</html>

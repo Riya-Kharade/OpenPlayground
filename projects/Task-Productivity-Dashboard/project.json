@@ -1,0 +1,13 @@
+{
+  "title": "Task Productivity Dashboard",
+  "category": "utility",
+  "difficulty": "Intermediate",
+  "description": "A dynamic dashboard to track tasks, deadlines, and productivity metrics with real-time updates and analytics.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "icon": "ri-task-line",
+  "coverStyle": "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+}

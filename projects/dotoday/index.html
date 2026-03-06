@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoToday · Smart Task Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: #f5f9fc;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            color: #1e3a4a;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .title h1 {
+            font-size: 2.8rem;
+            font-weight: 500;
+            background: linear-gradient(145deg, #2d5f7a, #4b8bb4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title p {
+            color: #5d7f99;
+            margin-top: 0.2rem;
+        }
+
+        .stats-badge {
+            background: white;
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            border: 2px solid #cde0ed;
+            color: #2a6182;
+            font-weight: 500;
+        }
+
+        /* filter row */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            border: 1px solid #d8e8f2;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: #eff7fd;
+            border: 2px solid #cde0f0;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #2b5f83;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .filter-tab.active {
+            background: #2f6d97;
+            border-color: #2f6d97;
+            color: white;
+        }
+
+        .clear-btn {
+            background: #e9f2fa;
+            border: 2px solid #c2d8ec;
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1f5377;
+            cursor: pointer;
+        }
+
+        /* add task row */
+        .add-task {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 60px;
+            border: 1px solid #d5e6f2;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .add-task input {
+            flex: 2 1 250px;
+            padding: 1rem 1.5rem;
+            border: 2px solid #c8dff0;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: #f9fcff;
+            outline: none;
+        }
+
+        .add-task input:focus {
+            border-color: #7fa9cc;
+        }
+
+        .priority-select {
+            padding: 1rem 1.5rem;
+            border: 2px solid #c8dff0;
+            border-radius: 50px;
+            background: #f9fcff;
+            color: #1c4b6e;
+            font-weight: 500;
+        }
+
+        .add-btn {
+            background: #2f6d97;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.1s;
+            border: 2px solid #2f6d97;
+        }
+
+        .add-btn:hover {
+            background: #1e567b;
+        }
+
+        /* task columns (drag & drop) */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .column {
+            background: white;
+            border-radius: 42px;
+            padding: 1.5rem 1.2rem;
+            border: 1px solid #daeaf5;
+            box-shadow: 0 15px 25px -20px rgba(0,0,0,0.1);
+        }
+
+        .column h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            padding-left: 0.5rem;
+            color: #1e5470;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .task-list {
+            min-height: 300px;
+            transition: background 0.2s;
+        }
+
+        .task-card {
+            background: #f7fcff;
+            border: 2px solid #cde0f0;
+            border-radius: 30px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            cursor: grab;
+            box-shadow: 0 5px 10px -5px rgba(0,0,0,0.05);
+            transition: 0.1s;
+            position: relative;
+            user-select: none;
+        }
+
+        .task-card.dragging {
+            opacity: 0.4;
+            cursor: grabbing;
+        }
+
+        .task-card:hover {
+            border-color: #9dc1e0;
+            background: white;
+        }
+
+        .task-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #154159;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .priority-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: #ffe2e2;
+            color: #b13e3e;
+        }
+
+        .priority-medium {
+            background: #fff0d9;
+            color: #b17b2e;
+        }
+
+        .priority-low {
+            background: #e1f0e8;
+            color: #2f7b5a;
+        }
+
+        .delete-task {
+            cursor: pointer;
+            color: #9fbad2;
+            font-size: 1.2rem;
+        }
+        .delete-task:hover {
+            color: #c15555;
+        }
+
+        .empty-column {
+            color: #9bb9d4;
+            text-align: center;
+            padding: 2rem 0;
+            border: 2px dashed #c9dff2;
+            border-radius: 40px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #6b90ae;
+            margin-top: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <h1>✅ DoToday</h1>
+                <p>drag & drop tasks · manage priorities</p>
+            </div>
+            <div class="stats-badge" id="taskCount">0 tasks</div>
+        </div>
+
+        <!-- filter row -->
+        <div class="filter-bar">
+            <div class="filter-tabs" id="filterTabs">
+                <span class="filter-tab active" data-filter="all">All</span>
+                <span class="filter-tab" data-filter="high">High</span>
+                <span class="filter-tab" data-filter="medium">Medium</span>
+                <span class="filter-tab" data-filter="low">Low</span>
+            </div>
+            <button class="clear-btn" id="clearCompleted">clear completed</button>
+        </div>
+
+        <!-- add task row -->
+        <div class="add-task">
+            <input type="text" placeholder="e.g., design meeting" id="taskInput">
+            <select class="priority-select" id="taskPriority">
+                <option value="high">🔥 high</option>
+                <option value="medium" selected>📌 medium</option>
+                <option value="low">🌱 low</option>
+            </select>
+            <button class="add-btn" id="addTaskBtn">add task</button>
+        </div>
+
+        <!-- kanban columns -->
+        <div class="board" id="board">
+            <div class="column" data-status="todo">
+                <h2>📋 To Do <span id="todoCount">0</span></h2>
+                <div class="task-list" id="todoList"></div>
+            </div>
+            <div class="column" data-status="inprogress">
+                <h2>⏳ In Progress <span id="progressCount">0</span></h2>
+                <div class="task-list" id="inprogressList"></div>
+            </div>
+            <div class="column" data-status="done">
+                <h2>✅ Done <span id="doneCount">0</span></h2>
+                <div class="task-list" id="doneList"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            ⚡ drag cards between columns · click ✕ to delete
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- TASK DATA -----
+            let tasks = [
+                { id: '1', title: 'design homepage', priority: 'high', status: 'todo' },
+                { id: '2', title: 'write documentation', priority: 'medium', status: 'todo' },
+                { id: '3', title: 'user testing', priority: 'low', status: 'inprogress' },
+                { id: '4', title: 'fix navigation bug', priority: 'high', status: 'inprogress' },
+                { id: '5', title: 'update dependencies', priority: 'medium', status: 'done' },
+                { id: '6', title: 'team meeting', priority: 'low', status: 'done' }
+            ];
+
+            // state
+            let activeFilter = 'all';
+            let draggedItem = null;
+
+            // DOM elements
+            const todoList = document.getElementById('todoList');
+            const inprogressList = document.getElementById('inprogressList');
+            const doneList = document.getElementById('doneList');
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const taskInput = document.getElementById('taskInput');
+            const taskPriority = document.getElementById('taskPriority');
+            const addBtn = document.getElementById('addTaskBtn');
+            const clearCompletedBtn = document.getElementById('clearCompleted');
+            const todoCountSpan = document.getElementById('todoCount');
+            const progressCountSpan = document.getElementById('progressCount');
+            const doneCountSpan = document.getElementById('doneCount');
+            const taskCountSpan = document.getElementById('taskCount');
+
+            // helper: generate unique id
+            function generateId() {
+                return Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+
+            // filter tasks by status and priority filter
+            function getFilteredTasks(status) {
+                return tasks.filter(t => t.status === status).filter(t => {
+                    if (activeFilter === 'all') return true;
+                    return t.priority === activeFilter;
+                });
+            }
+
+            // render all columns
+            function renderBoard() {
+                // todo
+                const todoFiltered = getFilteredTasks('todo');
+                renderColumn(todoList, todoFiltered, 'todo');
+                todoCountSpan.innerText = todoFiltered.length;
+
+                // inprogress
+                const progFiltered = getFilteredTasks('inprogress');
+                renderColumn(inprogressList, progFiltered, 'inprogress');
+                progressCountSpan.innerText = progFiltered.length;
+
+                // done
+                const doneFiltered = getFilteredTasks('done');
+                renderColumn(doneList, doneFiltered, 'done');
+                doneCountSpan.innerText = doneFiltered.length;
+
+                // total count
+                taskCountSpan.innerText = tasks.length + (tasks.length === 1 ? ' task' : ' tasks');
+            }
+
+            function renderColumn(container, taskList, status) {
+                if (taskList.length === 0) {
+                    container.innerHTML = `<div class="empty-column">✨ no tasks</div>`;
+                    return;
+                }
+                let html = '';
+                taskList.forEach(task => {
+                    const priorityClass = `priority-${task.priority}`;
+                    html += `
+                        <div class="task-card" draggable="true" data-id="${task.id}" data-status="${status}">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                <span class="priority-badge ${priorityClass}">${task.priority}</span>
+                                <span class="delete-task" data-id="${task.id}">✕</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+
+                // attach drag listeners to new cards
+                document.querySelectorAll('.task-card').forEach(card => {
+                    card.addEventListener('dragstart', handleDragStart);
+                    card.addEventListener('dragend', handleDragEnd);
+                });
+
+                // attach delete listeners
+                document.querySelectorAll('.delete-task').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = btn.getAttribute('data-id');
+                        deleteTask(id);
+                    });
+                });
+            }
+
+            // delete task
+            function deleteTask(id) {
+                tasks = tasks.filter(t => t.id !== id);
+                renderBoard();
+            }
+
+            // drag & drop handlers
+            function handleDragStart(e) {
+                draggedItem = e.target.closest('.task-card');
+                if (!draggedItem) return;
+                e.dataTransfer.setData('text/plain', draggedItem.getAttribute('data-id'));
+                draggedItem.classList.add('dragging');
+            }
+
+            function handleDragEnd(e) {
+                if (draggedItem) {
+                    draggedItem.classList.remove('dragging');
+                    draggedItem = null;
+                }
+            }
+
+            // allow drop on columns
+            function setupDropZones() {
+                const columns = document.querySelectorAll('.task-list');
+                columns.forEach(col => {
+                    col.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                    });
+                    col.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const taskId = e.dataTransfer.getData('text/plain');
+                        if (!taskId) return;
+
+                        // find target column status
+                        const targetColumn = e.target.closest('.column');
+                        if (!targetColumn) return;
+                        const newStatus = targetColumn.getAttribute('data-status');
+
+                        // update task status
+                        const task = tasks.find(t => t.id === taskId);
+                        if (task && task.status !== newStatus) {
+                            task.status = newStatus;
+                            renderBoard();
+                        }
+                    });
+                });
+            }
+
+            // filter change
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    activeFilter = tab.getAttribute('data-filter');
+                    renderBoard();
+                });
+            });
+
+            // add new task
+            addBtn.addEventListener('click', () => {
+                const title = taskInput.value.trim();
+                if (!title) return;
+                const priority = taskPriority.value;
+                const newTask = {
+                    id: generateId(),
+                    title: title,
+                    priority: priority,
+                    status: 'todo'
+                };
+                tasks.push(newTask);
+                renderBoard();
+                taskInput.value = '';
+            });
+
+            // clear completed (remove all done tasks)
+            clearCompletedBtn.addEventListener('click', () => {
+                tasks = tasks.filter(t => t.status !== 'done');
+                renderBoard();
+            });
+
+            // initialize
+            renderBoard();
+            setupDropZones();
+
+            // optional: allow enter key to add
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addBtn.click();
+            });
+        })();
+    </script>
+</body>
+</html>

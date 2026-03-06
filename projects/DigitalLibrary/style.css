@@ -1,0 +1,58 @@
+body{
+    font-family: Arial;
+    margin:0;
+    background:#f4f4f4;
+}
+
+header{
+    background:#333;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+header input{
+    padding:8px;
+    width:250px;
+    margin-top:10px;
+}
+
+.admin{
+    padding:20px;
+    background:white;
+    margin:20px;
+}
+
+.admin input{
+    padding:8px;
+    margin:5px;
+}
+
+.admin button{
+    padding:8px 15px;
+    background:#007BFF;
+    color:white;
+    border:none;
+}
+
+.library{
+    padding:20px;
+}
+
+.book{
+    background:white;
+    margin:10px;
+    padding:15px;
+    border-radius:5px;
+}
+
+.book button{
+    margin-top:10px;
+    padding:5px 10px;
+}
+
+.reading{
+    padding:20px;
+    background:white;
+    margin:20px;
+}

@@ -1,0 +1,18 @@
+{
+  "project_name": "Digital Library",
+  "version": "1.0",
+  "description": "A web-based platform to browse, search and manage digital books.",
+  "technologies": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "features": [
+    "Browse books",
+    "Search books",
+    "Add books (admin)",
+    "Reading list",
+    "View book availability"
+  ],
+  "author": "Your Name"
+}

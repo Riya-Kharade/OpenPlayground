@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>📚 Digital Library</h1>
+    <input type="text" id="search" placeholder="Search books..." onkeyup="searchBook()">
+</header>
+
+<section class="admin">
+    <h2>Admin Panel</h2>
+    <input type="text" id="title" placeholder="Book Title">
+    <input type="text" id="author" placeholder="Author">
+    <button onclick="addBook()">Add Book</button>
+</section>
+
+<section class="library">
+    <h2>Available Books</h2>
+    <div id="bookList"></div>
+</section>
+
+<section class="reading">
+    <h2>📖 My Reading List</h2>
+    <ul id="readingList"></ul>
+</section>
+
+<script src="script.js"></script>
+
+</body>
+</html>

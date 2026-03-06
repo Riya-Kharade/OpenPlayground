@@ -1,0 +1,13 @@
+{
+  "title": "Mental Health Awareness Informational Website",
+  "category": "utility",
+  "difficulty": "Beginner",
+  "description": "A responsive website spreading awareness about anxiety, depression, stress, and burnout.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "icon": "ri-heart-2-line",
+  "coverStyle": "background: linear-gradient(135deg, #cfd9df 0%, #5c6bc0 100%); color: white;"
+}

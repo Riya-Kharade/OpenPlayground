@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Detector</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <canvas id="pixi-bg"></canvas>
+
+  <div class="container">
+    <header>
+      <h1>⌨ Input Detector</h1>
+      <p>REAL-TIME KEYBOARD & MOUSE MONITOR</p>
+    </header>
+
+    <!-- Live feed -->
+    <div class="live-feed">
+      <div class="feed-row">
+        <div class="feed-item">
+          <span class="feed-label">Last Key</span>
+          <span class="feed-value" id="lastKey">—</span>
+        </div>
+        <div class="feed-item">
+          <span class="feed-label">Key Code</span>
+          <span class="feed-value" id="lastCode">—</span>
+        </div>
+        <div class="feed-item">
+          <span class="feed-label">Mouse Button</span>
+          <span class="feed-value" id="lastMouse">—</span>
+        </div>
+        <div class="feed-item">
+          <span class="feed-label">Cursor XY</span>
+          <span class="feed-value coords" id="coords">0, 0</span>
+        </div>
+        <div class="feed-item">
+          <span class="feed-label">Scroll Δ</span>
+          <span class="feed-value" id="scrollVal">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active keys -->
+    <div class="panel log-panel">
+      <div class="panel-header">
+        <div class="dot"></div>Active Keys Right Now
+      </div>
+      <div class="active-keys-display" id="activeKeysDisplay">
+        <span class="no-keys">Press any key...</span>
+      </div>
+    </div>
+
+    <!-- Keyboard + Mouse -->
+    <div class="grid">
+      <!-- Keyboard -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="dot"></div>Keyboard
+        </div>
+        <div class="keyboard-wrap" id="keyboard"></div>
+      </div>
+
+      <!-- Mouse -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="dot red"></div>Mouse
+        </div>
+        <div class="mouse-section">
+          <div class="mouse-visual">
+            <div class="mouse-btn mbtn-left" id="mb-left">L</div>
+            <div class="mouse-btn mbtn-right right" id="mb-right">R</div>
+            <div class="mouse-btn mbtn-mid mid" id="mb-mid">
+              <span class="scroll-ind">↕</span>
+            </div>
+          </div>
+          <div class="mouse-info">
+            <div class="mouse-stat"><span class="stat-label">Left Button</span><span class="stat-val"
+                id="ms-left">UP</span></div>
+            <div class="mouse-stat"><span class="stat-label">Right Button</span><span class="stat-val red"
+                id="ms-right">UP</span></div>
+            <div class="mouse-stat"><span class="stat-label">Middle Button</span><span class="stat-val purple"
+                id="ms-mid">UP</span></div>
+            <div class="mouse-stat"><span class="stat-label">X Position</span><span class="stat-val" id="ms-x">0</span>
+            </div>
+            <div class="mouse-stat"><span class="stat-label">Y Position</span><span class="stat-val" id="ms-y">0</span>
+            </div>
+            <div class="mouse-stat"><span class="stat-label">Scroll Dir</span><span class="stat-val purple"
+                id="ms-scroll">—</span></div>
+            <div class="mouse-stat"><span class="stat-label">Total Clicks</span><span class="stat-val"
+                id="ms-clicks">0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="panel log-panel" style="margin-bottom:16px;">
+      <div class="panel-header">
+        <div class="dot"></div>Event History <span
+          style="margin-left:auto;font-size:0.6rem;color:var(--dim);cursor:pointer;" onclick="clearHistory()">[ CLEAR
+          ]</span>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-chip">
+        <div class="chip-val" id="stat-keys">0</div>
+        <div class="chip-label">Keys Pressed</div>
+      </div>
+      <div class="stat-chip">
+        <div class="chip-val" id="stat-clicks">0</div>
+        <div class="chip-label">Mouse Clicks</div>
+      </div>
+      <div class="stat-chip">
+        <div class="chip-val" id="stat-scrolls">0</div>
+        <div class="chip-label">Scroll Events</div>
+      </div>
+      <div class="stat-chip">
+        <div class="chip-val" id="stat-combo">0</div>
+        <div class="chip-label">Max Combo Keys</div>
+      </div>
+      <div class="stat-chip">
+        <div class="chip-val" id="stat-events">0</div>
+        <div class="chip-label">Total Events</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>

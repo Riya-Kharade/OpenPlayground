@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A* Tower Defense: Campaign</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ui-layer">
+        <header class="top-bar">
+            <h1>🛡️ A* Tower Defense</h1>
+            <div class="stats">
+                <span>❤️ Health: <span id="health-display" class="highlight">10</span></span>
+                <span>💰 Credits: <span id="money-display" class="highlight-green">150</span></span>
+                <span>🌊 Enemies Left: <span id="enemies-left-display" class="highlight">10</span></span>
+            </div>
+            <div class="controls">
+                <button class="guide-btn" onclick="game.toggleGuide()">📖 DSA Manual</button>
+            </div>
+        </header>
+        
+        <div class="level-panel">
+            <h3>Sectors</h3>
+            <div id="level-grid" class="grid-container">
+                </div>
+        </div>
+
+        <div class="build-menu">
+            <h3>Construct Tower (Costs 50)</h3>
+            <p id="build-status">Click any empty tile to build.</p>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="guide-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="game.toggleGuide()">&times;</span>
+            <h2>📖 Dynamic A* Pathfinding Manual</h2>
+            <div class="guide-steps">
+                <h3>The Campaign:</h3>
+                <p>You must clear 5 sectors. Each sector has a fixed number of enemies. Eliminate all of them to win.</p>
+                <h3>How to Play:</h3>
+                <ul>
+                    <li><strong>Building:</strong> Click on the grid to build a tower. Towers cost 50 credits.</li>
+                    <li><strong>Blocking:</strong> The engine will physically prevent you from placing a tower if it completely blocks the only valid path to the base!</li>
+                    <li><strong>Dark Walls:</strong> These are permanent environmental obstacles. You cannot build on them.</li>
+                    <li><strong>Combat:</strong> Towers automatically detect enemies in range and fire.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="win-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <h2 style="color: #4ade80;">🎉 Sector Cleared!</h2>
+            <p>You successfully defended the base.</p>
+            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+                <button class="action-btn" onclick="game.nextLevel()">Next Level ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <h2 style="color: #ef4444;">💥 Base Destroyed</h2>
+            <p>The swarm breached your defenses.</p>
+            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+                <button class="action-btn" onclick="game.resetLevel()">🔄 Retry Level</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

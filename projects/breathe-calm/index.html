@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathe · Calm Breathing Exercise</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f7fc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            color: #1e2e44;
+        }
+
+        .breathe-card {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            box-shadow: 0 25px 50px -20px rgba(0,0,0,0.15), 0 0 0 1px rgba(211, 226, 255, 0.5) inset;
+            padding: 2.8rem 2.2rem;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            letter-spacing: -1px;
+            background: linear-gradient(145deg, #1e3b5a, #557da5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
+
+        .header p {
+            color: #627a9c;
+            font-size: 1.1rem;
+        }
+
+        /* main breathing circle */
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0 2rem 0;
+            position: relative;
+        }
+
+        .circle {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(145deg, #d9e8ff, #ffffff);
+            border-radius: 50%;
+            box-shadow: 0 30px 45px -20px #809bbf, 0 0 0 3px white, 0 0 0 6px #cbd7ed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 5.5s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
+            transform: scale(1);
+            cursor: pointer;
+            color: #1e3a5f;
+        }
+
+        .circle.inhale {
+            transform: scale(1.4);
+            box-shadow: 0 40px 60px -15px #4f7bb3, 0 0 0 4px white, 0 0 0 8px #a5c4f0;
+        }
+
+        .circle.exhale {
+            transform: scale(0.9);
+            box-shadow: 0 15px 35px -10px #819bbf, 0 0 0 3px white, 0 0 0 6px #b9cef0;
+        }
+
+        .circle-hold {
+            transform: scale(1.4); /* same as inhale for hold visual */
+        }
+
+        .phase-text {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1e3b5a;
+            line-height: 1.2;
+        }
+
+        .phase-sub {
+            font-size: 1rem;
+            color: #5b7da3;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+        }
+
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            color: #1d3853;
+            margin: 0.5rem 0;
+        }
+
+        /* control bar */
+        .control-panel {
+            background: #ffffffc0;
+            backdrop-filter: blur(4px);
+            border-radius: 90px;
+            padding: 1rem 2rem;
+            display: inline-flex;
+            gap: 1.2rem;
+            margin: 1.8rem 0 1rem;
+            border: 2px solid #e2ebf6;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.05);
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3c618b;
+            transition: 0.2s;
+            background: #f0f5fe;
+            border: 2px solid #c6daf5;
+        }
+
+        .ctrl-btn:hover {
+            background: #dde9ff;
+            transform: scale(1.07);
+            color: #1d3f68;
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cycle-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            font-size: 1.1rem;
+            color: #47678f;
+            background: #ffffffd0;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            border: 2px solid #d1e2f7;
+            margin-top: 1.2rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6e8eb5;
+        }
+
+        .info-number {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin-top: 0.1rem;
+            color: #1f3d5e;
+        }
+
+        .settings-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 0.2rem;
+        }
+
+        .settings-item {
+            background: #ecf2fc;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #c8daf2;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .settings-item label {
+            color: #34587e;
+            font-weight: 500;
+        }
+
+        .settings-item input {
+            width: 60px;
+            border: 2px solid #b1cbf0;
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e3f64;
+            background: white;
+        }
+
+        .footer-note {
+            margin-top: 2.2rem;
+            color: #7f99bf;
+            font-size: 0.9rem;
+        }
+
+        .credit {
+            color: #8fa6cc;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="breathe-card">
+        <div class="header">
+            <h1>🌿 Breathe</h1>
+            <p>guided breathing · 4-7-8 method</p>
+        </div>
+
+        <!-- animated circle -->
+        <div class="circle-container">
+            <div class="circle" id="breathCircle">
+                <span class="phase-text" id="phaseDisplay">Inhale</span>
+                <span class="phase-sub" id="instruction">through nose</span>
+                <div class="timer-display" id="timerDisplay">4</div>
+            </div>
+        </div>
+
+        <!-- control buttons -->
+        <div class="control-panel">
+            <button class="ctrl-btn" id="playPauseBtn">▶</button>
+            <button class="ctrl-btn" id="resetBtn">↺</button>
+        </div>
+
+        <!-- cycle info -->
+        <div class="cycle-info">
+            <div class="info-item">
+                <span class="info-label">cycles</span>
+                <span class="info-number" id="cycleCount">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">duration</span>
+                <span class="info-number" id="totalTime">0:00</span>
+            </div>
+        </div>
+
+        <!-- adjustable timings (simple) -->
+        <div class="settings-bar">
+            <div class="settings-item">
+                <label>inhale</label>
+                <input type="number" id="inhaleTime" min="2" max="10" value="4">
+            </div>
+            <div class="settings-item">
+                <label>hold</label>
+                <input type="number" id="holdTime" min="0" max="10" value="7">
+            </div>
+            <div class="settings-item">
+                <label>exhale</label>
+                <input type="number" id="exhaleTime" min="2" max="10" value="8">
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <span>tap circle to pause/resume · 4-7-8 relaxing breath</span>
+            <div class="credit">light theme · calm edition</div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ----- DOM elements -----
+            const circle = document.getElementById('breathCircle');
+            const phaseDisplay = document.getElementById('phaseDisplay');
+            const instruction = document.getElementById('instruction');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const cycleCountSpan = document.getElementById('cycleCount');
+            const totalTimeSpan = document.getElementById('totalTime');
+
+            // input fields
+            const inhaleInput = document.getElementById('inhaleTime');
+            const holdInput = document.getElementById('holdTime');
+            const exhaleInput = document.getElementById('exhaleTime');
+
+            // ----- state -----
+            let isRunning = false;
+            let currentPhase = 'inhale'; // inhale, hold, exhale
+            let timer = 0; // seconds left in current phase
+            let cycleCounter = 0;
+            let totalSeconds = 0;
+            let intervalId = null;
+
+            // phase durations (in seconds)
+            let inhaleDur = 4;
+            let holdDur = 7;
+            let exhaleDur = 8;
+
+            // ----- helper to update UI from durations -----
+            function updateDurationsFromInputs() {
+                inhaleDur = parseInt(inhaleInput.value, 10) || 4;
+                holdDur = parseInt(holdInput.value, 10) || 0;
+                exhaleDur = parseInt(exhaleInput.value, 10) || 4;
+                if (inhaleDur < 2) inhaleDur = 2;
+                if (exhaleDur < 2) exhaleDur = 2;
+                if (holdDur < 0) holdDur = 0;
+                if (holdDur > 15) holdDur = 15;
+                // clamp
+                inhaleInput.value = inhaleDur;
+                holdInput.value = holdDur;
+                exhaleInput.value = exhaleDur;
+
+                // reset phase timer when changed? but we'll just reset cycle
+                resetCycle();
+            }
+
+            // ----- reset to beginning of cycle (inhale) -----
+            function resetCycle() {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+                isRunning = false;
+                playPauseBtn.innerText = '▶';
+                currentPhase = 'inhale';
+                timer = inhaleDur;
+                updateDisplay();
+                applyCircleClass();
+                // don't reset cycle counter maybe, but reset total seconds? we'll keep counter as is? for simplicity, we reset counter on reset button
+            }
+
+            // full reset (including counters)
+            function fullReset() {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+                isRunning = false;
+                playPauseBtn.innerText = '▶';
+                currentPhase = 'inhale';
+                timer = inhaleDur;
+                cycleCounter = 0;
+                totalSeconds = 0;
+                cycleCountSpan.innerText = '0';
+                totalTimeSpan.innerText = '0:00';
+                updateDisplay();
+                applyCircleClass();
+            }
+
+            // update the text and timer display
+            function updateDisplay() {
+                timerDisplay.innerText = timer;
+                if (currentPhase === 'inhale') {
+                    phaseDisplay.innerText = 'Inhale';
+                    instruction.innerText = 'through nose';
+                } else if (currentPhase === 'hold') {
+                    phaseDisplay.innerText = 'Hold';
+                    instruction.innerText = 'keep calm';
+                } else {
+                    phaseDisplay.innerText = 'Exhale';
+                    instruction.innerText = 'through mouth';
+                }
+            }
+
+            // apply css class for animation (scale)
+            function applyCircleClass() {
+                circle.classList.remove('inhale', 'exhale');
+                if (currentPhase === 'inhale') {
+                    circle.classList.add('inhale');
+                } else if (currentPhase === 'exhale') {
+                    circle.classList.add('exhale');
+                } else {
+                    // hold: keep same as inhale scale? we'll keep inhale scale for hold too
+                    circle.classList.add('inhale');
+                }
+            }
+
+            // advance to next phase
+            function nextPhase() {
+                if (currentPhase === 'inhale') {
+                    if (holdDur > 0) {
+                        currentPhase = 'hold';
+                        timer = holdDur;
+                    } else {
+                        currentPhase = 'exhale';
+                        timer = exhaleDur;
+                    }
+                } else if (currentPhase === 'hold') {
+                    currentPhase = 'exhale';
+                    timer = exhaleDur;
+                } else { // exhale
+                    // cycle completed
+                    currentPhase = 'inhale';
+                    timer = inhaleDur;
+                    cycleCounter++;
+                    cycleCountSpan.innerText = cycleCounter;
+                }
+                updateDisplay();
+                applyCircleClass();
+            }
+
+            // tick every second
+            function tick() {
+                if (!isRunning) return;
+
+                timer--;
+                totalSeconds++;
+                // update total time display
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+                totalTimeSpan.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+                if (timer <= 0) {
+                    nextPhase();
+                } else {
+                    updateDisplay();
+                }
+            }
+
+            // start/pause
+            function toggleRunning() {
+                if (isRunning) {
+                    // pause
+                    if (intervalId) {
+                        clearInterval(intervalId);
+                        intervalId = null;
+                    }
+                    isRunning = false;
+                    playPauseBtn.innerText = '▶';
+                } else {
+                    // start
+                    isRunning = true;
+                    playPauseBtn.innerText = '⏸';
+                    if (!intervalId) {
+                        intervalId = setInterval(tick, 1000);
+                    }
+                }
+            }
+
+            // ----- event listeners -----
+            playPauseBtn.addEventListener('click', toggleRunning);
+            resetBtn.addEventListener('click', () => {
+                fullReset();
+            });
+
+            // circle click toggles
+            circle.addEventListener('click', toggleRunning);
+
+            // input changes: update durations and reset cycle (but keep running? better reset to avoid mismatch)
+            inhaleInput.addEventListener('change', () => {
+                updateDurationsFromInputs();
+                fullReset(); // reset everything
+            });
+            holdInput.addEventListener('change', () => {
+                updateDurationsFromInputs();
+                fullReset();
+            });
+            exhaleInput.addEventListener('change', () => {
+                updateDurationsFromInputs();
+                fullReset();
+            });
+
+            // initialize
+            updateDurationsFromInputs();
+            fullReset();
+
+            // handle visibility change: optional – we don't want timer to drift when tab hidden, but it's fine.
+        })();
+    </script>
+</body>
+</html>

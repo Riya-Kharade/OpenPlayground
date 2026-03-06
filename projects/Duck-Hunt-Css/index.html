@@ -1,0 +1,80 @@
+doctype html
+html(lang="en")
+    head
+        title Duck hunt css!
+        link(href='./styles.css', rel='stylesheet')
+    body
+        div#stage
+            div#dogIntro
+            - var n = 0
+            while n < 10
+                - n++
+                input(type='checkbox' id='d' + n)
+                - var i = 0
+                while i < 3
+                    - i++
+                    input(type='checkbox' id='bc' + n + '-' + i)
+            div#dogLaugh
+                - var n = 0
+                while n < 10
+                    - n++
+                    div
+                        span
+                        span
+            div#shootingArea
+                - var n = 0
+                while n < 10
+                    - n++
+                    div
+                        div
+                            - var i = 0
+                            while i < 3
+                                - i++
+                                label(for='bc' + n + '-' + i)
+                            div
+                                label(for='d' + n)
+                                span
+
+            div#bullets.console
+                div
+                    - var n = 0
+                    while n < 10
+                        - n++
+                        div
+                            span
+                            span
+                            span
+                span SHOT
+
+            div#hits.console
+                span HIT
+                div
+                    - var n = 0
+                    while n < 10
+                        - n++
+                        span
+            
+            div#points.console
+                div.pts1
+                    div.pts2
+                        div.pts3
+                            div.pts4
+                                div.pts5
+                                    div.pts6
+                                        div.pts7
+                                            div.pts8
+                                                div.pts9
+                                                    div.pts10
+                                                        span 000000
+                                                        span 000100
+                                                        span 000200
+                                                        span 000300
+                                                        span 000400
+                                                        span 000500
+                                                        span 000600
+                                                        span 000700
+                                                        span 000800
+                                                        span 000900
+                                                        span 001000
+                span SCORE
+

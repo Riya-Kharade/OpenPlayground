@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Productivity Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1><i class="ri-task-2-line"></i> TaskFlow</h1>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="ri-moon-line"></i>
+                </button>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-section="dashboard">
+                    <i class="ri-dashboard-line"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-section="tasks">
+                    <i class="ri-file-list-line"></i>
+                    <span>All Tasks</span>
+                </button>
+                <button class="nav-item" data-section="stats">
+                    <i class="ri-bar-chart-line"></i>
+                    <span>Analytics</span>
+                </button>
+                <button class="nav-item" data-section="settings">
+                    <i class="ri-settings-line"></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="stats-mini">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Tasks</span>
+                        <span class="stat-value" id="totalTasksCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Completed</span>
+                        <span class="stat-value" id="completedTasksCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section class="section-content active" id="dashboard">
+                <div class="header-section">
+                    <div>
+                        <h2>Welcome Back!</h2>
+                        <p id="currentDate"></p>
+                    </div>
+                    <button class="btn-primary" id="newTaskBtn">
+                        <i class="ri-add-line"></i> New Task
+                    </button>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon high-priority">
+                            <i class="ri-fire-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Urgent Tasks</h3>
+                            <p id="urgentCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon medium-priority">
+                            <i class="ri-alert-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>In Progress</h3>
+                            <p id="inProgressCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon low-priority">
+                            <i class="ri-checkbox-circle-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Completed Today</h3>
+                            <p id="completedTodayCount">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="ri-time-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Due Soon</h3>
+                            <p id="dueSoonCount">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Overview -->
+                <div class="progress-section">
+                    <h3>Today's Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">0 of 0 tasks completed</p>
+                </div>
+
+                <!-- Today's Tasks -->
+                <div class="tasks-section">
+                    <div class="section-header">
+                        <h3>Today's Tasks</h3>
+                        <div class="filter-group">
+                            <select id="filterPriority" class="filter-select">
+                                <option value="all">All Priorities</option>
+                                <option value="high">High Priority</option>
+                                <option value="medium">Medium Priority</option>
+                                <option value="low">Low Priority</option>
+                            </select>
+                            <select id="filterStatus" class="filter-select">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="task-list" id="dashboardTaskList">
+                        <div class="empty-state">
+                            <i class="ri-inbox-line"></i>
+                            <p>No tasks yet. Create one to get started!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Tasks Section -->
+            <section class="section-content" id="tasks">
+                <div class="header-section">
+                    <h2>All Tasks</h2>
+                    <button class="btn-primary" id="newTaskBtn2">
+                        <i class="ri-add-line"></i> New Task
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <i class="ri-search-line"></i>
+                    <input type="text" id="searchInput" placeholder="Search tasks...">
+                </div>
+
+                <div class="task-list" id="allTaskList">
+                    <div class="empty-state">
+                        <i class="ri-inbox-line"></i>
+                        <p>No tasks found</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section class="section-content" id="stats">
+                <div class="header-section">
+                    <h2>Analytics & Insights</h2>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Completion Rate</h3>
+                        <div class="chart-placeholder">
+                            <div class="donut-chart" id="completionChart"></div>
+                            <p id="completionPercentage">0%</p>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Tasks by Priority</h3>
+                        <div class="priority-stats">
+                            <div class="priority-item">
+                                <span class="priority-badge high">High</span>
+                                <span id="highPriorityStats">0</span>
+                            </div>
+                            <div class="priority-item">
+                                <span class="priority-badge medium">Medium</span>
+                                <span id="mediumPriorityStats">0</span>
+                            </div>
+                            <div class="priority-item">
+                                <span class="priority-badge low">Low</span>
+                                <span id="lowPriorityStats">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Weekly Overview</h3>
+                        <div class="weekly-chart" id="weeklyChart"></div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Productivity Streak</h3>
+                        <div class="streak-display">
+                            <div class="streak-number" id="streakNumber">0</div>
+                            <p>days in a row</p>
+                            <p class="streak-message" id="streakMessage">Keep it up!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insights-section">
+                    <h3>Insights</h3>
+                    <div class="insights-list" id="insightsList">
+                        <div class="insight-item">
+                            <i class="ri-lightbulb-line"></i>
+                            <p>Create your first task to get personalized insights</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="section-content" id="settings">
+                <div class="header-section">
+                    <h2>Settings</h2>
+                </div>
+
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <h3>Notification Settings</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notificationsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                        <p class="setting-description">Get notified about upcoming deadlines</p>
+                    </div>
+
+                    <div class="setting-item">
+                        <h3>Dark Mode</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <p class="setting-description">Use dark theme for comfortable viewing</p>
+                    </div>
+
+                    <div class="setting-item">
+                        <h3>Data Management</h3>
+                        <button class="btn-secondary" id="exportDataBtn">
+                            <i class="ri-download-line"></i> Export Data
+                        </button>
+                        <button class="btn-danger" id="clearDataBtn">
+                            <i class="ri-delete-bin-line"></i> Clear All Data
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Task</h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <form id="taskForm" class="modal-body">
+                <div class="form-group">
+                    <label for="taskTitle">Task Title *</label>
+                    <input type="text" id="taskTitle" required placeholder="What do you need to do?">
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">Description</label>
+                    <textarea id="taskDescription" placeholder="Add details about your task..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskPriority">Priority *</label>
+                        <select id="taskPriority" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskCategory">Category</label>
+                        <select id="taskCategory">
+                            <option value="work">Work</option>
+                            <option value="personal">Personal</option>
+                            <option value="health">Health</option>
+                            <option value="learning">Learning</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskDueDate">Due Date *</label>
+                        <input type="date" id="taskDueDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskDueTime">Due Time</label>
+                        <input type="time" id="taskDueTime">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskEstimatedTime">Estimated Time (minutes)</label>
+                    <input type="number" id="taskEstimatedTime" min="1" placeholder="30">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

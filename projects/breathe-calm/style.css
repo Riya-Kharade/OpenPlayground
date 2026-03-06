@@ -1,0 +1,717 @@
+        .header p {
+            color: #627a9c;
+            font-size: 1.1rem;
+        }
+
+        /* main breathing circle */
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0 2rem 0;
+            position: relative;
+        }
+
+        .circle {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(145deg, #d9e8ff, #ffffff);
+            border-radius: 50%;
+            box-shadow: 0 30px 45px -20px #809bbf, 0 0 0 3px white, 0 0 0 6px #cbd7ed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 5.5s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
+            transform: scale(1);
+            cursor: pointer;
+            color: #1e3a5f;
+        }
+
+        .circle.inhale {
+            transform: scale(1.4);
+            box-shadow: 0 40px 60px -15px #4f7bb3, 0 0 0 4px white, 0 0 0 8px #a5c4f0;
+        }
+
+        .circle.exhale {
+            transform: scale(0.9);
+            box-shadow: 0 15px 35px -10px #819bbf, 0 0 0 3px white, 0 0 0 6px #b9cef0;
+        }
+
+        .circle-hold {
+            transform: scale(1.4); /* same as inhale for hold visual */
+        }
+
+        .phase-text {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1e3b5a;
+            line-height: 1.2;
+        }
+
+        .phase-sub {
+            font-size: 1rem;
+            color: #5b7da3;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+        }
+
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            color: #1d3853;
+            margin: 0.5rem 0;
+        }
+
+        /* control bar */
+        .control-panel {
+            background: #ffffffc0;
+            backdrop-filter: blur(4px);
+            border-radius: 90px;
+            padding: 1rem 2rem;
+            display: inline-flex;
+            gap: 1.2rem;
+            margin: 1.8rem 0 1rem;
+            border: 2px solid #e2ebf6;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.05);
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3c618b;
+            transition: 0.2s;
+            background: #f0f5fe;
+            border: 2px solid #c6daf5;
+        }
+
+        .ctrl-btn:hover {
+            background: #dde9ff;
+            transform: scale(1.07);
+            color: #1d3f68;
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cycle-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            font-size: 1.1rem;
+            color: #47678f;
+            background: #ffffffd0;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            border: 2px solid #d1e2f7;
+            margin-top: 1.2rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6e8eb5;
+        }
+
+        .info-number {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin-top: 0.1rem;
+            color: #1f3d5e;
+        }
+
+        .settings-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 0.2rem;
+        }
+
+        .settings-item {
+            background: #ecf2fc;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #c8daf2;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .settings-item label {
+            color: #34587e;
+            font-weight: 500;
+        }
+
+        .settings-item input {
+            width: 60px;
+            border: 2px solid #b1cbf0;
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e3f64;
+            background: white;
+        }
+
+        .footer-note {
+            margin-top: 2.2rem;
+            color: #7f99bf;
+            font-size: 0.9rem;
+        }
+
+        .credit {
+            color: #8fa6cc;
+            font-size: 0.85rem;
+        }        .header p {
+            color: #627a9c;
+            font-size: 1.1rem;
+        }
+
+        /* main breathing circle */
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0 2rem 0;
+            position: relative;
+        }
+
+        .circle {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(145deg, #d9e8ff, #ffffff);
+            border-radius: 50%;
+            box-shadow: 0 30px 45px -20px #809bbf, 0 0 0 3px white, 0 0 0 6px #cbd7ed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 5.5s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
+            transform: scale(1);
+            cursor: pointer;
+            color: #1e3a5f;
+        }
+
+        .circle.inhale {
+            transform: scale(1.4);
+            box-shadow: 0 40px 60px -15px #4f7bb3, 0 0 0 4px white, 0 0 0 8px #a5c4f0;
+        }
+
+        .circle.exhale {
+            transform: scale(0.9);
+            box-shadow: 0 15px 35px -10px #819bbf, 0 0 0 3px white, 0 0 0 6px #b9cef0;
+        }
+
+        .circle-hold {
+            transform: scale(1.4); /* same as inhale for hold visual */
+        }
+
+        .phase-text {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1e3b5a;
+            line-height: 1.2;
+        }
+
+        .phase-sub {
+            font-size: 1rem;
+            color: #5b7da3;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+        }
+
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            color: #1d3853;
+            margin: 0.5rem 0;
+        }
+
+        /* control bar */
+        .control-panel {
+            background: #ffffffc0;
+            backdrop-filter: blur(4px);
+            border-radius: 90px;
+            padding: 1rem 2rem;
+            display: inline-flex;
+            gap: 1.2rem;
+            margin: 1.8rem 0 1rem;
+            border: 2px solid #e2ebf6;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.05);
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3c618b;
+            transition: 0.2s;
+            background: #f0f5fe;
+            border: 2px solid #c6daf5;
+        }
+
+        .ctrl-btn:hover {
+            background: #dde9ff;
+            transform: scale(1.07);
+            color: #1d3f68;
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cycle-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            font-size: 1.1rem;
+            color: #47678f;
+            background: #ffffffd0;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            border: 2px solid #d1e2f7;
+            margin-top: 1.2rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6e8eb5;
+        }
+
+        .info-number {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin-top: 0.1rem;
+            color: #1f3d5e;
+        }
+
+        .settings-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 0.2rem;
+        }
+
+        .settings-item {
+            background: #ecf2fc;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #c8daf2;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .settings-item label {
+            color: #34587e;
+            font-weight: 500;
+        }
+
+        .settings-item input {
+            width: 60px;
+            border: 2px solid #b1cbf0;
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e3f64;
+            background: white;
+        }
+
+        .footer-note {
+            margin-top: 2.2rem;
+            color: #7f99bf;
+            font-size: 0.9rem;
+        }
+
+        .credit {
+            color: #8fa6cc;
+            font-size: 0.85rem;
+        }        .header p {
+            color: #627a9c;
+            font-size: 1.1rem;
+        }
+
+        /* main breathing circle */
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0 2rem 0;
+            position: relative;
+        }
+
+        .circle {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(145deg, #d9e8ff, #ffffff);
+            border-radius: 50%;
+            box-shadow: 0 30px 45px -20px #809bbf, 0 0 0 3px white, 0 0 0 6px #cbd7ed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 5.5s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
+            transform: scale(1);
+            cursor: pointer;
+            color: #1e3a5f;
+        }
+
+        .circle.inhale {
+            transform: scale(1.4);
+            box-shadow: 0 40px 60px -15px #4f7bb3, 0 0 0 4px white, 0 0 0 8px #a5c4f0;
+        }
+
+        .circle.exhale {
+            transform: scale(0.9);
+            box-shadow: 0 15px 35px -10px #819bbf, 0 0 0 3px white, 0 0 0 6px #b9cef0;
+        }
+
+        .circle-hold {
+            transform: scale(1.4); /* same as inhale for hold visual */
+        }
+
+        .phase-text {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1e3b5a;
+            line-height: 1.2;
+        }
+
+        .phase-sub {
+            font-size: 1rem;
+            color: #5b7da3;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+        }
+
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            color: #1d3853;
+            margin: 0.5rem 0;
+        }
+
+        /* control bar */
+        .control-panel {
+            background: #ffffffc0;
+            backdrop-filter: blur(4px);
+            border-radius: 90px;
+            padding: 1rem 2rem;
+            display: inline-flex;
+            gap: 1.2rem;
+            margin: 1.8rem 0 1rem;
+            border: 2px solid #e2ebf6;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.05);
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3c618b;
+            transition: 0.2s;
+            background: #f0f5fe;
+            border: 2px solid #c6daf5;
+        }
+
+        .ctrl-btn:hover {
+            background: #dde9ff;
+            transform: scale(1.07);
+            color: #1d3f68;
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cycle-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            font-size: 1.1rem;
+            color: #47678f;
+            background: #ffffffd0;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            border: 2px solid #d1e2f7;
+            margin-top: 1.2rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6e8eb5;
+        }
+
+        .info-number {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin-top: 0.1rem;
+            color: #1f3d5e;
+        }
+
+        .settings-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 0.2rem;
+        }
+
+        .settings-item {
+            background: #ecf2fc;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #c8daf2;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .settings-item label {
+            color: #34587e;
+            font-weight: 500;
+        }
+
+        .settings-item input {
+            width: 60px;
+            border: 2px solid #b1cbf0;
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e3f64;
+            background: white;
+        }
+
+        .footer-note {
+            margin-top: 2.2rem;
+            color: #7f99bf;
+            font-size: 0.9rem;
+        }
+
+        .credit {
+            color: #8fa6cc;
+            font-size: 0.85rem;
+        }        .header p {
+            color: #627a9c;
+            font-size: 1.1rem;
+        }
+
+        /* main breathing circle */
+        .circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0 2rem 0;
+            position: relative;
+        }
+
+        .circle {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(145deg, #d9e8ff, #ffffff);
+            border-radius: 50%;
+            box-shadow: 0 30px 45px -20px #809bbf, 0 0 0 3px white, 0 0 0 6px #cbd7ed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 5.5s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s;
+            transform: scale(1);
+            cursor: pointer;
+            color: #1e3a5f;
+        }
+
+        .circle.inhale {
+            transform: scale(1.4);
+            box-shadow: 0 40px 60px -15px #4f7bb3, 0 0 0 4px white, 0 0 0 8px #a5c4f0;
+        }
+
+        .circle.exhale {
+            transform: scale(0.9);
+            box-shadow: 0 15px 35px -10px #819bbf, 0 0 0 3px white, 0 0 0 6px #b9cef0;
+        }
+
+        .circle-hold {
+            transform: scale(1.4); /* same as inhale for hold visual */
+        }
+
+        .phase-text {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1e3b5a;
+            line-height: 1.2;
+        }
+
+        .phase-sub {
+            font-size: 1rem;
+            color: #5b7da3;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+        }
+
+        .timer-display {
+            font-size: 3.2rem;
+            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            color: #1d3853;
+            margin: 0.5rem 0;
+        }
+
+        /* control bar */
+        .control-panel {
+            background: #ffffffc0;
+            backdrop-filter: blur(4px);
+            border-radius: 90px;
+            padding: 1rem 2rem;
+            display: inline-flex;
+            gap: 1.2rem;
+            margin: 1.8rem 0 1rem;
+            border: 2px solid #e2ebf6;
+            box-shadow: 0 10px 20px -10px rgba(0,0,0,0.05);
+        }
+
+        .ctrl-btn {
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #3c618b;
+            transition: 0.2s;
+            background: #f0f5fe;
+            border: 2px solid #c6daf5;
+        }
+
+        .ctrl-btn:hover {
+            background: #dde9ff;
+            transform: scale(1.07);
+            color: #1d3f68;
+        }
+
+        .ctrl-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cycle-info {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            font-size: 1.1rem;
+            color: #47678f;
+            background: #ffffffd0;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            border: 2px solid #d1e2f7;
+            margin-top: 1.2rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #6e8eb5;
+        }
+
+        .info-number {
+            font-weight: 600;
+            font-size: 1.6rem;
+            margin-top: 0.1rem;
+            color: #1f3d5e;
+        }
+
+        .settings-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1.8rem 0 0.2rem;
+        }
+
+        .settings-item {
+            background: #ecf2fc;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border: 2px solid #c8daf2;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .settings-item label {
+            color: #34587e;
+            font-weight: 500;
+        }
+
+        .settings-item input {
+            width: 60px;
+            border: 2px solid #b1cbf0;
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: #1e3f64;
+            background: white;
+        }
+
+        .footer-note {
+            margin-top: 2.2rem;
+            color: #7f99bf;
+            font-size: 0.9rem;
+        }
+
+        .credit {
+            color: #8fa6cc;
+            font-size: 0.85rem;
+        }

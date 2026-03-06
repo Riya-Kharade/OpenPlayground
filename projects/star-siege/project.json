@@ -1,0 +1,9 @@
+{
+  "title": "A-Star Siege",
+  "category": "game",
+  "description": "Enemies spawn and attempt to navigate a maze to reach a base. The player builds structures to block their path and intercept them.",
+  "tech": ["HTML", "CSS", "JavaScript"],
+  "link": "./projects/star-siege/index.html",
+  "icon": "ri-line-chart-line",
+  "coverStyle": "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+}

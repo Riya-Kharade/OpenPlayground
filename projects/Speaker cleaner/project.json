@@ -1,0 +1,16 @@
+{
+  "title": "Speaker Cleaner",
+  "category": "utility",
+  "difficulty": "advanced",
+  "description": "Speaker Cleaner is a web-based application designed to help users clean and maintain their speakers. The app provides step-by-step instructions, visual guides, and tips for safely cleaning different types of speakers, including home audio systems, car speakers, and headphones. It also includes a checklist to ensure users follow the proper cleaning process and avoid damaging their equipment.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Web Audio API for analyzing speaker sound quality",
+    "Canvas API for visual guides and instructions",
+    "Local Storage for saving user progress and preferences"
+  ],
+  "icon": "ri-gamepad-line",
+  "coverStyle": "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+}
