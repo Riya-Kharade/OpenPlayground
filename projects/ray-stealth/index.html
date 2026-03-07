@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Infiltrator: Raycasting Engine</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ui-layer">
+        <header class="top-bar">
+            <h1>🔦 Shadow Infiltrator</h1>
+            <div class="stats">
+                <span id="level-display">Sector 1</span>
+                <span class="highlight">Data Drives: <span id="score-display">0 / 5</span></span>
+            </div>
+            <div class="controls">
+                <button class="guide-btn" onclick="game.toggleGuide()">📖 Engine Manual</button>
+            </div>
+        </header>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="guide-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="game.toggleGuide()">&times;</span>
+            <h2>📖 Raycasting & Lighting Manual</h2>
+            <div class="guide-steps">
+                <h3>The Mathematics:</h3>
+                <p>This engine casts hundreds of invisible mathematical rays originating from the player. It calculates the exact <code>(x, y)</code> intersection point where each ray hits a line segment (wall), creating a dynamic, real-time polygon that represents the player's field of view.</p>
+                <h3>How to Play:</h3>
+                <ul>
+                    <li><strong>Movement:</strong> Use <code>W, A, S, D</code> or Arrow Keys to move your operative.</li>
+                    <li><strong>Flashlight:</strong> Use your <code>Mouse</code> to aim your flashlight. The darkness is absolute—you can only see what the light touches.</li>
+                    <li><strong>Objective:</strong> Find and collect all the glowing blue Data Drives hidden in the maze to advance to the next sector.</li>
+                    <li><strong>Physics:</strong> The player uses sliding collision detection to smoothly glide along walls instead of getting stuck.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="win-modal" class="modal hidden">
+        <div class="modal-content text-center">
+            <h2>🔓 Sector Cleared!</h2>
+            <p>All data drives secured. Moving deeper into the facility.</p>
+            <button class="action-btn" onclick="game.nextLevel()">Enter Next Sector ➡️</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
