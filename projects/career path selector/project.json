@@ -1,0 +1,13 @@
+{
+  "title": "Career Path Selector",
+  "category": "productivity",
+  "difficulty": "advanced",
+  "description": "  A web application that helps users explore and select potential career paths based on their skills, interests, and goals.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "icon": "ri-tools-line",
+  "coverStyle": "background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;"
+}
