@@ -2492,6 +2492,15 @@
     "folder": "Fitness Awareness",
     "path": "./projects/Fitness-Awareness/project.json",
     "link": "./projects/Fitness-Awareness/index.html"
+  },
+
+
+
+
+   {
+    "folder": "Growth vs Fixed Mindset Website",
+    "path": "./projects/Growth-vs-Fixed-Mindset-Website/project.json",
+    "link": "./projects/Growth-vs-Fixed-Mindset-Website/index.html"
   }
 ]
 }
