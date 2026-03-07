@@ -1,0 +1,13 @@
+{
+  "title": "HireStream - Next-Gen Job Platform",
+  "category": "utility",
+  "difficulty": "advanced",
+  "description": "HireStream is a next-generation job platform designed to revolutionize the way job seekers and employers connect. With a focus on user experience, advanced search capabilities, and personalized job recommendations, HireStream aims to streamline the job search process and help users find their ideal career opportunities.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "icon": "ri-code-s-slash-line",
+  "coverStyle": "background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;"
+}
