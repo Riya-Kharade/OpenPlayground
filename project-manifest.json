@@ -2503,6 +2503,10 @@
     "folder": "WorkOut Planner",
     "path": "./projects/WorkOut-Planner/project.json",
     "link": "./projects/WorkOut-Planner/index.html"
+  },{
+    "folder": "Currency Converter",
+    "path": "./projects/Currency-Converter/project.json",
+    "link": "./projects/Currency-Converter/index.html"
   }
 ]
 }

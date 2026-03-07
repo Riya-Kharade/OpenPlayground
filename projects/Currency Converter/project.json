@@ -1,0 +1,13 @@
+{
+  "title": "Currency Converter",
+  "category": "utility",
+  "difficulty": "Beginner",
+  "description": "An interactive currency converter with real-time exchange rates.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "icon": "ri-shield-keyhole-line",
+  "coverStyle": "background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%); color: white;"
+}
