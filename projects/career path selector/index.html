@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerPath - Discover Your Future</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .option-card:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 font-extrabold text-xl tracking-tight">
+                <i class="fa-solid fa-compass text-blue-600"></i>
+                <span>Career<span class="text-blue-600">Path</span></span>
+            </div>
+            <button onclick="location.reload()" class="text-sm font-medium text-slate-500 hover:text-blue-600 transition">
+                Reset Assessment
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        
+        <!-- Hero Section (Landing) -->
+        <div id="view-landing" class="text-center space-y-8 py-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                </span>
+                Powered by Career Intelligence
+            </div>
+            <h1 class="text-5xl md:text-6xl font-black text-slate-900 leading-tight">
+                Find the career that <br><span class="gradient-text">actually fits you.</span>
+            </h1>
+            <p class="text-xl text-slate-600 max-w-2xl mx-auto">
+                Stop guessing. Take our 2-minute assessment to match your personality, skills, and values with the world's most high-growth career paths.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <button onclick="startQuiz()" class="px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl shadow-xl shadow-blue-500/20 hover:bg-blue-700 hover:scale-105 transition active:scale-95 flex items-center gap-3">
+                    Start Assessment
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <div class="text-slate-400 text-sm">
+                    <i class="fa-solid fa-user-group mr-1"></i> 12.4k users matched this month
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="view-quiz" class="hidden animate-fade-in">
+            <div class="mb-10">
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <span class="text-blue-600 font-bold" id="step-indicator">Question 1</span>
+                        <h2 class="text-2xl font-bold mt-1" id="question-text">Loading...</h2>
+                    </div>
+                    <span class="text-slate-400 text-sm font-medium" id="progress-text">0% Complete</span>
+                </div>
+                <div class="h-3 w-full bg-slate-200 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="progress-bar h-full bg-blue-600" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Options injected here -->
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="view-results" class="hidden animate-fade-in space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold mb-2">Your Career Matches</h2>
+                <p class="text-slate-500">Based on your unique profile, here are your top matches.</p>
+            </div>
+
+            <div id="match-results" class="space-y-6">
+                <!-- Career cards injected here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const questions = [
+            {
+                id: 'interest',
+                text: "What drives you most during a workday?",
+                options: [
+                    { label: "Building and solving complex technical puzzles", value: "tech", icon: "fa-code" },
+                    { label: "Helping people and making a direct social impact", value: "people", icon: "fa-hand-holding-heart" },
+                    { label: "Creating beautiful, intuitive visual experiences", value: "art", icon: "fa-palette" },
+                    { label: "Analyzing numbers to find hidden patterns", value: "data", icon: "fa-chart-pie" }
+                ]
+            },
+            {
+                id: 'workstyle',
+                text: "How do you prefer to tackle a major project?",
+                options: [
+                    { label: "Independently with deep, focused work", value: "solo", icon: "fa-user-focus" },
+                    { label: "Leading and collaborating with a large team", value: "lead", icon: "fa-users-gear" },
+                    { label: "Strictly following logical systems and data", value: "logical", icon: "fa-microchip" },
+                    { label: "Experimenting with abstract, messy ideas first", value: "creative", icon: "fa-flask" }
+                ]
+            },
+            {
+                id: 'environment',
+                text: "Which environment sounds most appealing?",
+                options: [
+                    { label: "A fast-paced, high-stakes startup", value: "fast", icon: "fa-rocket" },
+                    { label: "A stable, structured corporate office", value: "stable", icon: "fa-building" },
+                    { label: "Remote work from anywhere in the world", value: "remote", icon: "fa-house-laptop" },
+                    { label: "On-the-ground, interacting with the public", value: "public", icon: "fa-earth-americas" }
+                ]
+            }
+        ];
+
+        const careers = [
+            {
+                id: 'se',
+                title: 'Software Engineer',
+                category: 'Technology',
+                salary: '$110k - $190k',
+                growth: '92%',
+                desc: 'Architecting digital systems and writing code to solve global problems.',
+                skills: ['Python/JS', 'Cloud Computing', 'Logic'],
+                match: { interest: 'tech', workstyle: 'logical' }
+            },
+            {
+                id: 'ux',
+                title: 'Product Designer (UX)',
+                category: 'Creative Tech',
+                salary: '$95k - $160k',
+                growth: '85%',
+                desc: 'Crafting the bridge between human needs and digital solutions.',
+                skills: ['Figma', 'User Research', 'Empathy'],
+                match: { interest: 'art', workstyle: 'creative' }
+            },
+            {
+                id: 'da',
+                title: 'Data Scientist',
+                category: 'Analytics',
+                salary: '$120k - $210k',
+                growth: '95%',
+                desc: 'Using statistical models to predict the future and guide business strategy.',
+                skills: ['Mathematics', 'Machine Learning', 'SQL'],
+                match: { interest: 'data', workstyle: 'logical' }
+            },
+            {
+                id: 'pm',
+                title: 'Product Manager',
+                category: 'Strategy',
+                salary: '$105k - $185k',
+                growth: '88%',
+                desc: 'Connecting technology, business, and design to ship impactful products.',
+                skills: ['Leadership', 'Roadmapping', 'Agile'],
+                match: { interest: 'people', workstyle: 'lead' }
+            }
+        ];
+
+        let currentStep = 0;
+        let userAnswers = {};
+
+        function startQuiz() {
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('view-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = questions[currentStep];
+            document.getElementById('step-indicator').innerText = `Question ${currentStep + 1} of ${questions.length}`;
+            document.getElementById('question-text').innerText = q.text;
+            
+            const progress = ((currentStep) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-text').innerText = `${Math.round(progress)}% Complete`;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const button = document.createElement('button');
+                button.className = "option-card glass-card p-6 rounded-2xl text-left transition-all flex items-start gap-4 border-2 border-transparent group";
+                button.onclick = () => handleAnswer(q.id, opt.value);
+                button.innerHTML = `
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+                        <i class="fa-solid ${opt.icon}"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-900 mb-1">${opt.label}</div>
+                        <div class="text-xs text-slate-400 uppercase font-bold tracking-widest">Select this option</div>
+                    </div>
+                `;
+                container.appendChild(button);
+            });
+        }
+
+        function handleAnswer(key, value) {
+            userAnswers[key] = value;
+            if (currentStep < questions.length - 1) {
+                currentStep++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('view-quiz').classList.add('hidden');
+            document.getElementById('view-results').classList.remove('hidden');
+
+            const resultsContainer = document.getElementById('match-results');
+            
+            // Basic matching logic: Find careers that share at least one trait or return curated list
+            // For this app, we'll calculate a 'match score'
+            const scoredCareers = careers.map(c => {
+                let score = 0;
+                if (c.match.interest === userAnswers.interest) score += 60;
+                if (c.match.workstyle === userAnswers.workstyle) score += 40;
+                return { ...c, score };
+            }).sort((a, b) => b.score - a.score);
+
+            scoredCareers.forEach((career, index) => {
+                const card = document.createElement('div');
+                card.className = `glass-card p-8 rounded-3xl border-l-8 ${index === 0 ? 'border-l-blue-600 shadow-2xl scale-[1.02]' : 'border-l-slate-300'} animate-fade-in`;
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between gap-6">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold uppercase tracking-wider">${career.category}</span>
+                                ${index === 0 ? '<span class="px-3 py-1 bg-blue-600 text-white rounded-full text-xs font-bold uppercase tracking-wider">Top Match</span>' : ''}
+                            </div>
+                            <h3 class="text-2xl font-black text-slate-900 mb-3">${career.title}</h3>
+                            <p class="text-slate-600 mb-6 leading-relaxed">${career.desc}</p>
+                            
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${career.skills.map(s => `<span class="bg-white border border-slate-200 px-3 py-1 rounded-lg text-sm text-slate-700 font-medium"># ${s}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-64 space-y-4">
+                            <div class="p-4 bg-slate-50 rounded-2xl">
+                                <div class="text-xs text-slate-400 font-bold uppercase mb-1">Estimated Salary</div>
+                                <div class="text-xl font-extrabold text-slate-900">${career.salary}</div>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-2xl">
+                                <div class="text-xs text-slate-400 font-bold uppercase mb-1">Market Growth</div>
+                                <div class="flex items-center gap-2">
+                                    <div class="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-green-500" style="width: ${career.growth}"></div>
+                                    </div>
+                                    <span class="text-sm font-bold text-green-600">${career.growth}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-slate-100 flex justify-end">
+                        <button class="text-blue-600 font-bold text-sm flex items-center gap-2 hover:gap-3 transition-all">
+                            View Full Career Roadmap
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                `;
+                resultsContainer.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
